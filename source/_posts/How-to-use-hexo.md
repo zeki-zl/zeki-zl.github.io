@@ -2,6 +2,9 @@
 title: How to use hexo
 date: 2022-05-29 09:06:33
 tags:
+  - hexo
+  - blog
+  - 工具
 ---
 
 # 参考  
