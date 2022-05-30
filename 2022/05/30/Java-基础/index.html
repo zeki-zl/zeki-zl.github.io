@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>Zeki&#39;s Blog | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">Zeki&#39;s Blog</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            Java 基础
+        </div>
+        <div class="post-meta">
+            2022-05-30
+        </div>
+    
+
+    <div class="post-md">
+        <h1 id="语言特性"><a href="#语言特性" class="headerlink" title="语言特性"></a>语言特性</h1><ul>
+<li>面向对象（封装、继承、多态）</li>
+<li>跨平台</li>
+<li>多线程支持</li>
+<li>编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）</li>
+</ul>
+<h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><ol>
+<li><p>基础数据类型</p>
+<table>
+<thead>
+<tr>
+<th>基本类型</th>
+<th>位数</th>
+<th>字节</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>byte</code></td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td>-128 ~ 127</td>
+</tr>
+<tr>
+<td><code>short</code></td>
+<td>16</td>
+<td>2</td>
+<td>0</td>
+<td>-32768 ~ 32767</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td>32</td>
+<td>4</td>
+<td>0</td>
+<td>-2147483648 ~ 2147483647</td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td>64</td>
+<td>8</td>
+<td>0L</td>
+<td>-9223372036854775808 ~ 9223372036854775807</td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td>16</td>
+<td>2</td>
+<td>‘u0000’</td>
+<td>0 ~ 65535</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>32</td>
+<td>4</td>
+<td>0f</td>
+<td>1.4E-45 ~ 3.4028235E38</td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td>64</td>
+<td>8</td>
+<td>0d</td>
+<td>4.9E-324 ~ 1.7976931348623157E308</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td>1</td>
+<td></td>
+<td>false</td>
+<td>true、false</td>
+</tr>
+</tbody></table>
+<p>注意：boolean长度为明确。取决于JVM实现，逻辑上是占用1位。</p>
+</li>
+<li><p>自动拆装箱</p>
+<p>装箱其实就是调用了 包装类的<code>valueOf()</code>方法，拆箱其实就是调用了 <code>xxxValue()</code>方法。</p>
+<ol>
+<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
+<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
+</ol>
+</li>
+<li><p>局部变量与成员变量</p>
+<p>局部变量通常在栈中，随方法调用结束而回收。无默认值需设置；</p>
+<p>成员变量通常在堆中，随对象创建而存在。有默认值。</p>
+</li>
+<li><p>异常</p>
+<p>共同祖先：java.lang.Throwable</p>
+<p>重要子类：Exception与Error</p>
+<p><strong><code>Exception</code></strong> ：程序本身可以处理的异常，可以通过 <code>catch</code> 来进行捕获。<code>Exception</code> 又可以分为 Checked Exception (受检查异常，必须处理) 和 Unchecked Exception (不受检查异常，可以不处理)。</p>
+<ul>
+<li>Checked Excpetion:<ul>
+<li>IOException</li>
+<li>ClassNotFoundException</li>
+<li>SQLException</li>
+<li>FileNotFoundException</li>
+</ul>
+</li>
+<li>Unchecked Exception:<ul>
+<li>ArithmeticException</li>
+<li>ClassCastException</li>
+<li>NullPointException</li>
+<li>IllegalThreadStateException</li>
+<li>IndexOutOfBoundsException</li>
+</ul>
+</li>
+</ul>
+<p>**<code>Error</code>**：<code>Error</code> 属于程序无法处理的错误 ，<del>我们没办法通过 <code>catch</code> 来进行捕获</del>不建议通过<code>catch</code>捕获 。例如 Java 虚拟机运行错误（<code>Virtual MachineError</code>）、虚拟机内存不够错误(<code>OutOfMemoryError</code>)、类定义错误（<code>NoClassDefFoundError</code>）等 。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
+<ul>
+<li>OutOfMemoryError</li>
+<li>StackOverFlowError</li>
+<li>AssertionError</li>
+<li>VritualMachineError</li>
+</ul>
+<p>注意：不要再finally中使用return！在try中return返回值会放在一个本地变量中，后续执行到finally中的return，会覆盖并返回。</p>
+<p>JVM官方文档明确提到：</p>
+<p>If the <code>try</code> clause executes a <em>return</em>, the compiled code does the following:</p>
+<ol>
+<li>Saves the return value (if any) in a local variable.</li>
+<li>Executes a <em>jsr</em> to the code for the <code>finally</code> clause.</li>
+<li>Upon return from the <code>finally</code> clause, returns the value saved in the local variable.</li>
+</ol>
+<p>异常使用规范：异常信息有意义；日志打印异常与抛出异常不要并存。</p>
+</li>
+<li><p>泛型</p>
+<p>一套工具适配多种类型</p>
+<p>提供编译时检查避免错误</p>
+<p>泛型擦出：运行时泛型会去掉</p>
+</li>
+<li><p>反射</p>
+<p>优点：灵活</p>
+<p>缺点：性能问题，参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow">https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow</a></p>
+<p>应用场景：各种框架配置与调用都有用到反射。</p>
+</li>
+<li><p>IO与NIO</p>
+<p>&#x2F;&#x2F; TODO 后续补充</p>
+</li>
+</ol>
+<h1 id="面试问题整理"><a href="#面试问题整理" class="headerlink" title="面试问题整理"></a>面试问题整理</h1><ol>
+<li><p>字符型常量与字符串常量的区别？</p>
+<p>字符常量相当于一个整形ASCII值，可以参与运算；字符串是内存地址。字符串常量2个字节；字符串若干个字节</p>
+</li>
+<li><p>重写遵循规范</p>
+<ol>
+<li>方法名，形参需要相同</li>
+<li>返回值类型以及声明异常均小于或等于父类方法</li>
+<li>访问权限需大于或等于父类方法</li>
+</ol>
+</li>
+<li><p>可变长参数</p>
+<p>可以传入不等长参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的：如果方法重载，固定参数方法优先级会高于变长参数方法</p>
+</li>
+<li><p>基本数据类型与包装类的区别？</p>
+<ol>
+<li>包装类型默认值null</li>
+<li>包装类型可用于泛型</li>
+<li>基本数据类型局部变量存储与Java虚拟机栈局部变量表中，基本数据类型的成员变量存在堆中，包装类型都在堆中</li>
+</ol>
+</li>
+<li><p>构造方否可以override？</p>
+<p>不能override，可以overload</p>
+</li>
+<li><p>java 9为何将String底层由 char[] 改成了 byte[] ?</p>
+<p>新版的 String 其实支持两个编码方案： Latin-1 和 UTF-16。如果字符串中包含的汉字没有超过 Latin-1 可表示范围内的字符，那就会使用 Latin-1 作为编码方案。Latin-1 编码方案下，<code>byte</code> 占一个字节(8 位)，<code>char</code> 占用 2 个字节（16），<code>byte</code> 相较 <code>char</code> 节省一半的内存空间。</p>
+</li>
+<li><p>String采用运算符“+”拼接为何耗费内存？</p>
+<p>内部采用StringBuillder.append() 方法实现，拼接完后调用toString() 得到Stirng对象。这样就会存在大量的StringBuilder对象。</p>
+</li>
+<li><p>字符串常量池什么作用？</p>
+<p>创建字符串后会在堆中创建具体对象，然后在常量池中创建对应的引用。访问字符串是直接返回常量池中的引用即可。字节码命令“ldc” 可以判断字符串常量池是否保存对应的字符串对象引用。</p>
+</li>
+<li><p>intern方法作用</p>
+<p>native方法：如果字符串常量池不包含字符串饮用添加。然后返回字符串引用。</p>
+</li>
+<li><p>常量折叠</p>
+<p>对于源代码中存在的可以确定的static final修饰的基础变量数据类型以及String，会对其进行计算并作为常量嵌入最终生成代码中。这事javac编译器做的优化</p>
+</li>
+<li><p>finally代码一定执行吗？</p>
+<p>不一定！虚拟机异常终止便不会执行了。比如调用：System.exit(1); 还有所在线程死亡，CPU停止执行。</p>
+</li>
+<li></li>
+<li></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>基本类型</th>
+<th>位数</th>
+<th>字节</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 Zeki&#39;s Blog</span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
