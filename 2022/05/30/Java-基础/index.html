@@ -49,7 +49,7 @@
 <li>多线程支持</li>
 <li>编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）</li>
 </ul>
-<h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><ol>
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><ol>
 <li><p>基础数据类型</p>
 <table>
 <thead>
@@ -131,6 +131,12 @@
 <p>局部变量通常在栈中，随方法调用结束而回收。无默认值需设置；</p>
 <p>成员变量通常在堆中，随对象创建而存在。有默认值。</p>
 </li>
+<li><p>集合</p>
+<p>List，Map，Set以及线程安全相关集合</p>
+<p>集合操作参考：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-precautions-for-use.md">https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-precautions-for-use.md</a></p>
+</li>
+<li><p>并发</p>
+</li>
 <li><p>异常</p>
 <p>共同祖先：java.lang.Throwable</p>
 <p>重要子类：Exception与Error</p>
@@ -179,8 +185,45 @@
 <p>缺点：性能问题，参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow">https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow</a></p>
 <p>应用场景：各种框架配置与调用都有用到反射。</p>
 </li>
-<li><p>IO与NIO</p>
-<p>&#x2F;&#x2F; TODO 后续补充</p>
+<li><p>IO</p>
+<p>操作系统相关的知识：为了保证操作系统的稳定性和安全性，一个进程的地址空间划分为 <strong>用户空间（User space）</strong> 和 <strong>内核空间（Kernel space ）</strong> 。</p>
+<p><strong>从应用程序的视角来看的话，我们的应用程序对操作系统的内核发起 IO 调用（系统调用），操作系统负责的内核执行具体的 IO 操作。也就是说，我们的应用程序实际上只是发起了 IO 操作的调用而已，具体 IO 的执行是由操作系统的内核来完成的。</strong></p>
+<p>UNIX 系统下， IO 模型一共有 5 种： <strong>同步阻塞 I&#x2F;O</strong>、<strong>同步非阻塞 I&#x2F;O</strong>、<strong>I&#x2F;O 多路复用</strong>、<strong>信号驱动 I&#x2F;O</strong> 和<strong>异步 I&#x2F;O</strong>。</p>
+<ul>
+<li><p>BIO</p>
+<ul>
+<li><p>同步阻塞 I&#x2F;O</p>
+<p>阻塞每次读写，等到内核态数据拷贝完成返回。</p>
+</li>
+<li><p>同步非阻塞 I&#x2F;O</p>
+<p>多次读取不阻塞，内核态数据拷贝时时阻塞。</p>
+</li>
+</ul>
+</li>
+<li><p>NIO</p>
+<ul>
+<li><p>select </p>
+<p>维护很多socket连接（创建链接时维护socket集合），通过询问内核是否已准备好数据，如果准备好再发器read（读取过程依旧是阻塞的），内核轮询socket集合，找到准备完成的socket进行数据读取（可能只有部分socket活跃，每次轮训耗时长且无意义）。每次需要将socket集合传递给内核，有一定开销。进程被唤醒拿到相应还需要遍历确定哪个socket收到数据，共需要两次遍历。select有最大文件描述符数量限制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> nfds, fd_set *readfds, fd_set *writefds,</span></span><br><span class="line"><span class="params">           fd_set *exceptfds, <span class="keyword">struct</span> timeval *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>pool 同select，但是无最大文件描述符限制</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">poll</span><span class="params">(<span class="keyword">struct</span> pollfd fds[], <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span>；</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>epool</p>
+<p>基于事件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epitem</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">rb_node</span>  <span class="title">rbn</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">rdllink</span>;</span> </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epitem</span>  *<span class="title">next</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epoll_filefd</span>  <span class="title">ffd</span>;</span>  </span><br><span class="line">  <span class="type">int</span>  nwait;                 </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">pwqlist</span>;</span>  </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">eventpoll</span>  *<span class="title">ep</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">fllink</span>;</span>   </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span>  <span class="title">event</span>;</span>  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">eventpoll</span> &#123;</span></span><br><span class="line">  <span class="type">spin_lock_t</span>       lock; </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">mutex</span>      <span class="title">mtx</span>;</span>  </span><br><span class="line">  <span class="type">wait_queue_head_t</span>     wq; </span><br><span class="line">  <span class="type">wait_queue_head_t</span>   poll_wait; </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">rdllist</span>;</span>   <span class="comment">//就绪链表</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">rb_root</span>      <span class="title">rbr</span>;</span>      <span class="comment">//红黑树根节点 </span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epitem</span>      *<span class="title">ovflist</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用户数据载体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span> &#123;</span></span><br><span class="line">   <span class="type">void</span>    *ptr;</span><br><span class="line">   <span class="type">int</span>      fd;</span><br><span class="line">   <span class="type">uint32_t</span> u32;</span><br><span class="line">   <span class="type">uint64_t</span> u64;</span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br><span class="line"><span class="comment">//fd装载入内核的载体</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> &#123;</span></span><br><span class="line">     <span class="type">uint32_t</span>     events;    <span class="comment">/* Epoll events */</span></span><br><span class="line">     <span class="type">epoll_data_t</span> data;      <span class="comment">/* User data variable */</span></span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="comment">//三板斧api</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_create</span><span class="params">(<span class="type">int</span> size)</span>; </span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events,</span></span><br><span class="line"><span class="params">                 <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>AIO</p>
+<p>拿回数据也异步</p>
+</li>
+</ul>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/722819425dbd">https://www.jianshu.com/p/722819425dbd</a></p>
+<p>类加载流程</p>
 </li>
 </ol>
 <h1 id="面试问题整理"><a href="#面试问题整理" class="headerlink" title="面试问题整理"></a>面试问题整理</h1><ol>
@@ -228,27 +271,16 @@
 <li><p>finally代码一定执行吗？</p>
 <p>不一定！虚拟机异常终止便不会执行了。比如调用：System.exit(1); 还有所在线程死亡，CPU停止执行。</p>
 </li>
-<li></li>
-<li></li>
+<li><p>Java只有值传递吗？</p>
+<p>是的，无论是基础类型还是引用类型。如果要修改对象值，通过引用修改即可。</p>
+</li>
+<li><p>通过类加载器与Class.forName()差异</p>
+<p>Class.forName() 可以指定是否初始化Class，类加载器不会初始化。如果不出实话静态代码不会得到执行。</p>
+</li>
+<li><p>精度丢失与BigDecimal</p>
+<p>由于float，double等表示小数时由于二进制存储原理，对于一些小数没有精确的2进制表示形式所以存在精度丢失。BigDecimal实现利用了BigInteger，并加入小数位的概念实现避免了精读丢失。</p>
+</li>
 </ol>
-<table>
-<thead>
-<tr>
-<th>基本类型</th>
-<th>位数</th>
-<th>字节</th>
-<th>默认值</th>
-<th>取值范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
 
     </div>
 
