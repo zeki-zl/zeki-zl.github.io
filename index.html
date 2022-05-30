@@ -1,156 +1,23 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
-    <title>Zeki&#39;s Blog | </title>
-    
-<link rel="stylesheet" href="/css/reset.css">
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-    
-<link rel="stylesheet" href="/css/style.css">
+{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
 
-    
-<link rel="stylesheet" href="/css/markdown.css">
+{% block page_class %}
+  {% if is_home() %}page-home{% endif -%}
+{% endblock %}
 
-    
-<link rel="stylesheet" href="/css/fonts.css">
+{% block content %}
+  <section id="posts" class="posts-expand">
+    {% for post in page.posts %}
+      {{ post_template.render(post, true) }}
+    {% endfor %}
+  </section>
 
-<meta name="generator" content="Hexo 6.2.0"></head>
-    <body>
-        <div class="paper">
-            <div class="paper-main">
-                
-                    <div class="header">
-    <a class="logo" href="/">Zeki&#39;s Blog</a>
-    <ul class="nav">
-        
-        <li><a href="/">首页</a></li>
-        
-        <li><a href="/archives">归档</a></li>
-        
-        <li><a href="/about">关于</a></li>
-        
-    </ul>
-</div>
-                
-                <div class="post-list">
-    
-    <div class="post">
-        <a class="post-title" href="/2022/05/30/Java-%E5%9F%BA%E7%A1%80/">Java 基础</a>
-        <div class="post-except">
-            语言特性
-面向对象（封装、继承、多态）
-跨平台
-多线程支持
-编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）
+  {% include '_partials/pagination.swig' %}
+{% endblock %}
 
-基础
-基础数据类型
-
-
-
-基本类型
-位数
-字节
-默认值
-取值范围
-
-
-
-byte
-8
-1
-0
--128 ~ 127
-
-
-short
-16
-2
-0
--32768 ~ 32767
-
-
-int
-32
-4
-0
--2147483648 ~ 2147483647
-
-
-long
-64
-8
-0L
--9223372036854775808 ~
-            <a class="read-more" href="/2022/05/30/Java-%E5%9F%BA%E7%A1%80/"> ... </a>
-        </div>
-        <div class="post-date">2022.05.30</div>
-    </div>
-    
-    <div class="post">
-        <a class="post-title" href="/2022/05/30/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%E4%B9%8B%E4%BA%AE%E7%82%B9%E4%B8%8E%E9%9A%BE%E7%82%B9/">项目介绍之亮点与难点</a>
-        <div class="post-except">
-            面试中对于项目考察，通常会询问项目中的亮点已经难点。这其实是考察对工作熟悉以及发现并解决问题能力，还有总结归纳的能力。
-1.项目亮点采用了哪种技术方案，达成了什么样的效果。新方案的优劣势如何？
-比如：
-
-针对复杂业务根据模块拆分从而更加灵活
-改为无状态服务解耦
-采用订阅发布模型集中维护数据流向，结偶并提升容错和可维护性
-采用了统一网关进行链路追踪方便问题定位以及集中化配置
-采用配置中心提供即时生效的配置更新与完善的权限控制
-统一日志采集提供快速问题定位
-告警系统提供实时邮件提
-            <a class="read-more" href="/2022/05/30/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%E4%B9%8B%E4%BA%AE%E7%82%B9%E4%B8%8E%E9%9A%BE%E7%82%B9/"> ... </a>
-        </div>
-        <div class="post-date">2022.05.30</div>
-    </div>
-    
-    <div class="post">
-        <a class="post-title" href="/2022/05/29/How-to-use-hexo/">How to use hexo</a>
-        <div class="post-except">
-            参考https://hexo.io/docs/
-准备NodejsGit初始化配置日常使用配合github pages使用
-            <a class="read-more" href="/2022/05/29/How-to-use-hexo/"> ... </a>
-        </div>
-        <div class="post-date">2022.05.29</div>
-    </div>
-    
-    <div class="post">
-        <a class="post-title" href="/2022/05/29/hello-world/">Hello World</a>
-        <div class="post-except">
-            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new &quot
-            <a class="read-more" href="/2022/05/29/hello-world/"> ... </a>
-        </div>
-        <div class="post-date">2022.05.29</div>
-    </div>
-    
-</div>
-
-                <div class="footer">
-    <span>Copyright © 2022 Zeki&#39;s Blog</span>
-</div>
-
-
-<link rel="stylesheet" href="/css/a11y-dark.min.css">
-
-
-<script src="/js/highlight.min.js"></script>
-
-
-<script src="/js/highlightjs-line-numbers.js"></script>
-
-
-<script>
-    hljs.initHighlightingOnLoad();
-    hljs.initLineNumbersOnLoad();
-</script>
-
-            </div>
-        </div>
-    </body>
-</html>
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}

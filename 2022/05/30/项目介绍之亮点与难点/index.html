@@ -1,114 +1,37 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
-    <title>Zeki&#39;s Blog | </title>
-    
-<link rel="stylesheet" href="/css/reset.css">
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-    
-<link rel="stylesheet" href="/css/style.css">
 
-    
-<link rel="stylesheet" href="/css/markdown.css">
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-    
-<link rel="stylesheet" href="/css/fonts.css">
+{% block page_class %}page-post-detail{% endblock %}
 
-<meta name="generator" content="Hexo 6.2.0"></head>
-    <body>
-        <div class="paper">
-            <div class="paper-main">
-                
-                    <div class="post-header">
-    <a class="logo" href="/">Zeki&#39;s Blog</a>
-    <a class="go-home" href="/">
-        <svg width="8" height="14" viewBox="0 0 8 14">
-            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </a>
-</div>
-                
-                <div class="post-main">
 
-    
-        <div class="post-main-title">
-            项目介绍之亮点与难点
-        </div>
-        <div class="post-meta">
-            2022-05-30
-        </div>
-    
+{% block content %}
 
-    <div class="post-md">
-        <p>面试中对于项目考察，通常会询问项目中的亮点已经难点。这其实是考察对工作熟悉以及发现并解决问题能力，还有总结归纳的能力。</p>
-<h1 id="1-项目亮点"><a href="#1-项目亮点" class="headerlink" title="1.项目亮点"></a>1.项目亮点</h1><p>采用了哪种技术方案，达成了什么样的效果。新方案的优劣势如何？</p>
-<p>比如：</p>
-<ul>
-<li>针对复杂业务根据模块拆分从而更加灵活</li>
-<li>改为无状态服务解耦</li>
-<li>采用订阅发布模型集中维护数据流向，结偶并提升容错和可维护性</li>
-<li>采用了统一网关进行链路追踪方便问题定位以及集中化配置</li>
-<li>采用配置中心提供即时生效的配置更新与完善的权限控制</li>
-<li>统一日志采集提供快速问题定位</li>
-<li>告警系统提供实时邮件提醒</li>
-<li>……</li>
-</ul>
-<h1 id="2-项目难点"><a href="#2-项目难点" class="headerlink" title="2.项目难点"></a>2.项目难点</h1><p>遇到了什么棘手的问题，如何分析定位问题？如果解决？</p>
-<p>比如：</p>
-<ul>
-<li><p>由于MQ失败重试导致的数据错误</p>
-<p>由于MQ一般不会无限重试，所以在对于错误消息会设置延迟重试。此时存在一个问题：如果A，B两笔数据存在依赖关系。这将导致数据不一致。后续我们采用error-callback对于错误数据进行异步修复，并对修复数据集进行监控。</p>
-</li>
-<li><p>Kerberos认证多HBase集群错误</p>
-<p>再多集群情况下采用Kerberos认证时发现存在无法找到正确relm的情况。后续通过debug发现对于请求的Kerberos配置读取存在静态存储。通过阅读源码使用Config.refresh() 在每次获取链接时重新读取配置即可。</p>
-</li>
-<li><p>JVM方法区OOM</p>
-<p>由于读取配置文件解析时使用的序列化工具内部采用ASM技术动态生成。导致大量Class被加载，最终导致OOM。后续优化方案：配置无需多次加载，对配置进行缓存即可。</p>
-</li>
-<li><p>DNS导致HBase Region不可用</p>
-<p>由于采用公司集中配置管理的DNS服务。其中存在冲突配置导致RegionServer连接异常。排查发现后联系IT解决冲突。</p>
-</li>
-<li><p>……</p>
-</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对于项目面试，首先对项目有自己的认识靠清楚几个问题：</p>
-<ul>
-<li>是解决什么问题的？</li>
-<li>是如何解决的？</li>
-<li>解决过程中遇到哪些问题？</li>
-<li>问题产生的原因是什么？</li>
-<li>如果解决遇到问题的？</li>
-<li>为什么这样解决？</li>
-<li>如何减少问题发生的？</li>
-<li>有哪些调优的经验？</li>
-</ul>
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
 
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
+  </div>
 
-</div>
-                <div class="footer">
-    <span>Copyright © 2022 Zeki&#39;s Blog</span>
-</div>
+{% endblock %}
 
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-<link rel="stylesheet" href="/css/a11y-dark.min.css">
-
-
-<script src="/js/highlight.min.js"></script>
-
-
-<script src="/js/highlightjs-line-numbers.js"></script>
-
-
-<script>
-    hljs.initHighlightingOnLoad();
-    hljs.initLineNumbersOnLoad();
-</script>
-
-            </div>
-        </div>
-    </body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
