@@ -35,5 +35,41 @@ AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类
 - 修改成功释放锁
 - 唤醒下一个节点
 
+# Condition
 
+```java
+// 初始化
+Lock lock = new ReentrantLock();
+Condition condition = lock.newCondition();
+
+// await
+try {
+  lock.lock();
+  condition.await();
+} catch (InterruptedException e) {
+  e.printStackTrace();
+} finally {
+  lock.unlock();
+}
+
+// lock
+try {
+  lock.lock();
+  condition.signal();
+} finally {
+  lock.unlock();
+}
+```
+
+Condition内部维护条件队列（单向链表）。当调用`awit()`时，加入条件队列中。调用`signal()`时将头节点转移到AQS队列尾部，等待唤醒执行。`signalAll()`会将所有条件队列的节点计入AQS队列。
+
+
+
+# Synchronized VS AQS
+
+- Synchronized 无需手动解锁，AQS需要
+- Synchronized膨胀为重量级锁后无法回退，AQS会自适应调整
+- Synchronized 的wait/notifyAll没有AQS Condition灵活
+- AQS可中断锁
+- AQS可以实现公平锁
 
