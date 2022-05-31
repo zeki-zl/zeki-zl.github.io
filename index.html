@@ -183,6 +183,549 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/ThreadLoacl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/ThreadLoacl/" class="post-title-link" itemprop="url">ThreadLoacl</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 11:33:47 / Modified: 12:34:41" itemprop="dateCreated datePublished" datetime="2022-05-31T11:33:47+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;T&gt; res1 = <span class="keyword">new</span> <span class="title class_">NamedThreadLocal</span>&lt;&gt;(<span class="string">&quot;resource1&quot;</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;T&gt; res2 = <span class="keyword">new</span> <span class="title class_">NamedThreadLocal</span>&lt;&gt;(<span class="string">&quot;resource2&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>ThreadLocal是一个壳子，真正的存储结构是ThreadLocal里有ThreadLocalMap这么个内部类。</p>
+<p>ThreadLocalMap的引用是在Thread上定义的</p>
+<p>ThreadLocal本身并不存储值，它只是作为key（弱引用）来让线程从ThreadLocalMap获取value</p>
+<p><img src="/2022/05/31/ThreadLoacl/image-20220531114220950.png" alt="image-20220531114220950"></p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><ol>
+<li><p>为什么不用Thread作为key存取数据？这样更直观</p>
+<p>thread作为key则所有线程数据在一个大Map中</p>
+<ul>
+<li>不方便维护，一个大map。</li>
+<li>一个线程多个值需要存取，只能在value上做文章。</li>
+<li>Map不能无限膨胀</li>
+</ul>
+</li>
+<li><p>内存泄漏问题是什么？什么时候会发生？如何避免？</p>
+<p>ThreadLocalMap的Key是一个弱引用指向ThreadLocal实例。此时正常情况有两个引用指向ThreadLocal实例，一个强引用和一个弱引用。如果强引用被回收掉，ThreadLocal对象只有一个弱引用，也会被回收掉。此时ThreadLocalMap中key为null。到那时value并未被回收，如果在线程池下使用ThreadLocal并且对于key无新操作（因为ThreadLocal在每次操作时会自动清理key为null的value）就会存在大量value未回收的情况。</p>
+<p><img src="/2022/05/31/ThreadLoacl/640.jpeg" alt="640"></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="post-title-link" itemprop="url">线程池</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 11:05:43 / Modified: 11:37:34" itemprop="dateCreated datePublished" datetime="2022-05-31T11:05:43+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="创建方式"><a href="#创建方式" class="headerlink" title="创建方式"></a>创建方式</h1><p>ThreadPoolExecutor创建，了解线程创建参数避免资源耗尽。</p>
+<h1 id="核心参数"><a href="#核心参数" class="headerlink" title="核心参数"></a>核心参数</h1><ul>
+<li>核心线程数</li>
+<li>最大线程数</li>
+<li>线程空闲时间</li>
+<li>阻塞队列<ul>
+<li><code>ArrayBlockingQueue</code></li>
+<li><code>LinkedBlockingQuewue</code></li>
+<li><code>PriorityBlockingQueue</code></li>
+</ul>
+</li>
+<li>拒绝策略<ul>
+<li>丢弃任务并抛异常</li>
+<li>直接丢掉新任务</li>
+<li>丢掉队列中最早的任务</li>
+<li>提交任务的线程执行该任务</li>
+</ul>
+</li>
+</ul>
+<h1 id="任务提交执行流程"><a href="#任务提交执行流程" class="headerlink" title="任务提交执行流程"></a>任务提交执行流程</h1><ol>
+<li>提交任务</li>
+<li>判断当前线程数是否小雨核心线程，如果小于则创建核心线程执行</li>
+<li>否则判断阻塞队列是否已满，如果已满执行4，否则5</li>
+<li>判断当前线程数是否达到最大线程数，如果达到则触发拒绝策略，否则创建新线程执行</li>
+<li>加入阻塞队列即可</li>
+</ol>
+<h1 id="参数设计"><a href="#参数设计" class="headerlink" title="参数设计"></a>参数设计</h1><ol>
+<li><p>根据任务类型设计：</p>
+<p><strong>CPU密集型</strong>：与CPU核心数1～2倍。（不设置过多是CPU已经占用很高，避免无意义的上下文切换）</p>
+<p><strong>IO密集型</strong>：采用《Java并发编程实战》的作者 Brain Goetz 推荐的计算方法：<strong>线程数 &#x3D; CPU 核心数 *（1+平均等待时间&#x2F;平均工作时间）</strong></p>
+</li>
+<li><p>压测确定</p>
+<p>为了更准确的参数配置，可以通过压测来确定服务的最佳线程数量。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AQS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/AQS/" class="post-title-link" itemprop="url">AQS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 09:59:15 / Modified: 10:53:50" itemprop="dateCreated datePublished" datetime="2022-05-31T09:59:15+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类型state和一个双向队列。封装了线程锁请求入FIFO双向队列入队出队以及线程挂起唤醒等过程，实现线程安全。</p>
+<h1 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a><strong>两种模式</strong></h1><p>独占：State作为一个独占资源</p>
+<p>共享：State的32位拆分为多个资源。</p>
+<h1 id="公平非公平"><a href="#公平非公平" class="headerlink" title="公平非公平"></a><strong>公平非公平</strong></h1><p>公平锁：通过FIFO队列，新锁请求放入队尾</p>
+<p>非公平锁：锁请求先尝试获取锁，获取失败再入队列</p>
+<h1 id="加锁执行流程（独占非公平锁为例）"><a href="#加锁执行流程（独占非公平锁为例）" class="headerlink" title="加锁执行流程（独占非公平锁为例）"></a><strong>加锁执行流程</strong>（独占非公平锁为例）</h1><ul>
+<li>调用<code>lock()</code>方法</li>
+<li>CAS尝试修改State获取锁</li>
+<li>获取锁成功</li>
+<li>获取失败，加入锁队列，前驱节点设置为<code>Signal</code>状态（有后继节点需要唤醒），挂起当前线程</li>
+<li>等待前驱节点获取锁唤醒执行后，唤醒后继线程获取锁继续执行</li>
+</ul>
+<h1 id="解锁执行流程"><a href="#解锁执行流程" class="headerlink" title="解锁执行流程"></a><strong>解锁执行流程</strong></h1><ul>
+<li>调用<code>unlock()</code>方法</li>
+<li>CAS尝试修改State</li>
+<li>修改成功释放锁</li>
+<li>唤醒下一个节点</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Synchronized/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/Synchronized/" class="post-title-link" itemprop="url">Synchronized</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 09:12:49 / Modified: 09:58:59" itemprop="dateCreated datePublished" datetime="2022-05-31T09:12:49+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Synchronized是Java的一个关键字，通过它可以实现线程安全。</p>
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ol>
+<li><p>修饰实例方法</p>
+<p>将实例作为锁对象</p>
+</li>
+<li><p>修饰静态方法与静态代码块</p>
+<p>将Class对象作为锁对象</p>
+</li>
+<li><p>自定义锁对象</p>
+</li>
+</ol>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>编译过程中会生成<code>monitorenter</code>与<code>monitorexit</code>字节码指令。锁信息会记录在锁对象的对象头中的Mark Word中</p>
+<h1 id="锁升级过程"><a href="#锁升级过程" class="headerlink" title="锁升级过程"></a>锁升级过程</h1><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41860497/article/details/125010798#:~:text=%E5%81%8F%E5%90%91%E9%94%81%E6%98%AF%E6%8C%87%E5%BD%93%E4%B8%80%E6%AE%B5%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E4%B8%80%E7%9B%B4%E8%A2%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%89%80%E8%AE%BF%E9%97%AE%E6%97%B6%EF%BC%8C%E5%8D%B3%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AB%9E%E4%BA%89%E6%97%B6%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%A5%E7%BA%BF%E7%A8%8B%E5%9C%A8%E5%90%8E%E7%BB%AD%E8%AE%BF%E9%97%AE%E6%97%B6%E4%BE%BF%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%8E%B7%E5%BE%97%E9%94%81%EF%BC%8C%E4%BB%8E%E8%80%8C%E9%99%8D%E4%BD%8E%E8%8E%B7%E5%8F%96%E9%94%81%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%B6%88%E8%80%97%EF%BC%8C%E5%8D%B3%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E3%80%82%20%E5%BD%93%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%AE%BF%E9%97%AE%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%B9%B6%E8%8E%B7%E5%8F%96%E9%94%81%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%9C%A8%20Mark%20Word,%E9%87%8C%E5%AD%98%E5%82%A8%E9%94%81%E5%81%8F%E5%90%91%E7%9A%84%20%E7%BA%BF%E7%A8%8B%20ID%20%E3%80%82">锁升级过程</a></p>
+<p>最初Synchronized是采用重量级锁，重量级锁存在内核态与用户态的切换，存在性能损耗。于是后续进行了相关优化：锁升级</p>
+<p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
+<p>偏向锁：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程是不会主动释放偏向锁的。线程尝试竞争时，偏向锁等待全局安全点判断是否有竞争恢复到轻量级锁或无锁状态。<strong>偏向锁适用于同一个线程多次获取锁的情况</strong>。 <strong>缺点：竞争激烈情况下，存在锁撤销的开销，此时可以关闭偏向锁</strong></p>
+<p>轻量级锁：<strong>适用于多个线程交替获取锁，很少发生竞争</strong>， <strong>缺点：消耗CPU</strong></p>
+<p>重量级锁：<strong>系统中存在大量的线程同时尝试获取锁，高并发场景</strong>，<strong>缺点：线程阻塞唤醒，频繁切换上下文性能损耗</strong></p>
+<p>详细过程：</p>
+<ol>
+<li>尝试获取锁的线程，检查锁对象头中Mark Word记录的线程ID。如果与当前线程ID相同，表示已获取锁直接执行</li>
+<li>如果发现与当前线程不一致，偏向锁撤销升级为轻量级锁。拷贝Mark Word到栈帧，尝试CAS自旋修改Mark Word指向栈帧，修改成功则获得锁，否则在多次（15次）自旋失败后膨胀为重量级锁</li>
+<li>此时存在大量竞争，未保证线程安全并且降低自旋导致的cpu busy。重量级锁接管，对于未获取锁的线程进行阻塞。等待锁释放操作系统调度。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AtomInteger%E4%B8%8ELongAdder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/AtomInteger%E4%B8%8ELongAdder/" class="post-title-link" itemprop="url">AtomInteger与LongAdder</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:59:49 / Modified: 09:12:09" itemprop="dateCreated datePublished" datetime="2022-05-31T08:59:49+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>Compare And Swap：通过原子的进行比较交换操作保证数据安全。</p>
+<p>具体流程：每次更新前先判断当前值是否相等，如果相等就进行替换。否则自旋等待锁释放。</p>
+<p>存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁</p>
+<p>如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据</p>
+<h1 id="AtomInteger"><a href="#AtomInteger" class="headerlink" title="AtomInteger"></a>AtomInteger</h1><p>底层通过CAS，能够原子的进行累加，保证线程安全。</p>
+<p>缺点：只有一个共享资源，高并发下大部分线程自旋等待。性能不佳</p>
+<p>改进：使用<code>LongAdder</code></p>
+<h1 id="LongAdder"><a href="#LongAdder" class="headerlink" title="LongAdder"></a>LongAdder</h1><p>底层同样采用CAS，但是内部类似分段锁机制通过一个Cell数据将资源划分开，降低失败次数并减小自旋性能损失。所以在高并发情况下推荐使用<code>LongAdder</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E6%AD%BB%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:52:56 / Modified: 08:58:19" itemprop="dateCreated datePublished" datetime="2022-05-31T08:52:56+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是死锁"><a href="#什么是死锁" class="headerlink" title="什么是死锁"></a>什么是死锁</h1><p>多线程情况下，线程互相拥有对方需要的资源从而相互等待资源释放，从而导致程序无法继续进行造成死锁。</p>
+<h1 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h1><ol>
+<li><p>固定枷锁顺序</p>
+<p>可以通过业务字段运算排序确定加锁的顺序</p>
+</li>
+<li><p>尽可能减小锁的范围</p>
+<p>等到操作共享变量时再加锁，降低死锁概率</p>
+</li>
+<li><p>定时锁</p>
+<p>一段时间获取不到锁，释放掉</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Java-IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/Java-IO/" class="post-title-link" itemprop="url">Java IO</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:37:56 / Modified: 08:50:33" itemprop="dateCreated datePublished" datetime="2022-05-31T08:37:56+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BIO-gt-NIO"><a href="#BIO-gt-NIO" class="headerlink" title="BIO -&gt; NIO"></a>BIO -&gt; NIO</h1><blockquote>
+<p> BIO： Blocking IO 阻塞IO，按字节进行处理</p>
+<p>NIO：No-Blocking IO（New-IO），非阻塞。按缓冲区处理</p>
+</blockquote>
+<h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><p>3个组件：</p>
+<ul>
+<li>Selector：检查Channel状态变化</li>
+<li>Channel：运输数据通道</li>
+<li>Buffer：数据存储</li>
+</ul>
+<p>零拷贝：</p>
+<ul>
+<li><p>mmap（内核缓冲区与用户缓冲区的共享）</p>
+</li>
+<li><p>sendfile（系统底层函数支持）</p>
+</li>
+</ul>
+<h1 id="操作系统支持"><a href="#操作系统支持" class="headerlink" title="操作系统支持"></a>操作系统支持</h1><p>select，poll，epoll</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/30/Hexo-%E5%9B%BE%E7%89%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -206,10 +749,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-30 23:24:16 / Modified: 23:32:42" itemprop="dateCreated datePublished" datetime="2022-05-30T23:24:16+08:00">2022-05-30</time>
+              <time title="Created: 2022-05-30 23:24:16" itemprop="dateCreated datePublished" datetime="2022-05-30T23:24:16+08:00">2022-05-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-31 08:37:10" itemprop="dateModified" datetime="2022-05-31T08:37:10+08:00">2022-05-31</time>
+              </span>
 
           
 
@@ -707,154 +1256,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/29/How-to-use-hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/29/How-to-use-hexo/" class="post-title-link" itemprop="url">How to use hexo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-29 09:06:33" itemprop="dateCreated datePublished" datetime="2022-05-29T09:06:33+08:00">2022-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-30 18:08:15" itemprop="dateModified" datetime="2022-05-30T18:08:15+08:00">2022-05-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://hexo.io/docs/">https://hexo.io/docs/</a></p>
-<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="Nodejs"><a href="#Nodejs" class="headerlink" title="Nodejs"></a>Nodejs</h2><h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node hexo init blog  <span class="comment"># create dir blog and init</span></span><br><span class="line"><span class="built_in">cd</span> blog </span><br><span class="line">npm init</span><br></pre></td></tr></table></figure>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>修改_config.yml文件，具体配置项参考文章顶部链接</p>
-<h1 id="日常使用"><a href="#日常使用" class="headerlink" title="日常使用"></a>日常使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node hexo clean  <span class="comment"># clean</span></span><br><span class="line">node hexo s  <span class="comment"># start server to preview</span></span><br></pre></td></tr></table></figure>
-
-<p>修改主题：</p>
-<p>下载主题到theme目录下，修改_config.yml下theme配置即可</p>
-<h1 id="配合github-pages使用"><a href="#配合github-pages使用" class="headerlink" title="配合github pages使用"></a>配合github pages使用</h1><p>_config.yml配置github仓库以及branch</p>
-<p>一键deploy需要安装插件：hexo-github-dploy</p>
-<p>search功能插件：hexo-search-db</p>
-<p>具体参考文章顶部链接</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/29/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/29/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-29 09:02:12" itemprop="dateCreated datePublished" datetime="2022-05-29T09:02:12+08:00">2022-05-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -919,14 +1325,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
