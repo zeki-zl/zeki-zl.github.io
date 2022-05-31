@@ -23,7 +23,7 @@ ThreadLocalMap的引用是在Thread上定义的
 
 ThreadLocal本身并不存储值，它只是作为key（弱引用）来让线程从ThreadLocalMap获取value
 
-![image-20220531114220950](/Users/zeki/Documents/Blog/source/_posts/ThreadLoacl/image-20220531114220950.png)
+![image-20220531114220950](image-20220531114220950.png)
 
 
 
@@ -41,5 +41,5 @@ ThreadLocal本身并不存储值，它只是作为key（弱引用）来让线程
 
    ThreadLocalMap的Key是一个弱引用指向ThreadLocal实例。此时正常情况有两个引用指向ThreadLocal实例，一个强引用和一个弱引用。如果强引用被回收掉，ThreadLocal对象只有一个弱引用，也会被回收掉。此时ThreadLocalMap中key为null。到那时value并未被回收，如果在线程池下使用ThreadLocal并且对于key无新操作（因为ThreadLocal在每次操作时会自动清理key为null的value）就会存在大量value未回收的情况。
 
-   ![Image](https://mmbiz.qpic.cn/mmbiz_jpg/E44aHibktsKYsgMLicgU7JFpiaMHPSUjtFWUDTuViaTxgOmFjHLrA46ib2bm4uHRlBxo7SIJHFc74cmtho9WY6ugS8w/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+   ![640](640.jpeg)
 
