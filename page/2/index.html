@@ -183,6 +183,386 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AQS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/AQS/" class="post-title-link" itemprop="url">AQS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 09:59:15 / Modified: 16:17:28" itemprop="dateCreated datePublished" datetime="2022-05-31T09:59:15+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类型state和一个双向队列。封装了线程锁请求入FIFO双向队列入队出队以及线程挂起唤醒等过程，实现线程安全。</p>
+<h1 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a><strong>两种模式</strong></h1><p>独占：State作为一个独占资源</p>
+<p>共享：State的32位拆分为多个资源。</p>
+<h1 id="公平非公平"><a href="#公平非公平" class="headerlink" title="公平非公平"></a><strong>公平非公平</strong></h1><p>公平锁：通过FIFO队列，新锁请求放入队尾</p>
+<p>非公平锁：锁请求先尝试获取锁，获取失败再入队列</p>
+<h1 id="加锁执行流程（独占非公平锁为例）"><a href="#加锁执行流程（独占非公平锁为例）" class="headerlink" title="加锁执行流程（独占非公平锁为例）"></a><strong>加锁执行流程</strong>（独占非公平锁为例）</h1><ul>
+<li>调用<code>lock()</code>方法</li>
+<li>CAS尝试修改State获取锁</li>
+<li>获取锁成功</li>
+<li>获取失败，加入锁队列，前驱节点设置为<code>Signal</code>状态（有后继节点需要唤醒），挂起当前线程</li>
+<li>等待前驱节点获取锁唤醒执行后，唤醒后继线程获取锁继续执行</li>
+</ul>
+<h1 id="解锁执行流程"><a href="#解锁执行流程" class="headerlink" title="解锁执行流程"></a><strong>解锁执行流程</strong></h1><ul>
+<li>调用<code>unlock()</code>方法</li>
+<li>CAS尝试修改State</li>
+<li>修改成功释放锁</li>
+<li>唤醒下一个节点</li>
+</ul>
+<h1 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"><span class="type">Condition</span> <span class="variable">condition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line"><span class="comment">// await</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.await();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// lock</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.signal();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Condition内部维护条件队列（单向链表）。当调用<code>awit()</code>时，加入条件队列中。调用<code>signal()</code>时将头节点转移到AQS队列尾部，等待唤醒执行。<code>signalAll()</code>会将所有条件队列的节点计入AQS队列。</p>
+<h1 id="Synchronized-VS-AQS"><a href="#Synchronized-VS-AQS" class="headerlink" title="Synchronized VS AQS"></a>Synchronized VS AQS</h1><ul>
+<li>Synchronized 无需手动解锁，AQS需要</li>
+<li>Synchronized膨胀为重量级锁后无法回退，AQS会自适应调整</li>
+<li>Synchronized 的wait&#x2F;notifyAll没有AQS Condition灵活</li>
+<li>AQS可中断锁</li>
+<li>AQS可以实现公平锁</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Synchronized/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/Synchronized/" class="post-title-link" itemprop="url">Synchronized</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 09:12:49 / Modified: 09:58:59" itemprop="dateCreated datePublished" datetime="2022-05-31T09:12:49+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Synchronized是Java的一个关键字，通过它可以实现线程安全。</p>
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ol>
+<li><p>修饰实例方法</p>
+<p>将实例作为锁对象</p>
+</li>
+<li><p>修饰静态方法与静态代码块</p>
+<p>将Class对象作为锁对象</p>
+</li>
+<li><p>自定义锁对象</p>
+</li>
+</ol>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>编译过程中会生成<code>monitorenter</code>与<code>monitorexit</code>字节码指令。锁信息会记录在锁对象的对象头中的Mark Word中</p>
+<h1 id="锁升级过程"><a href="#锁升级过程" class="headerlink" title="锁升级过程"></a>锁升级过程</h1><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41860497/article/details/125010798#:~:text=%E5%81%8F%E5%90%91%E9%94%81%E6%98%AF%E6%8C%87%E5%BD%93%E4%B8%80%E6%AE%B5%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E4%B8%80%E7%9B%B4%E8%A2%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%89%80%E8%AE%BF%E9%97%AE%E6%97%B6%EF%BC%8C%E5%8D%B3%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AB%9E%E4%BA%89%E6%97%B6%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%A5%E7%BA%BF%E7%A8%8B%E5%9C%A8%E5%90%8E%E7%BB%AD%E8%AE%BF%E9%97%AE%E6%97%B6%E4%BE%BF%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%8E%B7%E5%BE%97%E9%94%81%EF%BC%8C%E4%BB%8E%E8%80%8C%E9%99%8D%E4%BD%8E%E8%8E%B7%E5%8F%96%E9%94%81%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%B6%88%E8%80%97%EF%BC%8C%E5%8D%B3%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E3%80%82%20%E5%BD%93%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%AE%BF%E9%97%AE%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%B9%B6%E8%8E%B7%E5%8F%96%E9%94%81%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%9C%A8%20Mark%20Word,%E9%87%8C%E5%AD%98%E5%82%A8%E9%94%81%E5%81%8F%E5%90%91%E7%9A%84%20%E7%BA%BF%E7%A8%8B%20ID%20%E3%80%82">锁升级过程</a></p>
+<p>最初Synchronized是采用重量级锁，重量级锁存在内核态与用户态的切换，存在性能损耗。于是后续进行了相关优化：锁升级</p>
+<p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
+<p>偏向锁：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程是不会主动释放偏向锁的。线程尝试竞争时，偏向锁等待全局安全点判断是否有竞争恢复到轻量级锁或无锁状态。<strong>偏向锁适用于同一个线程多次获取锁的情况</strong>。 <strong>缺点：竞争激烈情况下，存在锁撤销的开销，此时可以关闭偏向锁</strong></p>
+<p>轻量级锁：<strong>适用于多个线程交替获取锁，很少发生竞争</strong>， <strong>缺点：消耗CPU</strong></p>
+<p>重量级锁：<strong>系统中存在大量的线程同时尝试获取锁，高并发场景</strong>，<strong>缺点：线程阻塞唤醒，频繁切换上下文性能损耗</strong></p>
+<p>详细过程：</p>
+<ol>
+<li>尝试获取锁的线程，检查锁对象头中Mark Word记录的线程ID。如果与当前线程ID相同，表示已获取锁直接执行</li>
+<li>如果发现与当前线程不一致，偏向锁撤销升级为轻量级锁。拷贝Mark Word到栈帧，尝试CAS自旋修改Mark Word指向栈帧，修改成功则获得锁，否则在多次（15次）自旋失败后膨胀为重量级锁</li>
+<li>此时存在大量竞争，未保证线程安全并且降低自旋导致的cpu busy。重量级锁接管，对于未获取锁的线程进行阻塞。等待锁释放操作系统调度。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AtomInteger%E4%B8%8ELongAdder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/AtomInteger%E4%B8%8ELongAdder/" class="post-title-link" itemprop="url">AtomInteger与LongAdder</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:59:49 / Modified: 09:12:09" itemprop="dateCreated datePublished" datetime="2022-05-31T08:59:49+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>Compare And Swap：通过原子的进行比较交换操作保证数据安全。</p>
+<p>具体流程：每次更新前先判断当前值是否相等，如果相等就进行替换。否则自旋等待锁释放。</p>
+<p>存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁</p>
+<p>如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据</p>
+<h1 id="AtomInteger"><a href="#AtomInteger" class="headerlink" title="AtomInteger"></a>AtomInteger</h1><p>底层通过CAS，能够原子的进行累加，保证线程安全。</p>
+<p>缺点：只有一个共享资源，高并发下大部分线程自旋等待。性能不佳</p>
+<p>改进：使用<code>LongAdder</code></p>
+<h1 id="LongAdder"><a href="#LongAdder" class="headerlink" title="LongAdder"></a>LongAdder</h1><p>底层同样采用CAS，但是内部类似分段锁机制通过一个Cell数据将资源划分开，降低失败次数并减小自旋性能损失。所以在高并发情况下推荐使用<code>LongAdder</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E6%AD%BB%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:52:56 / Modified: 08:58:19" itemprop="dateCreated datePublished" datetime="2022-05-31T08:52:56+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是死锁"><a href="#什么是死锁" class="headerlink" title="什么是死锁"></a>什么是死锁</h1><p>多线程情况下，线程互相拥有对方需要的资源从而相互等待资源释放，从而导致程序无法继续进行造成死锁。</p>
+<h1 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h1><ol>
+<li><p>固定枷锁顺序</p>
+<p>可以通过业务字段运算排序确定加锁的顺序</p>
+</li>
+<li><p>尽可能减小锁的范围</p>
+<p>等到操作共享变量时再加锁，降低死锁概率</p>
+</li>
+<li><p>定时锁</p>
+<p>一段时间获取不到锁，释放掉</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Java-IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/31/Java-IO/" class="post-title-link" itemprop="url">Java IO</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-31 08:37:56 / Modified: 08:50:33" itemprop="dateCreated datePublished" datetime="2022-05-31T08:37:56+08:00">2022-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BIO-gt-NIO"><a href="#BIO-gt-NIO" class="headerlink" title="BIO -&gt; NIO"></a>BIO -&gt; NIO</h1><blockquote>
+<p> BIO： Blocking IO 阻塞IO，按字节进行处理</p>
+<p>NIO：No-Blocking IO（New-IO），非阻塞。按缓冲区处理</p>
+</blockquote>
+<h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><p>3个组件：</p>
+<ul>
+<li>Selector：检查Channel状态变化</li>
+<li>Channel：运输数据通道</li>
+<li>Buffer：数据存储</li>
+</ul>
+<p>零拷贝：</p>
+<ul>
+<li><p>mmap（内核缓冲区与用户缓冲区的共享）</p>
+</li>
+<li><p>sendfile（系统底层函数支持）</p>
+</li>
+</ul>
+<h1 id="操作系统支持"><a href="#操作系统支持" class="headerlink" title="操作系统支持"></a>操作系统支持</h1><p>select，poll，epoll</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/30/Hexo-%E5%9B%BE%E7%89%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,14 +1308,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
