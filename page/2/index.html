@@ -183,6 +183,670 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/02/%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8C-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/02/%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8C-II/" class="post-title-link" itemprop="url">路径总和 II</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-02 14:52:06" itemprop="dateCreated datePublished" datetime="2022-06-02T14:52:06+08:00">2022-06-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-03 10:55:57" itemprop="dateModified" datetime="2022-06-03T10:55:57+08:00">2022-06-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/path-sum-ii/">路径总和 II</a></p>
+<p>给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。</p>
+<p>叶子节点 是指没有子节点的节点。</p>
+<p><img src="/2022/06/02/%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8C-II/pathsumii1.jpg" alt="pathsumii1"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22</span><br><span class="line">输出：[[5,4,11,2],[5,8,4,5]]</span><br></pre></td></tr></table></figure>
+
+<p>思路：求root节点开始到叶子节点和为target的路径，等于当前节点加上子节点到叶子节点和为：target - root.val的路径。采用先序遍历，在遍历过程维护当前路径与子路径并及时回退</p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val) &#123; this.val = val; &#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val, TreeNode left, TreeNode right) &#123;</span></span><br><span class="line"><span class="comment"> *         this.val = val;</span></span><br><span class="line"><span class="comment"> *         this.left = left;</span></span><br><span class="line"><span class="comment"> *         this.right = right;</span></span><br><span class="line"><span class="comment"> *     &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="comment">// 全局结果</span></span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">pathSum</span><span class="params">(TreeNode root, <span class="type">int</span> targetSum)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 临时路径</span></span><br><span class="line">        List&lt;Integer&gt; tmp = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">        findPath(root, targetSum, tmp);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">findPath</span><span class="params">(TreeNode node, <span class="type">int</span> target, List&lt;Integer&gt; tmp)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> node.val;</span><br><span class="line">        <span class="comment">// 添加当前节点路径</span></span><br><span class="line">        tmp.add(val);</span><br><span class="line">        <span class="comment">// 计算子节点需要满足的target</span></span><br><span class="line">        target -= val;</span><br><span class="line">        <span class="comment">// 叶子节点</span></span><br><span class="line">        <span class="keyword">if</span>(node.left == <span class="literal">null</span> &amp;&amp; node.right == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(target == <span class="number">0</span>) &#123;  <span class="comment">// found matched</span></span><br><span class="line">                List&lt;Integer&gt; t = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">                t.addAll(tmp);</span><br><span class="line">                result.add(t);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 找左子树</span></span><br><span class="line">            <span class="keyword">if</span>(node.left != <span class="literal">null</span>) &#123;</span><br><span class="line">                findPath(node.left, target, tmp);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(node.right != <span class="literal">null</span>) &#123;</span><br><span class="line">                findPath(node.right, target, tmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">				<span class="comment">// 回退临时路径</span></span><br><span class="line">        tmp.remove(tmp.size()-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/02/Kubernetes%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/02/Kubernetes%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">Kubernetes基础概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-02 10:51:41 / Modified: 13:07:03" itemprop="dateCreated datePublished" datetime="2022-06-02T10:51:41+08:00">2022-06-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是Kubernetes"><a href="#什么是Kubernetes" class="headerlink" title="什么是Kubernetes"></a>什么是Kubernetes</h1><p>开源的容器管理平台。通过配置即可自动调度管理容器。拥有以下功能：</p>
+<ul>
+<li><strong>服务发现与负载均衡</strong> k8s可以通过DNS或者IP暴露容器服务并自动发现，如果对于容器服务请求过高，k8s可以进行负载均衡流量，使服务平稳运行</li>
+<li><strong>存储编排</strong> 可以自由挂在存储资源，例如本地存储，云存储等</li>
+<li><strong>自动状态更新</strong> 通过配置新的容器状态，随后k8s将创建新的容器并进行资源转移</li>
+<li><strong>机器资源配置</strong> 可以为每个容器配置需要的CPU以及内存资源</li>
+<li><strong>自愈</strong> 发现服务异常自动重启</li>
+<li><strong>敏感信息配置</strong> 对于密码，token，keys等敏感信息由k8s私密管理</li>
+</ul>
+<h1 id="Kubernates集群组件"><a href="#Kubernates集群组件" class="headerlink" title="Kubernates集群组件"></a>Kubernates集群组件</h1><p>k8s集群包换了一些<code>worker</code>机器，被称为<code>nodes</code>。worker上会运行容器程序，每个集群至少有一个<code>worker</code>。<code>control plan</code>管理这些worker nodes 以及 Pods，通常在生产环境会运行于多个节点上。提供high availability服务。</p>
+<p>组件：</p>
+<p><img src="/2022/06/02/Kubernetes%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/components-of-kubernetes.svg" alt="components-of-kubernetes"></p>
+<h2 id="Control-Plane-Components"><a href="#Control-Plane-Components" class="headerlink" title="Control Plane Components"></a>Control Plane Components</h2><p>Control Plane Components 主要用来做一些决策，例如启动新的副本如果副本数不足。一些请求事件响应，如创建了dployment就同步创建启动pod。通常情况下部署在相同节点下，并且不在该节点下运行用户容器。参考：<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/components/">Kubbernetes Components</a></p>
+<ul>
+<li><p>kube-apiserver</p>
+<p>用于暴露k8s api</p>
+</li>
+<li><p>etcd</p>
+<p>高可用键值数据库</p>
+</li>
+<li><p>kube-scheduler</p>
+<p>根据resource定义分配满足执行条件节点并运行</p>
+</li>
+<li><p>kube-controller-manager</p>
+<p>运行控制器进程的控制组件。从逻辑上讲，每个控制器都是一个单独的进程，但为了降低复杂性，它们都编译成单个二进制文件并在单个进程中运行。</p>
+<p>这些控制器的某些类型是：</p>
+<ul>
+<li><p>节点控制器：负责节点发生故障时的注意和响应。</p>
+</li>
+<li><p>作业控制器：监视表示一次性任务的作业对象，然后创建Pod来运行这些任务完成。</p>
+</li>
+<li><p>端点控制器：填充端点对象（即加入服务和Pod）。</p>
+</li>
+<li><p>服务帐户和令牌控制器：为新命名空间创建默认帐户和API访问令牌。</p>
+</li>
+</ul>
+</li>
+<li><p>cloud-controller-manager</p>
+<p>可以将当前集群加入云集群，具体参考<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/components/">Kubbernetes Components</a></p>
+</li>
+</ul>
+<h2 id="Node-Components"><a href="#Node-Components" class="headerlink" title="Node Components"></a>Node Components</h2><ul>
+<li>kubelet</li>
+<li>kube-proxy</li>
+<li>Container runtime</li>
+</ul>
+<h2 id="Addons"><a href="#Addons" class="headerlink" title="Addons"></a>Addons</h2><ul>
+<li>DNS</li>
+<li>Web UI（Dashboard）</li>
+<li>Container Resource Monitoring</li>
+<li>Cluster-level Logging</li>
+</ul>
+<h1 id="Kubernetes常用对象"><a href="#Kubernetes常用对象" class="headerlink" title="Kubernetes常用对象"></a>Kubernetes常用对象</h1><p>Kubernetes对象是Kubernetes系统中的持久实体。Kubernetes使用这些实体来表示集群的状态。具体来说，他们可以描述：</p>
+<ul>
+<li><p>正在运行哪些容器化应用程序（以及哪些节点）</p>
+</li>
+<li><p>这些应用程序可用的资源</p>
+</li>
+<li><p>围绕这些应用程序行为的策略，例如重新启动策略、升级和容错性</p>
+</li>
+</ul>
+<p>Kubernetes对象是“意图记录”，一旦您创建对象，Kubernetes系统将不断工作以确保该对象的存在。通过创建对象，您可以有效地告诉Kubernetes系统您希望集群的工作负载是什么样子；这是集群所需的状态。</p>
+<p>要使用Kubernetes对象，无论是创建、修改还是删除它们——您需要使用Kubernetes API。例如，当您使用kubectl命令行界面时，CLI会为您进行必要的Kubernetes API调用。您还可以使用客户端库之一直接在自己的程序中使用Kubernetes API。</p>
+<h2 id="Object-Spec-and-Status"><a href="#Object-Spec-and-Status" class="headerlink" title="Object Spec and Status"></a>Object Spec and Status</h2><p>对象规格和状态</p>
+<p>几乎每个Kubernetes对象都包含两个控制对象配置的嵌套对象字段：对象规范和对象状态。对于具有规范的对象，您必须在创建对象时设置此设置，并描述您希望资源具有的特征：其所需的状态。</p>
+<p>该状态描述了对象的当前状态，由Kubernetes系统及其组件提供和更新。Kubernetes控制平面持续并主动地管理每个对象的实际状态，以匹配您提供的期望状态。</p>
+<p>例如：在Kubernetes中，部署是一个可以表示在集群上运行的应用程序的对象。当您创建部署时，您可以将部署规范设置为指定您希望运行应用程序的三个副本。Kubernetes系统读取部署规范，并启动所需应用程序的三个实例——更新状态以匹配您的规范。如果其中任何实例出现故障（状态更改），Kubernetes系统会通过更正来响应规范和状态之间的差异——在这种情况下，启动替换实例。</p>
+<p>有关对象规范、状态和元数据的更多信息，请参阅<a target="_blank" rel="noopener" href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md">Kubernetes API Conventions</a>.</p>
+<h2 id="Describing-a-Kubernetes-object"><a href="#Describing-a-Kubernetes-object" class="headerlink" title="Describing a Kubernetes object"></a>Describing a Kubernetes object</h2><p>当您在Kubernetes中创建对象时，您必须提供描述其所需状态的对象规范，以及有关对象的一些基本信息（例如名称）。当您使用Kubernetes API创建对象（直接或通过kubectl）时，该API请求必须在请求主体中包含该信息作为JSON。通常，您在.yaml文件中向kubectl提供信息。kubectl在提出API请求时将信息转换为JSON。</p>
+<p>这里有一个.yaml文件示例，显示Kubernetes部署的必填字段和对象规范：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span> <span class="comment"># tells deployment to run 2 pods matching the template</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用<code>kubectl apply</code>命令创建Deployment</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://k8s.io/examples/application/deployment.yaml</span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line"><span class="comment"># deployment.apps/nginx-deployment created</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="必须字段"><a href="#必须字段" class="headerlink" title="必须字段"></a>必须字段</h2><p>在您要创建的Kubernetes对象的.yaml文件中，您需要为以下字段设置值：</p>
+<ul>
+<li><p>apiVersion - 您正在使用哪个版本的Kubernetes API来创建此对象</p>
+</li>
+<li><p>kind - 您想创建哪种对象</p>
+</li>
+<li><p>metadata - 有助于唯一识别对象的数据，包括名称字符串、UID和可选命名空间</p>
+</li>
+<li><p>spec - 您希望对象处于什么状态</p>
+</li>
+<li><p>对象规范的精确格式对每个Kubernetes对象都不同，并包含特定于该对象的嵌套字段。Kubernetes API参考可以帮助您找到可以使用Kubernetes创建的所有对象的规范格式。</p>
+</li>
+</ul>
+<p>例如，请参阅Pod API参考的规范字段。对于每个Pod，.spec字段指定pod及其所需状态（例如该pod中每个容器的容器映像名称）。对象规范的另一个例子是StatefulSet API的规范字段。对于StatefulSet，.spec字段指定StatefulSet及其所需状态。在StatefulSet的.spec中是Pod对象的模板。该模板描述了StatefulSet控制器为满足StatefulSet规范而创建的Pod。不同类型的对象也可以具有不同的.status；同样，API参考页面详细说明了该.status字段的结构，以及每种不同类型对象的内容。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>namespace</li>
+<li>node</li>
+<li>pod</li>
+<li>deployment</li>
+<li>service</li>
+<li>volumn</li>
+</ul>
+<h1 id="待补充。。。。。。"><a href="#待补充。。。。。。" class="headerlink" title="待补充。。。。。。"></a>待补充。。。。。。</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" class="post-title-link" itemprop="url">验证二叉搜索树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-02 10:00:15 / Modified: 10:26:45" itemprop="dateCreated datePublished" datetime="2022-06-02T10:00:15+08:00">2022-06-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/validate-binary-search-tree/">验证二叉搜索树</a></p>
+<p>给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。</p>
+<p>有效 二叉搜索树定义如下：</p>
+<p>节点的左子树只包含 小于 当前节点的数。<br>节点的右子树只包含 大于 当前节点的数。<br>所有左子树和右子树自身必须也是二叉搜索树。</p>
+<p><img src="/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/tree1.jpg" alt="tree1"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [2,1,3]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：判断二叉搜索树合法，需要根节点判断左右子树最大最小节点满足题目关系。可以维护一个子节点值范围（递归子节点时维护并判断当前节点合法性），通过此范围与根节点值判断。从而判断该节点是否合法。</p>
+<p><strong>递归思路：先自顶向下分析，然后分析底层边界逻辑反向验证，然后开始实现。</strong></p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val) &#123; this.val = val; &#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val, TreeNode left, TreeNode right) &#123;</span></span><br><span class="line"><span class="comment"> *         this.val = val;</span></span><br><span class="line"><span class="comment"> *         this.left = left;</span></span><br><span class="line"><span class="comment"> *         this.right = right;</span></span><br><span class="line"><span class="comment"> *     &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Integer[] vals = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">return</span> isValid(root, vals);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * root：要判断合法的子树根节点</span></span><br><span class="line"><span class="comment">     * vals：该子树值范围</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(TreeNode root, Integer[] vals)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">null</span>) &#123; </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对于叶子节点还是其他都出实话当前值作为范围</span></span><br><span class="line">        vals[<span class="number">0</span>] = root.val;</span><br><span class="line">        vals[<span class="number">1</span>] = root.val;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(root.left != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 此处用一个新的对象，防止污染当前节点范围</span></span><br><span class="line">            Integer[] tval = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">            <span class="type">boolean</span> <span class="variable">left</span> <span class="operator">=</span> isValid(root.left, tval);</span><br><span class="line">            <span class="keyword">if</span>(!left) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(root.val &lt;= tval[<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(tval[<span class="number">1</span>] &gt;= root.val)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 以左子树范围更新当前节点范围，如果上面条件通过则树合法，以子树范围更新可以扩大当前子树值范围</span></span><br><span class="line">            vals[<span class="number">0</span>] = tval[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 同上</span></span><br><span class="line">        <span class="keyword">if</span>(root.right != <span class="literal">null</span>)&#123;</span><br><span class="line">            Integer[] tval = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">            <span class="type">boolean</span> <span class="variable">right</span> <span class="operator">=</span> isValid(root.right, tval);</span><br><span class="line">            <span class="keyword">if</span>(!right) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(root.val &gt;= tval[<span class="number">0</span>]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(tval[<span class="number">0</span>] &lt;= root.val)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            vals[<span class="number">1</span>] = tval[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E6%9C%80%E5%B0%8F%E8%A6%86%E7%9B%96%E5%AD%90%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E6%9C%80%E5%B0%8F%E8%A6%86%E7%9B%96%E5%AD%90%E4%B8%B2/" class="post-title-link" itemprop="url">最小覆盖子串</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:26:57 / Modified: 21:57:08" itemprop="dateCreated datePublished" datetime="2022-06-01T21:26:57+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-substring/">最小覆盖字串</a></p>
+<p>给你一个字符串 <code>s</code> 、一个字符串 <code>t</code> 。返回 <code>s</code> 中涵盖 <code>t</code> 所有字符的最小子串。如果 <code>s</code> 中不存在涵盖 <code>t</code> 所有字符的子串，则返回空字符串 <code>&quot;&quot;</code> 。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>对于 <code>t</code> 中重复字符，我们寻找的子字符串中该字符数量必须不少于 <code>t</code> 中该字符数量。</li>
+<li>如果 <code>s</code> 中存在这样的子串，我们保证它是唯一的答案。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;ADOBECODEBANC&quot;, t = &quot;ABC&quot;</span><br><span class="line">输出：&quot;BANC&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：采用滑动窗口，通过hash <code>t</code>字符串每个字符的频率，同样在滑动窗口调整时维护<code>s</code>的字符频率hash。关于窗口的调整策略：先调整右边界，直到所有节点都已包含，可以更新最小长度。然后调整左边界，如果移动后依旧包含则更新最小长度。如果不包含调整右边界直至继续包含目标串。按照这个策略调整窗口并更新<code>s</code>的hash。右边界在移动的时候如果能保持hash数量大于t串hash对应数量则表示包含。另外全部包含需要一个额外变量存储length，通过每一次窗口调整更新该变量，如果该变量长度等于<code>t</code>串长度则表示已全包含（更新策略，如果右边界判断hash数量大于t串hash对应数量，则length + t中该字符数量，如果左边界判断hash数量小于t串hash对应数量，则length - 1）。</p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 待补充。。。</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/" class="post-title-link" itemprop="url">最长有效括号</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:11:25 / Modified: 21:27:56" itemprop="dateCreated datePublished" datetime="2022-06-01T21:11:25+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-valid-parentheses/">最长有效括号</a></p>
+<p>给你一个只包含 <code>&#39;(&#39;</code> 和 <code>&#39;)&#39;</code> 的字符串，找出最长有效（格式正确且连续）括号子串的长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;(()&quot;</span><br><span class="line">输出：2</span><br><span class="line">解释：最长有效括号子串是 &quot;()&quot;</span><br><span class="line"></span><br><span class="line">输入：s = &quot;)()())&quot;</span><br><span class="line">输出：4</span><br><span class="line">解释：最长有效括号子串是 &quot;()()&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：</p>
+<ol>
+<li><p>暴力</p>
+<p>遍历数组，以每一个索引开始寻找最长的合法括号串。然后找出最大的长度返回</p>
+</li>
+<li><p>dp</p>
+<p>定义：dp[i]：以索引<code>i</code>结尾的元素的最长合法括号串</p>
+<p>存在以下递推关系：</p>
+<p>dp[i] &#x3D; dp[i-2] + 2  &#x2F;&#x2F; 如果str[i] 与 str[i - 1] 为：<code>()</code></p>
+<p>dp[i] &#x3D; dp[i-1] + 2 + dp[i - 2 - dp[i-1]]  &#x2F;&#x2F; 如果str[i] &#x3D; <code>&#39;)&#39;</code> &amp;&amp; str[i - dp[i-1] - 1] &#x3D; <code>&#39;(&#39;</code></p>
+</li>
+</ol>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestValidParentheses</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="type">char</span> sc[] = s.toCharArray();</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> sc.length;</span><br><span class="line">        <span class="type">int</span> dp[] = <span class="keyword">new</span> <span class="title class_">int</span>[length];</span><br><span class="line">        <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">            <span class="comment">// 状况1</span></span><br><span class="line">            <span class="keyword">if</span>(sc[i]==<span class="string">&#x27;)&#x27;</span>&amp;&amp;sc[i-<span class="number">1</span>]==<span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">pos</span> <span class="operator">=</span> i-<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(pos&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                    dp[i] = <span class="number">2</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">// 更新dp</span></span><br><span class="line">                    dp[i] = dp[pos] + <span class="number">2</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 状况2</span></span><br><span class="line">            <span class="keyword">if</span>(sc[i]==<span class="string">&#x27;)&#x27;</span>&amp;&amp;sc[i-<span class="number">1</span>]==<span class="string">&#x27;)&#x27;</span>)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">pos</span> <span class="operator">=</span> i-dp[i-<span class="number">1</span>]-<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(pos&gt;=<span class="number">0</span>&amp;&amp;sc[pos]==<span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                    <span class="comment">// 更新dp</span></span><br><span class="line">                    dp[i] = dp[i-<span class="number">1</span>] + <span class="number">2</span>;</span><br><span class="line">                    <span class="comment">// 加前面的 重要：((()))(()), 如果此时索引为9，dp[i-1] = 2 (), 前面需要加的就是((()))</span></span><br><span class="line">                    <span class="keyword">if</span>(dp[i-<span class="number">1</span>]!=<span class="number">0</span>&amp;&amp;pos-<span class="number">1</span>&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">                        dp[i] += dp[pos-<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max,dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/" class="post-title-link" itemprop="url">零钱兑换</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:01:29 / Modified: 21:27:56" itemprop="dateCreated datePublished" datetime="2022-06-01T21:01:29+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/coin-change/">零钱兑换</a></p>
+<p>给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。</p>
+<p>计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。</p>
+<p>你可以认为每种硬币的数量是无限的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：coins = [1, 2, 5], amount = 11</span><br><span class="line">输出：3 </span><br><span class="line">解释：11 = 5 + 5 + 1</span><br></pre></td></tr></table></figure>
+
+<p>思路：dp[amount]，计算每个amount的关于提供硬币的所需硬币数量：针对提供的硬币数组，计算从0～amount的dp数组。存在这样的关系：</p>
+<ul>
+<li>需要计算每一个金额最小的硬币数</li>
+<li>遍历每一个硬币，如果可以大于要组成的amount，直接continue（无法通过这个硬币组成该金额）</li>
+<li>小于amount，组成amount的硬币个数为：dp[amount - coinAmount] + 1（需要注意，如果dp[amount - coinAmount] 为-1，即无法组成该amount硬币组合，直接continue）</li>
+<li>对于每种组合，求最小的进行赋值：dp[amount] &#x3D; min(dp[amount - coinAmount] ) + 1</li>
+</ul>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">coinChange</span><span class="params">(<span class="type">int</span>[] coins, <span class="type">int</span> amount)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">am</span> <span class="operator">=</span> <span class="number">1</span>; am &lt;= amount; am++) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> coin : coins) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">other</span> <span class="operator">=</span> am - coin;</span><br><span class="line">                <span class="keyword">if</span>(other &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 如果硬币面值过大，直接丢弃这种组合方式</span></span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">// 表示没有这种组合方式，丢弃</span></span><br><span class="line">                    <span class="keyword">if</span>(dp[other] == -<span class="number">1</span>) &#123;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 首次直接赋值，后续需要取较小值更新</span></span><br><span class="line">                    count = count == <span class="literal">null</span> ? dp[other] + <span class="number">1</span> : Math.min(count,dp[other] + <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[am] = count == <span class="literal">null</span> ? -<span class="number">1</span> : count;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[amount];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/RAFT%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/RAFT%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">RAFT算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-01 09:43:50" itemprop="dateCreated datePublished" datetime="2022-06-01T09:43:50+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/RESTful/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/RESTful/" class="post-title-link" itemprop="url">RESTful</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 09:11:01 / Modified: 09:36:03" itemprop="dateCreated datePublished" datetime="2022-06-01T09:11:01+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h1><h2 id="Resource-Representational-State-Transfer："><a href="#Resource-Representational-State-Transfer：" class="headerlink" title="Resource Representational State Transfer："></a><code>Resource Representational State Transfer</code>：</h2><ul>
+<li><strong>资源（Resource）</strong> ：URL即资源，指向具体操作的对象</li>
+<li><strong>表现形式（Representational）</strong>：请求数据类型（<code>json</code>, <code>xml</code>,<code>file</code>等）</li>
+<li><strong>状态转移（State Transfer）</strong> ：通过具体的<code>method</code>行为（<code>GET</code>,<code>POST</code>,<code>PUT</code>,<code>PATCH</code>,<code>DELETE</code>）操作资源并改变资源状态</li>
+</ul>
+<h2 id="动作"><a href="#动作" class="headerlink" title="动作"></a>动作</h2><ul>
+<li><code>GET</code> 获取资源</li>
+<li><code>POST</code> 保存资源</li>
+<li><code>PUT</code> 更新资源（全量更新）</li>
+<li><code>PATCH</code> 更新资源（部分更新）</li>
+<li><code>DELETE</code> 删除资源</li>
+</ul>
+<h2 id="URL设计规则"><a href="#URL设计规则" class="headerlink" title="URL设计规则"></a>URL设计规则</h2><ul>
+<li>不可包含动词，仅描述资源</li>
+<li>使用小写字母</li>
+<li>设置版本号规则，实现版本化</li>
+</ul>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="HATEOAS"><a href="#HATEOAS" class="headerlink" title="HATEOAS"></a>HATEOAS</h1><p><code>Hypermedia as the Engine of Application State</code></p>
+<p>可以被简单的理解为为 REST API 中的 Resource 提供必要的链接，对，就像是 HTML 页面上的链接。我们在访问一个 web 站点的时候从来没有说要看一个说明文档并在其中找到我们所需要的资源的 URI，而是通过一个入口页面（当然，搜索引擎也提供了入口）所包含的链接，一步一步找到我们想要的内容。HATEOAS 是 REST 架构风格重要的组成部分，然而对于现在的诸多 REST 接口中却并没有它的身影。它被 <a target="_blank" rel="noopener" href="https://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> 定义为 REST 的最终形态。<a target="_blank" rel="noopener" href="https://blog.aisensiy.me/2017/06/04/spring-boot-and-hateoas/">参考链接</a></p>
+<h1 id="SpringBoot"><a href="#SpringBoot" class="headerlink" title="SpringBoot"></a>SpringBoot</h1><p>参考1：<a target="_blank" rel="noopener" href="https://spring.io/guides/tutorials/rest/">SpringBoot Restful</a></p>
+<p>参考2：<a target="_blank" rel="noopener" href="https://blog.aisensiy.me/2017/06/04/spring-boot-and-hateoas/">SpringBoot &amp; HATEOAS</a></p>
+<p>参考3：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-hateoas/docs/1.5.0/reference/html/">Spring HATEOAS</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -315,631 +979,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/CountDownLatch%E5%92%8CCycilBarrier/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/CountDownLatch%E5%92%8CCycilBarrier/" class="post-title-link" itemprop="url">CountDownLatch和CycilBarrier</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 14:46:31 / Modified: 15:14:51" itemprop="dateCreated datePublished" datetime="2022-05-31T14:46:31+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h1><p>内部采用AQS实现，初始化时设置State。</p>
-<p><code>countDown()</code>方法调用时调用<code>tryRelease()</code>将state减一并通过CAS更新state；</p>
-<p><code>await()</code>主线程调用时，会判断state是否为0，是0的话直接退出，否则加入AQS队列等待唤醒。</p>
-<h1 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h1><p>借助 ReentrantLock的Condition等待唤醒实现。</p>
-<p>在构建CyclicBarrier时，传入的值会赋值给CyclicBarrier内部维护count变量，也会赋值给parties变量（这是可以复用的关键）</p>
-<p>每次调用await时，会将count -1 ，操作count值是直接使用ReentrantLock来保证线程安全性；</p>
-<p>如果count不为0，则添加则condition队列中</p>
-<p>如果count等于0时，则把节点从condition队列添加至AQS的队列中进行全部唤醒，并且将parties的值重新赋值为count的值（实现复用）</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>CountDownlatch基于AQS实现，会将构造CountDownLatch的入参传递至state，countDown()就是在利用CAS将state减-1，await()实际就是让头节点一直在等待state为0时，释放等待的线程</p>
-<p>CyclicBarrier则利用ReentrantLock和Condition，自身维护了count和parties变量。每次调用await将count-1，并将线程加入到condition队列上。等到count为0时，则将condition队列的节点移交至AQS队列，并全部释放。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/ThreadLoacl/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/ThreadLoacl/" class="post-title-link" itemprop="url">ThreadLoacl</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 11:33:47 / Modified: 12:34:41" itemprop="dateCreated datePublished" datetime="2022-05-31T11:33:47+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;T&gt; res1 = <span class="keyword">new</span> <span class="title class_">NamedThreadLocal</span>&lt;&gt;(<span class="string">&quot;resource1&quot;</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;T&gt; res2 = <span class="keyword">new</span> <span class="title class_">NamedThreadLocal</span>&lt;&gt;(<span class="string">&quot;resource2&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>ThreadLocal是一个壳子，真正的存储结构是ThreadLocal里有ThreadLocalMap这么个内部类。</p>
-<p>ThreadLocalMap的引用是在Thread上定义的</p>
-<p>ThreadLocal本身并不存储值，它只是作为key（弱引用）来让线程从ThreadLocalMap获取value</p>
-<p><img src="/2022/05/31/ThreadLoacl/image-20220531114220950.png" alt="image-20220531114220950"></p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><ol>
-<li><p>为什么不用Thread作为key存取数据？这样更直观</p>
-<p>thread作为key则所有线程数据在一个大Map中</p>
-<ul>
-<li>不方便维护，一个大map。</li>
-<li>一个线程多个值需要存取，只能在value上做文章。</li>
-<li>Map不能无限膨胀</li>
-</ul>
-</li>
-<li><p>内存泄漏问题是什么？什么时候会发生？如何避免？</p>
-<p>ThreadLocalMap的Key是一个弱引用指向ThreadLocal实例。此时正常情况有两个引用指向ThreadLocal实例，一个强引用和一个弱引用。如果强引用被回收掉，ThreadLocal对象只有一个弱引用，也会被回收掉。此时ThreadLocalMap中key为null。到那时value并未被回收，如果在线程池下使用ThreadLocal并且对于key无新操作（因为ThreadLocal在每次操作时会自动清理key为null的value）就会存在大量value未回收的情况。</p>
-<p><img src="/2022/05/31/ThreadLoacl/640.jpeg" alt="640"></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="post-title-link" itemprop="url">线程池</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 11:05:43 / Modified: 11:37:34" itemprop="dateCreated datePublished" datetime="2022-05-31T11:05:43+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="创建方式"><a href="#创建方式" class="headerlink" title="创建方式"></a>创建方式</h1><p>ThreadPoolExecutor创建，了解线程创建参数避免资源耗尽。</p>
-<h1 id="核心参数"><a href="#核心参数" class="headerlink" title="核心参数"></a>核心参数</h1><ul>
-<li>核心线程数</li>
-<li>最大线程数</li>
-<li>线程空闲时间</li>
-<li>阻塞队列<ul>
-<li><code>ArrayBlockingQueue</code></li>
-<li><code>LinkedBlockingQuewue</code></li>
-<li><code>PriorityBlockingQueue</code></li>
-</ul>
-</li>
-<li>拒绝策略<ul>
-<li>丢弃任务并抛异常</li>
-<li>直接丢掉新任务</li>
-<li>丢掉队列中最早的任务</li>
-<li>提交任务的线程执行该任务</li>
-</ul>
-</li>
-</ul>
-<h1 id="任务提交执行流程"><a href="#任务提交执行流程" class="headerlink" title="任务提交执行流程"></a>任务提交执行流程</h1><ol>
-<li>提交任务</li>
-<li>判断当前线程数是否小雨核心线程，如果小于则创建核心线程执行</li>
-<li>否则判断阻塞队列是否已满，如果已满执行4，否则5</li>
-<li>判断当前线程数是否达到最大线程数，如果达到则触发拒绝策略，否则创建新线程执行</li>
-<li>加入阻塞队列即可</li>
-</ol>
-<h1 id="参数设计"><a href="#参数设计" class="headerlink" title="参数设计"></a>参数设计</h1><ol>
-<li><p>根据任务类型设计：</p>
-<p><strong>CPU密集型</strong>：与CPU核心数1～2倍。（不设置过多是CPU已经占用很高，避免无意义的上下文切换）</p>
-<p><strong>IO密集型</strong>：采用《Java并发编程实战》的作者 Brain Goetz 推荐的计算方法：<strong>线程数 &#x3D; CPU 核心数 *（1+平均等待时间&#x2F;平均工作时间）</strong></p>
-</li>
-<li><p>压测确定</p>
-<p>为了更准确的参数配置，可以通过压测来确定服务的最佳线程数量。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AQS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/AQS/" class="post-title-link" itemprop="url">AQS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 09:59:15 / Modified: 16:17:28" itemprop="dateCreated datePublished" datetime="2022-05-31T09:59:15+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类型state和一个双向队列。封装了线程锁请求入FIFO双向队列入队出队以及线程挂起唤醒等过程，实现线程安全。</p>
-<h1 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a><strong>两种模式</strong></h1><p>独占：State作为一个独占资源</p>
-<p>共享：State的32位拆分为多个资源。</p>
-<h1 id="公平非公平"><a href="#公平非公平" class="headerlink" title="公平非公平"></a><strong>公平非公平</strong></h1><p>公平锁：通过FIFO队列，新锁请求放入队尾</p>
-<p>非公平锁：锁请求先尝试获取锁，获取失败再入队列</p>
-<h1 id="加锁执行流程（独占非公平锁为例）"><a href="#加锁执行流程（独占非公平锁为例）" class="headerlink" title="加锁执行流程（独占非公平锁为例）"></a><strong>加锁执行流程</strong>（独占非公平锁为例）</h1><ul>
-<li>调用<code>lock()</code>方法</li>
-<li>CAS尝试修改State获取锁</li>
-<li>获取锁成功</li>
-<li>获取失败，加入锁队列，前驱节点设置为<code>Signal</code>状态（有后继节点需要唤醒），挂起当前线程</li>
-<li>等待前驱节点获取锁唤醒执行后，唤醒后继线程获取锁继续执行</li>
-</ul>
-<h1 id="解锁执行流程"><a href="#解锁执行流程" class="headerlink" title="解锁执行流程"></a><strong>解锁执行流程</strong></h1><ul>
-<li>调用<code>unlock()</code>方法</li>
-<li>CAS尝试修改State</li>
-<li>修改成功释放锁</li>
-<li>唤醒下一个节点</li>
-</ul>
-<h1 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"><span class="type">Condition</span> <span class="variable">condition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line"><span class="comment">// await</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.await();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// lock</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.signal();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Condition内部维护条件队列（单向链表）。当调用<code>awit()</code>时，加入条件队列中。调用<code>signal()</code>时将头节点转移到AQS队列尾部，等待唤醒执行。<code>signalAll()</code>会将所有条件队列的节点计入AQS队列。</p>
-<h1 id="Synchronized-VS-AQS"><a href="#Synchronized-VS-AQS" class="headerlink" title="Synchronized VS AQS"></a>Synchronized VS AQS</h1><ul>
-<li>Synchronized 无需手动解锁，AQS需要</li>
-<li>Synchronized膨胀为重量级锁后无法回退，AQS会自适应调整</li>
-<li>Synchronized 的wait&#x2F;notifyAll没有AQS Condition灵活</li>
-<li>AQS可中断锁</li>
-<li>AQS可以实现公平锁</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Synchronized/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/Synchronized/" class="post-title-link" itemprop="url">Synchronized</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 09:12:49 / Modified: 09:58:59" itemprop="dateCreated datePublished" datetime="2022-05-31T09:12:49+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Synchronized是Java的一个关键字，通过它可以实现线程安全。</p>
-<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ol>
-<li><p>修饰实例方法</p>
-<p>将实例作为锁对象</p>
-</li>
-<li><p>修饰静态方法与静态代码块</p>
-<p>将Class对象作为锁对象</p>
-</li>
-<li><p>自定义锁对象</p>
-</li>
-</ol>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>编译过程中会生成<code>monitorenter</code>与<code>monitorexit</code>字节码指令。锁信息会记录在锁对象的对象头中的Mark Word中</p>
-<h1 id="锁升级过程"><a href="#锁升级过程" class="headerlink" title="锁升级过程"></a>锁升级过程</h1><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41860497/article/details/125010798#:~:text=%E5%81%8F%E5%90%91%E9%94%81%E6%98%AF%E6%8C%87%E5%BD%93%E4%B8%80%E6%AE%B5%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E4%B8%80%E7%9B%B4%E8%A2%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%89%80%E8%AE%BF%E9%97%AE%E6%97%B6%EF%BC%8C%E5%8D%B3%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AB%9E%E4%BA%89%E6%97%B6%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%A5%E7%BA%BF%E7%A8%8B%E5%9C%A8%E5%90%8E%E7%BB%AD%E8%AE%BF%E9%97%AE%E6%97%B6%E4%BE%BF%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%8E%B7%E5%BE%97%E9%94%81%EF%BC%8C%E4%BB%8E%E8%80%8C%E9%99%8D%E4%BD%8E%E8%8E%B7%E5%8F%96%E9%94%81%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%B6%88%E8%80%97%EF%BC%8C%E5%8D%B3%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E3%80%82%20%E5%BD%93%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%AE%BF%E9%97%AE%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%B9%B6%E8%8E%B7%E5%8F%96%E9%94%81%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%9C%A8%20Mark%20Word,%E9%87%8C%E5%AD%98%E5%82%A8%E9%94%81%E5%81%8F%E5%90%91%E7%9A%84%20%E7%BA%BF%E7%A8%8B%20ID%20%E3%80%82">锁升级过程</a></p>
-<p>最初Synchronized是采用重量级锁，重量级锁存在内核态与用户态的切换，存在性能损耗。于是后续进行了相关优化：锁升级</p>
-<p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
-<p>偏向锁：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程是不会主动释放偏向锁的。线程尝试竞争时，偏向锁等待全局安全点判断是否有竞争恢复到轻量级锁或无锁状态。<strong>偏向锁适用于同一个线程多次获取锁的情况</strong>。 <strong>缺点：竞争激烈情况下，存在锁撤销的开销，此时可以关闭偏向锁</strong></p>
-<p>轻量级锁：<strong>适用于多个线程交替获取锁，很少发生竞争</strong>， <strong>缺点：消耗CPU</strong></p>
-<p>重量级锁：<strong>系统中存在大量的线程同时尝试获取锁，高并发场景</strong>，<strong>缺点：线程阻塞唤醒，频繁切换上下文性能损耗</strong></p>
-<p>详细过程：</p>
-<ol>
-<li>尝试获取锁的线程，检查锁对象头中Mark Word记录的线程ID。如果与当前线程ID相同，表示已获取锁直接执行</li>
-<li>如果发现与当前线程不一致，偏向锁撤销升级为轻量级锁。拷贝Mark Word到栈帧，尝试CAS自旋修改Mark Word指向栈帧，修改成功则获得锁，否则在多次（15次）自旋失败后膨胀为重量级锁</li>
-<li>此时存在大量竞争，未保证线程安全并且降低自旋导致的cpu busy。重量级锁接管，对于未获取锁的线程进行阻塞。等待锁释放操作系统调度。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AtomInteger%E4%B8%8ELongAdder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/AtomInteger%E4%B8%8ELongAdder/" class="post-title-link" itemprop="url">AtomInteger与LongAdder</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 08:59:49 / Modified: 09:12:09" itemprop="dateCreated datePublished" datetime="2022-05-31T08:59:49+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>Compare And Swap：通过原子的进行比较交换操作保证数据安全。</p>
-<p>具体流程：每次更新前先判断当前值是否相等，如果相等就进行替换。否则自旋等待锁释放。</p>
-<p>存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁</p>
-<p>如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据</p>
-<h1 id="AtomInteger"><a href="#AtomInteger" class="headerlink" title="AtomInteger"></a>AtomInteger</h1><p>底层通过CAS，能够原子的进行累加，保证线程安全。</p>
-<p>缺点：只有一个共享资源，高并发下大部分线程自旋等待。性能不佳</p>
-<p>改进：使用<code>LongAdder</code></p>
-<h1 id="LongAdder"><a href="#LongAdder" class="headerlink" title="LongAdder"></a>LongAdder</h1><p>底层同样采用CAS，但是内部类似分段锁机制通过一个Cell数据将资源划分开，降低失败次数并减小自旋性能损失。所以在高并发情况下推荐使用<code>LongAdder</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E6%AD%BB%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 08:52:56 / Modified: 08:58:19" itemprop="dateCreated datePublished" datetime="2022-05-31T08:52:56+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么是死锁"><a href="#什么是死锁" class="headerlink" title="什么是死锁"></a>什么是死锁</h1><p>多线程情况下，线程互相拥有对方需要的资源从而相互等待资源释放，从而导致程序无法继续进行造成死锁。</p>
-<h1 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h1><ol>
-<li><p>固定枷锁顺序</p>
-<p>可以通过业务字段运算排序确定加锁的顺序</p>
-</li>
-<li><p>尽可能减小锁的范围</p>
-<p>等到操作共享变量时再加锁，降低死锁概率</p>
-</li>
-<li><p>定时锁</p>
-<p>一段时间获取不到锁，释放掉</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Java-IO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/Java-IO/" class="post-title-link" itemprop="url">Java IO</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 08:37:56 / Modified: 08:50:33" itemprop="dateCreated datePublished" datetime="2022-05-31T08:37:56+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="BIO-gt-NIO"><a href="#BIO-gt-NIO" class="headerlink" title="BIO -&gt; NIO"></a>BIO -&gt; NIO</h1><blockquote>
-<p> BIO： Blocking IO 阻塞IO，按字节进行处理</p>
-<p>NIO：No-Blocking IO（New-IO），非阻塞。按缓冲区处理</p>
-</blockquote>
-<h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><p>3个组件：</p>
-<ul>
-<li>Selector：检查Channel状态变化</li>
-<li>Channel：运输数据通道</li>
-<li>Buffer：数据存储</li>
-</ul>
-<p>零拷贝：</p>
-<ul>
-<li><p>mmap（内核缓冲区与用户缓冲区的共享）</p>
-</li>
-<li><p>sendfile（系统底层函数支持）</p>
-</li>
-</ul>
-<h1 id="操作系统支持"><a href="#操作系统支持" class="headerlink" title="操作系统支持"></a>操作系统支持</h1><p>select，poll，epoll</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1005,14 +1048,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
