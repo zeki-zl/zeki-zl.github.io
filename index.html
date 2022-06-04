@@ -183,6 +183,418 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E7%BB%93%E6%9E%84%E5%8C%96-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E5%92%8C%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/%E7%BB%93%E6%9E%84%E5%8C%96-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E5%92%8C%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">结构化,半结构化和非结构化数据</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-04 19:07:40 / Modified: 19:13:26" itemprop="dateCreated datePublished" datetime="2022-06-04T19:07:40+08:00">2022-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>转自<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1351609">https://cloud.tencent.com/developer/article/1351609</a></p>
+<h1 id="一、结构化数据"><a href="#一、结构化数据" class="headerlink" title="一、结构化数据"></a><strong>一、结构化数据</strong></h1><p>结构化的数据是指可以使用<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/cdb-overview?from=10680">关系型数据库</a>表示和存储，表现为二维形式的数据。一般特点是：数据以行为单位，一行数据表示一个实体的信息，每一行数据的属性是相同的。举一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id      name            age     gender</span><br><span class="line"><span class="number">1</span>       <span class="title class_">Liu</span> <span class="title class_">Yi</span>          <span class="number">20</span>      male</span><br><span class="line"><span class="number">2</span>       <span class="title class_">Chen</span> <span class="title class_">Er</span>         <span class="number">35</span>      female</span><br><span class="line"><span class="number">3</span>       <span class="title class_">Zhang</span> <span class="title class_">San</span>       <span class="number">28</span>      male</span><br></pre></td></tr></table></figure>
+
+<p>复制</p>
+<p>所以，结构化的数据的存储和排列是很有规律的，这对查询和修改等操作很有帮助。</p>
+<p>但是，它的扩展性不好。比如，如果字段不固定，利用关系型数据库也是比较困难的，有人会说，需要的时候加个字段就可以了，这样的方法也不是不可以，但在实际运用中每次都进行反复的表结构变更是非常痛苦的，这也容易导致后台接口从数据库取数据出错。你也可以预先设定大量的预备字段，但这样的话，时间一长很容易弄不清除字段和数据的对应状态，即哪个字段保存有哪些数据。</p>
+<h1 id="二、半结构化数据"><a href="#二、半结构化数据" class="headerlink" title="二、半结构化数据"></a><strong>二、半结构化数据</strong></h1><p>半结构化数据是结构化数据的一种形式，它并不符合关系型数据库或其他数据表的形式关联起来的数据模型结构，但包含相关标记，用来分隔语义元素以及对记录和字段进行分层。因此，它也被称为自描述的结构。</p>
+<p>半结构化数据，属于同一类实体可以有不同的属性，即使他们被组合在一起，这些属性的顺序并不重要。</p>
+<p>常见的半结构数据有XML和JSON，对于对于两个XML文件，第一个可能有</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;person&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">name</span>&gt;</span>A<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">age</span>&gt;</span>13<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">gender</span>&gt;</span>female<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span></span><br><span class="line">&lt;/person&gt;</span><br></pre></td></tr></table></figure>
+
+<p>复制</p>
+<p>第二个可能为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;person&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">name</span>&gt;</span>B<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">gender</span>&gt;</span>male<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span></span><br><span class="line">&lt;/person&gt;</span><br></pre></td></tr></table></figure>
+
+<p>复制</p>
+<p>从上面的例子中，属性的顺序是不重要的，不同的半结构化数据的属性的个数是不一定一样的。有些人说半结构化数据是以树或者图的数据结构存储的数据，怎么理解呢？上面的例子中，标签是树的根节点，和标签是子节点。通过这样的数据格式，可以自由地表达很多有用的信息，包括自我描述信息（元数据）。所以，半结构化数据的扩展性是很好的。</p>
+<h1 id="三、非结构化数据"><a href="#三、非结构化数据" class="headerlink" title="三、非结构化数据"></a><strong>三、非结构化数据</strong></h1><p>非结构化数据是数据结构不规则或不完整，没有预定义的数据模型，不方便用数据库二维逻辑表来表现的数据。包括所有格式的办公文档、文本、图片、各类报表、图像和音频&#x2F;视频信息等等。</p>
+<p>非结构化数据其格式非常多样，标准也是多样性的，而且在技术上非结构化信息比结构化信息更难标准化和理解。所以存储、检索、发布以及利用需要更加智能化的IT技术，比如海量存储、智能检索、知识挖掘、内容保护、信息的增值开发利用等。</p>
+<h1 id="四、应用场景"><a href="#四、应用场景" class="headerlink" title="四、应用场景"></a><strong>四、应用场景</strong></h1><p>结构化数据，简单来说就是数据库。结合到典型场景中更容易理解，比如企业ERP、财务系统；医疗HIS数据库；教育一卡通；政府行政审批；其他核心数据库等。这些应用需要哪些存储方案呢？基本包括高速存储应用需求、数据备份需求、数据共享需求以及数据容灾需求。</p>
+<p>非结构化数据，包括视频、音频、图片、图像、文档、文本等形式。具体到典型案例中，像是医疗影像系统、教育视频点播、视频监控、国土GIS、设计院、文件服务器（PDM&#x2F;FTP）、媒体资源管理等具体应用，这些行业对于存储需求包括数据存储、数据备份以及数据共享等。</p>
+<p>半结构化数据，包括邮件、HTML、报表、资源库等等，典型场景如邮件系统、WEB集群、教学资源库、数据挖掘系统、档案系统等等。这些应用对于数据存储、数据备份、数据共享以及数据归档 等基本存储需求。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/" class="post-title-link" itemprop="url">MySQL命令explain</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-04 18:12:00 / Modified: 18:50:46" itemprop="dateCreated datePublished" datetime="2022-06-04T18:12:00+08:00">2022-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><code>explain</code>是MySQL查询优化的关键命令. 通过这个命令可以模拟优化器执行SQL查询语句, 分析执行结果可以优化查询语句以提升查询性能.</p>
+<p>语句:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> xx <span class="keyword">where</span> yy <span class="operator">=</span> <span class="string">&#x27;zz&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>相应字段介绍:</p>
+<ul>
+<li><p>id : 语句中select查询子句的顺序</p>
+</li>
+<li><p>select_type : 查询类型</p>
+<ul>
+<li><p>SIMPLE : 简单查询, 不包含子查询与union查询</p>
+</li>
+<li><p>PRIMARY : 主查询, 存在子查询时,外层查询被标记为主查询</p>
+</li>
+<li><p>SUBQUERY : 子查询</p>
+</li>
+<li><p>UNION : 在union命令后的语句为此类型</p>
+</li>
+<li><p>UNION RESULT : 最终UNION结果会表示为此类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    id  select_type   table       partitions  type    possible_keys        key      </span><br><span class="line">------  ------------  ----------  ----------  ------  -------------------  ------- </span><br><span class="line">     1  PRIMARY       student     (NULL)      const   PRIMARY,id_name_age  PRIMARY  </span><br><span class="line">     2  UNION         student     (NULL)      const   PRIMARY,id_name_age  PRIMARY </span><br><span class="line">(NULL)  UNION RESULT  &lt;union1,2&gt;  (NULL)      ALL     (NULL)               (NULL)   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DERIVED : FROM列表中包含子查询的语句被标记为此类型, MySQL会递归执行这些子查询放入临时表(MySQL 5.7+ 优化后使用derived_merge加速查询效率. 无此状态)</p>
+</li>
+</ul>
+</li>
+<li><p>table : 访问的表,结合id可以看到执行过程中表查询顺序</p>
+</li>
+<li><p>partitions : 匹配分区</p>
+</li>
+<li><p>type : 访问类型</p>
+<p>10个状态,从好到差排序:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NULL &gt; system &gt; const &gt; eq_ref &gt; ref &gt; ref_or_null &gt; index_merge &gt; range &gt; index &gt; ALL</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>NULL : 无需访问表和索引的查询. 例: </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="number">5</span><span class="operator">*</span><span class="number">7</span>  <span class="comment">-- 不访问表,计算数值</span></span><br><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="built_in">MAX</span>(id) <span class="keyword">FROM</span> student  <span class="comment">-- 查询最大索引,直接取索引树叶子结点获取 </span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SYSTEM : 表只有一行记录（等于系统表），这是<code>const</code>类型的特列，平时不大会出现，可以忽略。</p>
+</li>
+<li><p>const : 一次索引查找到,主键索引或唯一索引查询时</p>
+</li>
+<li><p>eq_ref : 联表join查询时, 按联表的主键或唯一键查询</p>
+</li>
+<li><p>ref : 联表join查询时, 按联表的索引查询, 匹配多行不唯一</p>
+</li>
+<li><p>ref_or_null : 类似ref, 可以搜索值为NULL的行</p>
+</li>
+<li><p>index_merge : 查询了多个索引,然后取交集并集. 常见于在<code>and</code>, ‘or’的条件下使用了不同的索引. 大部分性能不如<code>range</code></p>
+</li>
+<li><p>range : 索引范围查询,常见于 &lt;&gt;, &gt;, &gt;&#x3D;, &lt;, &lt;&#x3D;, IS NULL, &lt;&#x3D;&gt;, BETWEEN, IN()或者like等运算符的查询中</p>
+</li>
+<li><p>ALL : 全表扫描, 务必优化!!!</p>
+</li>
+</ul>
+</li>
+<li><p>possible_keys : 可能使用的索引</p>
+</li>
+<li><p>key : 实际使用的索引, 为null时表示没使用索引</p>
+</li>
+<li><p>key_len : 索引中使用的字节数</p>
+</li>
+<li><p>ref : 索引的哪一列被使用</p>
+</li>
+<li><p>rows : 根据表统计信息以及索引选用情况,估算查找所需记录需要读取的行数. 数值越小效率越高</p>
+</li>
+<li><p>filtere : 查询数据占表的百分比. 类似rows,数值越小效率越高</p>
+</li>
+<li><p>extra : 其他重要的额外信息</p>
+<ul>
+<li>Using filesort : SQL需要排序, 但是优化器找不到可以使用的索引, 此时使用外部排序(多次磁盘IO访问,效率极低)</li>
+<li>Using tempporary : 查询结果排序时, 使用临时表协助. 效率低于外部排序.</li>
+<li>Using index : 使用了索引 👍🏻👍🏻👍🏻</li>
+<li>Using where : 使用了where</li>
+<li>Using join buffer : 多表join使用了连接缓存</li>
+<li>impossible where : 筛选条件啥也没找到</li>
+<li>distinct : 优化distinct操作, 找到匹配后立即停止同样值的动作</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/" class="post-title-link" itemprop="url">Sql 面试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-04 16:49:30 / Modified: 18:10:43" itemprop="dateCreated datePublished" datetime="2022-06-04T16:49:30+08:00">2022-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>having</p>
+<p>having常用语分组后的条件过滤常用于<code>group by xx </code>后</p>
+<p>例子:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name, aggregate_function(column_name)</span><br><span class="line"><span class="keyword">FROM</span> table_name</span><br><span class="line"><span class="keyword">WHERE</span> column_name operator <span class="keyword">value</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> column_name</span><br><span class="line"><span class="keyword">HAVING</span> aggregate_function(column_name) operator <span class="keyword">value</span></span><br></pre></td></tr></table></figure>
+
+<p>注意事项:</p>
+<ul>
+<li>having 子句内容需要存在select列表中</li>
+<li>having限制的是组, where限制的是行</li>
+<li>where, group by, having执行顺序: where过滤行 -&gt; group by对数据分组,并执行聚集函数 -&gt; having过滤符合条件的组</li>
+</ul>
+</li>
+<li><p><code>select a.xx,b.xx from a,b where a.x = b.x</code>与<code>select a.xx,b.xx from a inner join b on a.x = b.x</code> 区别</p>
+</li>
+<li><p>union与union all</p>
+<p>union会去重, union all 直接合并</p>
+</li>
+<li><p>row_number()</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--在test表中根据name分组，age进行排序</span></span><br><span class="line"><span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">age <span class="keyword">desc</span>) <span class="keyword">from</span> test;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--去掉重复的记录</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>( <span class="keyword">partition</span> <span class="keyword">by</span> name </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> age <span class="keyword">desc</span>) rn <span class="keyword">from</span> test )<span class="keyword">where</span> rn<span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以对结果集进行分组排序并生成一个row_number序列</p>
+</li>
+<li><p>DDL, DML与DCL</p>
+<ul>
+<li>DDL: Data Define Language, 数据定义语句. CREATE, ALTER, DROP等</li>
+<li>DML: Data Manage Language, 数据管理语句. SELECT, UPDATE, INSERT, DELETE</li>
+<li>DCL: Data Control Language, 数据控制语句. GRANT, DENY, REVOKE等个更新用户角色的命令</li>
+</ul>
+</li>
+<li><p>exists 与 in</p>
+<ul>
+<li><code>in</code> 仅执行一次(先查询子查询的表，然后将内表和外表做一个笛卡尔积，然后按照条件进行筛选), <code>exists</code>执行多次(外表行数)</li>
+<li>外层查询小于子查询使用<code>exists</code>; 外层查询大于子查询使用<code>in</code></li>
+<li><code>in</code> 与<code>exists</code>都会使用索引</li>
+<li><code>not in</code> 内外表均全局扫描,无法使用索引, <code>not exists</code>可以走索引</li>
+<li><code>in</code>的遍历实在内存中,速度较快. <code>exists</code>多次查询数据库.</li>
+</ul>
+</li>
+<li><p>索引使用注意事项</p>
+<ul>
+<li>尽量全值匹配</li>
+<li>模糊查询使用最左匹配原则</li>
+<li>全模糊查询使用覆盖索引方式也会走索引</li>
+<li>不在索引列上进行操作</li>
+<li>联合索引需要严格顺序匹配</li>
+<li>尽量使用覆盖索引</li>
+<li>mysql在使用<code>!=</code>与<code>&lt;&gt;</code>时索引失效</li>
+<li>字符串不加单引号导致索引失效</li>
+<li><code>or</code>使得索引失效</li>
+</ul>
+</li>
+<li><p>索引创建</p>
+<ul>
+<li>频繁查询的字段应创建索引</li>
+<li>与其他表关联查询的字段创建索引</li>
+<li>频繁更新的字段不适合作为索引</li>
+</ul>
+</li>
+<li><p>sql书写题目</p>
+<p>参考: <a target="_blank" rel="noopener" href="https://blog.csdn.net/jason_wang1989/article/details/115278576">经典题目</a></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Star-%E6%B3%95%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/Star-%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">Star 法则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-04 16:33:30 / Modified: 16:41:35" itemprop="dateCreated datePublished" datetime="2022-06-04T16:33:30+08:00">2022-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>摘自百度百科:</p>
+<p>STAR法则,即为Situation Task Action Result的缩写，具体含义是:</p>
+<ul>
+<li><p>Situation: 事情是在什么情况下发生</p>
+</li>
+<li><p>Task: 任务</p>
+</li>
+<li><p>Action: 针对这样的情况分析，你采用了什么行动方式</p>
+</li>
+<li><p>Result: 结果怎样，在这样的情况下你学习到了什么</p>
+</li>
+</ul>
+<p>简而言之，STAR法则是一个清晰、条理的模板。合理熟练运用此法则，可以轻松的对面试官描述事物的逻辑方式，表现出自己分析阐述问题的清晰性、条理性和逻辑性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -287,7 +699,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-06-04 11:36:52 / Modified: 12:13:51" itemprop="dateCreated datePublished" datetime="2022-06-04T11:36:52+08:00">2022-06-04</time>
+              <time title="Created: 2022-06-04 11:36:52 / Modified: 16:42:55" itemprop="dateCreated datePublished" datetime="2022-06-04T11:36:52+08:00">2022-06-04</time>
             </span>
 
           
@@ -325,7 +737,7 @@
 <p>参考namespace: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/9365405.html">linux namespace</a></p>
 </li>
 <li><p>cgroup</p>
-<p>参考cgroup: <a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">linux namespace</a></p>
+<p>参考cgroup: <a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">linux cgroup</a></p>
 </li>
 </ul>
 
@@ -619,297 +1031,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84/" class="post-title-link" itemprop="url">不同路径</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 20:15:11 / Modified: 20:24:20" itemprop="dateCreated datePublished" datetime="2022-06-03T20:15:11+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-paths/">不同路径</a></p>
-<p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
-<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。</p>
-<p>问总共有多少条不同的路径？</p>
-<p><img src="/2022/06/03/%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84/robot_maze.png" alt="robot_maze"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：m = 3, n = 7</span><br><span class="line">输出：28</span><br></pre></td></tr></table></figure>
-
-
-
-<p>思路1: 递归,  当前节点到终点的路径数等于往右走和往左右的路径和.</p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">        find(m, n, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n, <span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(x &gt;= m || y &gt;= n) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(x == m - <span class="number">1</span> &amp;&amp; y == n - <span class="number">1</span>) &#123;</span><br><span class="line">            max++;</span><br><span class="line">        &#125;</span><br><span class="line">        find(m, n, x + <span class="number">1</span>, y);</span><br><span class="line">        find(m, n, x, y + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>思路2: 思路1在leetcode中超时, 所以采用dp数组维护每个位置的路径数,终点位置只有一种.其余位置<code>dp[i][j] = dp[i+1][j] + dp[i][j+1]</code></p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> m - <span class="number">1</span>; row &gt;= <span class="number">0</span>; row--) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">column</span> <span class="operator">=</span> n - <span class="number">1</span>; column &gt;= <span class="number">0</span>; column--) &#123;</span><br><span class="line">                <span class="keyword">if</span>(row == m - <span class="number">1</span> &amp;&amp; column == n - <span class="number">1</span>) &#123;</span><br><span class="line">                    dp[row][column] = <span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">down</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">if</span>(row + <span class="number">1</span> &lt; m) &#123;</span><br><span class="line">                        down = dp[row+<span class="number">1</span>][column];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">if</span>(column + <span class="number">1</span> &lt; n) &#123;</span><br><span class="line">                        right = dp[row][column+<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                    dp[row][column] = down + right;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/" class="post-title-link" itemprop="url">删除排序链表中的重复元素</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 14:48:54 / Modified: 14:52:29" itemprop="dateCreated datePublished" datetime="2022-06-03T14:48:54+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list/">删除排序链表中的重复元素</a></p>
-<p>给定一个已排序的链表的头 <code>head</code> ， <em>删除所有重复的元素，使每个元素只出现一次</em> 。返回 <em>已排序的链表</em> 。</p>
-<p><img src="/2022/06/03/%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/list1.jpg" alt="list1"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1,1,2]</span><br><span class="line">输出：[1,2]</span><br></pre></td></tr></table></figure>
-
-
-
-<p>思路: 采用递归处理, 当前链表去重, 等于以当前节点作为根节点的子链表去重,再与当前节点去重选择最终返回的根节点</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode() &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int val) &#123; this.val = val; &#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int val, ListNode next) &#123; this.val = val; this.next = next; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">deleteDuplicates</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">next</span> <span class="operator">=</span> head.next;</span><br><span class="line">        <span class="keyword">if</span>(next == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果存在重复</span></span><br><span class="line">        <span class="keyword">if</span>(head.val == next.val) &#123;</span><br><span class="line">            <span class="comment">// 去重子链表</span></span><br><span class="line">            next.next = deleteDuplicates(next.next);</span><br><span class="line">            <span class="comment">// 如果去重后的子链表头与当前节点存在重复</span></span><br><span class="line">            <span class="keyword">if</span>(next.next != <span class="literal">null</span> &amp;&amp; next.next.val == next.val) &#123;</span><br><span class="line">                <span class="keyword">return</span> next.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> next;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            head.next = deleteDuplicates(next);</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">在排序数组中查找元素的第一个和最后一个位置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 12:21:57 / Modified: 12:26:14" itemprop="dateCreated datePublished" datetime="2022-06-03T12:21:57+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">在排序数组中查找元素的第一个和最后一个位置</a></p>
-<p>给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。</p>
-<p>如果数组中不存在目标值 target，返回 [-1, -1]。</p>
-<p>进阶：</p>
-<p>你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [5,7,7,8,8,10], target = 8</span><br><span class="line">输出：[3,4]</span><br></pre></td></tr></table></figure>
-
-
-
-<p>思路: 要求O(log n)时间复杂度. 采用二分查找即可. 先通过二分查找寻找target, 如果没有找到则返回<code>[-1, -1]</code>,否则根据找到的索引左右扩展知道不等于target为止. 返回左右拓展的最后位置即可</p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] searchRange(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">// 寻找target索引</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">pos</span> <span class="operator">=</span> midSearch(nums, target, <span class="number">0</span>, nums.length-<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 找不到</span></span><br><span class="line">        <span class="keyword">if</span>(pos == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> pos;</span><br><span class="line">        <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> pos;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">leftBound</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">rightBound</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// 左右扩展</span></span><br><span class="line">        <span class="keyword">while</span>(!leftBound || !rightBound) &#123;</span><br><span class="line">            <span class="keyword">if</span>(left &gt;= <span class="number">0</span> &amp;&amp; nums[left] == target) &#123;</span><br><span class="line">                left--;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                leftBound = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(right &lt; nums.length &amp;&amp; nums[right] == target) &#123;</span><br><span class="line">                right++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                rightBound = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;left+<span class="number">1</span>, right-<span class="number">1</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 二分查找</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">midSearch</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(start &gt; end) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (end - start) / <span class="number">2</span> + start;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target) &#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(nums[mid] &lt; target) &#123;</span><br><span class="line">            <span class="keyword">return</span> midSearch(nums, target, mid+<span class="number">1</span>, end);</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> midSearch(nums, target, start, mid-<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%90%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%90%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">最长重复子数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 10:39:22 / Modified: 12:07:27" itemprop="dateCreated datePublished" datetime="2022-06-03T10:39:22+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-length-of-repeated-subarray/">最长重复子数组</a></p>
-<p>给两个整数数组 <code>nums1</code> 和 <code>nums2</code> ，返回 <em>两个数组中 <strong>公共的</strong> 、长度最长的子数组的长度</em> </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,3,2,1], nums2 = [3,2,1,4,7]</span><br><span class="line">输出：3</span><br><span class="line">解释：长度最长的公共子数组是 [3,2,1] 。</span><br></pre></td></tr></table></figure>
-
-<p>思路：定义<code>dp[i][j]</code>数组为第一个数组<code>i</code>索引与第二个数组<code>j</code>索引结尾子数组最大公共长度。同时存在状态转移关系：</p>
-<p><code>dp[i][j] = dp[i-1][j-1]+1 when nums1[i] == nums2[j] and i != 0 and j != 0</code></p>
-<p><code>dp[i][j] = 1 when nums1[i] == nums2[j] and i==0 || j == 0</code></p>
-<p><code>dp[i][j] = 0 when nums1[i] != nums2[j] and i==0 || j == 0</code></p>
-<p>代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findLength</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l1</span> <span class="operator">=</span> nums1.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l2</span> <span class="operator">=</span> nums2.length;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[l1][l2];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; l1; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; l2; j++) &#123;</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">csame</span> <span class="operator">=</span> nums1[i] == nums2[j];</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">0</span> || j == <span class="number">0</span>) &#123;</span><br><span class="line">                    dp[i][j] = csame ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(csame) &#123;</span><br><span class="line">                        dp[i][j] = dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        dp[i][j] = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                max = Math.max(dp[i][j], max);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -975,14 +1100,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

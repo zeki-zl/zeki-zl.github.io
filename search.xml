@@ -4,6 +4,88 @@
   
     
     <entry>
+      <title>结构化,半结构化和非结构化数据</title>
+      <link href="/2022/06/04/%E7%BB%93%E6%9E%84%E5%8C%96-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E5%92%8C%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/"/>
+      <url>/2022/06/04/%E7%BB%93%E6%9E%84%E5%8C%96-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E5%92%8C%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/</url>
+      
+        <content type="html"><![CDATA[<p>转自<a href="https://cloud.tencent.com/developer/article/1351609">https://cloud.tencent.com/developer/article/1351609</a></p><h1 id="一、结构化数据"><a href="#一、结构化数据" class="headerlink" title="一、结构化数据"></a><strong>一、结构化数据</strong></h1><p>结构化的数据是指可以使用<a href="https://cloud.tencent.com/product/cdb-overview?from=10680">关系型数据库</a>表示和存储，表现为二维形式的数据。一般特点是：数据以行为单位，一行数据表示一个实体的信息，每一行数据的属性是相同的。举一个例子：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id      name            age     gender</span><br><span class="line"><span class="number">1</span>       <span class="title class_">Liu</span> <span class="title class_">Yi</span>          <span class="number">20</span>      male</span><br><span class="line"><span class="number">2</span>       <span class="title class_">Chen</span> <span class="title class_">Er</span>         <span class="number">35</span>      female</span><br><span class="line"><span class="number">3</span>       <span class="title class_">Zhang</span> <span class="title class_">San</span>       <span class="number">28</span>      male</span><br></pre></td></tr></table></figure><p>复制</p><p>所以，结构化的数据的存储和排列是很有规律的，这对查询和修改等操作很有帮助。</p><p>但是，它的扩展性不好。比如，如果字段不固定，利用关系型数据库也是比较困难的，有人会说，需要的时候加个字段就可以了，这样的方法也不是不可以，但在实际运用中每次都进行反复的表结构变更是非常痛苦的，这也容易导致后台接口从数据库取数据出错。你也可以预先设定大量的预备字段，但这样的话，时间一长很容易弄不清除字段和数据的对应状态，即哪个字段保存有哪些数据。</p><h1 id="二、半结构化数据"><a href="#二、半结构化数据" class="headerlink" title="二、半结构化数据"></a><strong>二、半结构化数据</strong></h1><p>半结构化数据是结构化数据的一种形式，它并不符合关系型数据库或其他数据表的形式关联起来的数据模型结构，但包含相关标记，用来分隔语义元素以及对记录和字段进行分层。因此，它也被称为自描述的结构。</p><p>半结构化数据，属于同一类实体可以有不同的属性，即使他们被组合在一起，这些属性的顺序并不重要。</p><p>常见的半结构数据有XML和JSON，对于对于两个XML文件，第一个可能有</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;person&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">name</span>&gt;</span>A<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">age</span>&gt;</span>13<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">gender</span>&gt;</span>female<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span></span><br><span class="line">&lt;/person&gt;</span><br></pre></td></tr></table></figure><p>复制</p><p>第二个可能为：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;person&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">name</span>&gt;</span>B<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">gender</span>&gt;</span>male<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span></span><br><span class="line">&lt;/person&gt;</span><br></pre></td></tr></table></figure><p>复制</p><p>从上面的例子中，属性的顺序是不重要的，不同的半结构化数据的属性的个数是不一定一样的。有些人说半结构化数据是以树或者图的数据结构存储的数据，怎么理解呢？上面的例子中，标签是树的根节点，和标签是子节点。通过这样的数据格式，可以自由地表达很多有用的信息，包括自我描述信息（元数据）。所以，半结构化数据的扩展性是很好的。</p><h1 id="三、非结构化数据"><a href="#三、非结构化数据" class="headerlink" title="三、非结构化数据"></a><strong>三、非结构化数据</strong></h1><p>非结构化数据是数据结构不规则或不完整，没有预定义的数据模型，不方便用数据库二维逻辑表来表现的数据。包括所有格式的办公文档、文本、图片、各类报表、图像和音频&#x2F;视频信息等等。</p><p>非结构化数据其格式非常多样，标准也是多样性的，而且在技术上非结构化信息比结构化信息更难标准化和理解。所以存储、检索、发布以及利用需要更加智能化的IT技术，比如海量存储、智能检索、知识挖掘、内容保护、信息的增值开发利用等。</p><h1 id="四、应用场景"><a href="#四、应用场景" class="headerlink" title="四、应用场景"></a><strong>四、应用场景</strong></h1><p>结构化数据，简单来说就是数据库。结合到典型场景中更容易理解，比如企业ERP、财务系统；医疗HIS数据库；教育一卡通；政府行政审批；其他核心数据库等。这些应用需要哪些存储方案呢？基本包括高速存储应用需求、数据备份需求、数据共享需求以及数据容灾需求。</p><p>非结构化数据，包括视频、音频、图片、图像、文档、文本等形式。具体到典型案例中，像是医疗影像系统、教育视频点播、视频监控、国土GIS、设计院、文件服务器（PDM&#x2F;FTP）、媒体资源管理等具体应用，这些行业对于存储需求包括数据存储、数据备份以及数据共享等。</p><p>半结构化数据，包括邮件、HTML、报表、资源库等等，典型场景如邮件系统、WEB集群、教学资源库、数据挖掘系统、档案系统等等。这些应用对于数据存储、数据备份、数据共享以及数据归档 等基本存储需求。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数据处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL命令explain</title>
+      <link href="/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/"/>
+      <url>/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/</url>
+      
+        <content type="html"><![CDATA[<p><code>explain</code>是MySQL查询优化的关键命令. 通过这个命令可以模拟优化器执行SQL查询语句, 分析执行结果可以优化查询语句以提升查询性能.</p><p>语句:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> xx <span class="keyword">where</span> yy <span class="operator">=</span> <span class="string">&#x27;zz&#x27;</span></span><br></pre></td></tr></table></figure><p>相应字段介绍:</p><ul><li><p>id : 语句中select查询子句的顺序</p></li><li><p>select_type : 查询类型</p><ul><li><p>SIMPLE : 简单查询, 不包含子查询与union查询</p></li><li><p>PRIMARY : 主查询, 存在子查询时,外层查询被标记为主查询</p></li><li><p>SUBQUERY : 子查询</p></li><li><p>UNION : 在union命令后的语句为此类型</p></li><li><p>UNION RESULT : 最终UNION结果会表示为此类型</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    id  select_type   table       partitions  type    possible_keys        key      </span><br><span class="line">------  ------------  ----------  ----------  ------  -------------------  ------- </span><br><span class="line">     1  PRIMARY       student     (NULL)      const   PRIMARY,id_name_age  PRIMARY  </span><br><span class="line">     2  UNION         student     (NULL)      const   PRIMARY,id_name_age  PRIMARY </span><br><span class="line">(NULL)  UNION RESULT  &lt;union1,2&gt;  (NULL)      ALL     (NULL)               (NULL)   </span><br></pre></td></tr></table></figure></li><li><p>DERIVED : FROM列表中包含子查询的语句被标记为此类型, MySQL会递归执行这些子查询放入临时表(MySQL 5.7+ 优化后使用derived_merge加速查询效率. 无此状态)</p></li></ul></li><li><p>table : 访问的表,结合id可以看到执行过程中表查询顺序</p></li><li><p>partitions : 匹配分区</p></li><li><p>type : 访问类型</p><p>10个状态,从好到差排序:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NULL &gt; system &gt; const &gt; eq_ref &gt; ref &gt; ref_or_null &gt; index_merge &gt; range &gt; index &gt; ALL</span><br></pre></td></tr></table></figure><ul><li><p>NULL : 无需访问表和索引的查询. 例: </p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="number">5</span><span class="operator">*</span><span class="number">7</span>  <span class="comment">-- 不访问表,计算数值</span></span><br><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="built_in">MAX</span>(id) <span class="keyword">FROM</span> student  <span class="comment">-- 查询最大索引,直接取索引树叶子结点获取 </span></span><br></pre></td></tr></table></figure></li><li><p>SYSTEM : 表只有一行记录（等于系统表），这是<code>const</code>类型的特列，平时不大会出现，可以忽略。</p></li><li><p>const : 一次索引查找到,主键索引或唯一索引查询时</p></li><li><p>eq_ref : 联表join查询时, 按联表的主键或唯一键查询</p></li><li><p>ref : 联表join查询时, 按联表的索引查询, 匹配多行不唯一</p></li><li><p>ref_or_null : 类似ref, 可以搜索值为NULL的行</p></li><li><p>index_merge : 查询了多个索引,然后取交集并集. 常见于在<code>and</code>, ‘or’的条件下使用了不同的索引. 大部分性能不如<code>range</code></p></li><li><p>range : 索引范围查询,常见于 &lt;&gt;, &gt;, &gt;&#x3D;, &lt;, &lt;&#x3D;, IS NULL, &lt;&#x3D;&gt;, BETWEEN, IN()或者like等运算符的查询中</p></li><li><p>ALL : 全表扫描, 务必优化!!!</p></li></ul></li><li><p>possible_keys : 可能使用的索引</p></li><li><p>key : 实际使用的索引, 为null时表示没使用索引</p></li><li><p>key_len : 索引中使用的字节数</p></li><li><p>ref : 索引的哪一列被使用</p></li><li><p>rows : 根据表统计信息以及索引选用情况,估算查找所需记录需要读取的行数. 数值越小效率越高</p></li><li><p>filtere : 查询数据占表的百分比. 类似rows,数值越小效率越高</p></li><li><p>extra : 其他重要的额外信息</p><ul><li>Using filesort : SQL需要排序, 但是优化器找不到可以使用的索引, 此时使用外部排序(多次磁盘IO访问,效率极低)</li><li>Using tempporary : 查询结果排序时, 使用临时表协助. 效率低于外部排序.</li><li>Using index : 使用了索引 👍🏻👍🏻👍🏻</li><li>Using where : 使用了where</li><li>Using join buffer : 多表join使用了连接缓存</li><li>impossible where : 筛选条件啥也没找到</li><li>distinct : 优化distinct操作, 找到匹配后立即停止同样值的动作</li></ul></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Sql 面试</title>
+      <link href="/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/"/>
+      <url>/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<ol><li><p>having</p><p>having常用语分组后的条件过滤常用于<code>group by xx </code>后</p><p>例子:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name, aggregate_function(column_name)</span><br><span class="line"><span class="keyword">FROM</span> table_name</span><br><span class="line"><span class="keyword">WHERE</span> column_name operator <span class="keyword">value</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> column_name</span><br><span class="line"><span class="keyword">HAVING</span> aggregate_function(column_name) operator <span class="keyword">value</span></span><br></pre></td></tr></table></figure><p>注意事项:</p><ul><li>having 子句内容需要存在select列表中</li><li>having限制的是组, where限制的是行</li><li>where, group by, having执行顺序: where过滤行 -&gt; group by对数据分组,并执行聚集函数 -&gt; having过滤符合条件的组</li></ul></li><li><p><code>select a.xx,b.xx from a,b where a.x = b.x</code>与<code>select a.xx,b.xx from a inner join b on a.x = b.x</code> 区别</p></li><li><p>union与union all</p><p>union会去重, union all 直接合并</p></li><li><p>row_number()</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--在test表中根据name分组，age进行排序</span></span><br><span class="line"><span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">age <span class="keyword">desc</span>) <span class="keyword">from</span> test;</span><br></pre></td></tr></table></figure><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--去掉重复的记录</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>( <span class="keyword">partition</span> <span class="keyword">by</span> name </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> age <span class="keyword">desc</span>) rn <span class="keyword">from</span> test )<span class="keyword">where</span> rn<span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure><p>可以对结果集进行分组排序并生成一个row_number序列</p></li><li><p>DDL, DML与DCL</p><ul><li>DDL: Data Define Language, 数据定义语句. CREATE, ALTER, DROP等</li><li>DML: Data Manage Language, 数据管理语句. SELECT, UPDATE, INSERT, DELETE</li><li>DCL: Data Control Language, 数据控制语句. GRANT, DENY, REVOKE等个更新用户角色的命令</li></ul></li><li><p>exists 与 in</p><ul><li><code>in</code> 仅执行一次(先查询子查询的表，然后将内表和外表做一个笛卡尔积，然后按照条件进行筛选), <code>exists</code>执行多次(外表行数)</li><li>外层查询小于子查询使用<code>exists</code>; 外层查询大于子查询使用<code>in</code></li><li><code>in</code> 与<code>exists</code>都会使用索引</li><li><code>not in</code> 内外表均全局扫描,无法使用索引, <code>not exists</code>可以走索引</li><li><code>in</code>的遍历实在内存中,速度较快. <code>exists</code>多次查询数据库.</li></ul></li><li><p>索引使用注意事项</p><ul><li>尽量全值匹配</li><li>模糊查询使用最左匹配原则</li><li>全模糊查询使用覆盖索引方式也会走索引</li><li>不在索引列上进行操作</li><li>联合索引需要严格顺序匹配</li><li>尽量使用覆盖索引</li><li>mysql在使用<code>!=</code>与<code>&lt;&gt;</code>时索引失效</li><li>字符串不加单引号导致索引失效</li><li><code>or</code>使得索引失效</li></ul></li><li><p>索引创建</p><ul><li>频繁查询的字段应创建索引</li><li>与其他表关联查询的字段创建索引</li><li>频繁更新的字段不适合作为索引</li></ul></li><li><p>sql书写题目</p><p>参考: <a href="https://blog.csdn.net/jason_wang1989/article/details/115278576">经典题目</a></p></li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+            <tag> sql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Star 法则</title>
+      <link href="/2022/06/04/Star-%E6%B3%95%E5%88%99/"/>
+      <url>/2022/06/04/Star-%E6%B3%95%E5%88%99/</url>
+      
+        <content type="html"><![CDATA[<p>摘自百度百科:</p><p>STAR法则,即为Situation Task Action Result的缩写，具体含义是:</p><ul><li><p>Situation: 事情是在什么情况下发生</p></li><li><p>Task: 任务</p></li><li><p>Action: 针对这样的情况分析，你采用了什么行动方式</p></li><li><p>Result: 结果怎样，在这样的情况下你学习到了什么</p></li></ul><p>简而言之，STAR法则是一个清晰、条理的模板。合理熟练运用此法则，可以轻松的对面试官描述事物的逻辑方式，表现出自己分析阐述问题的清晰性、条理性和逻辑性。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>分布式概念</title>
       <link href="/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/"/>
       <url>/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/</url>
@@ -29,7 +111,7 @@
       <link href="/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/"/>
       <url>/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/</url>
       
-        <content type="html"><![CDATA[<p>Docker底层通过<code>namespace</code>和<code>cgroup</code>实现. 通过<code>namespace</code>实现资源隔离. 通过cgroup实现资源限制.</p><h1 id="网络原理"><a href="#网络原理" class="headerlink" title="网络原理"></a>网络原理</h1><ul><li><p>Bridge(桥接)</p><p>容器的默认网络模式，docker在安装时会创建一个名为docker0的Linux bridge，在不指定–network的情况下，创建的容器都会默认挂到docker0上面。bridge模式为容器创建独立的网络栈，保证容器内的进程使用独立的网络环境，使容器之间，容器和docker host之间实现网络隔离。</p></li><li><p>Host</p><p>使用宿主机的网卡进行网络访问, 无需转发,网络性能比较好</p></li><li><p>Container</p><p>A容器使用B容器的共享网络(??)</p></li><li><p>None</p><p>这样创建出来的容器完全没有网络</p></li><li><p>User-defined</p><p>用户自定义模式主要可选的有三种网络驱动：bridge、overlay、macvlan。bridge驱动用于创建类似于前面提到的bridge网络;overlay和macvlan驱动用于创建跨主机的网络、IP等。</p></li></ul><p>linux网络基础参考:<a href="https://www.cnblogs.com/jmilkfan-fanguiju/p/12789756.html">虚拟网络</a></p><h1 id="资源隔离"><a href="#资源隔离" class="headerlink" title="资源隔离"></a>资源隔离</h1><ul><li><p>namespace</p><p>参考namespace: <a href="https://www.cnblogs.com/sparkdev/p/9365405.html">linux namespace</a></p></li><li><p>cgroup</p><p>参考cgroup: <a href="https://tech.meituan.com/2015/03/31/cgroups.html">linux namespace</a></p></li></ul>]]></content>
+        <content type="html"><![CDATA[<p>Docker底层通过<code>namespace</code>和<code>cgroup</code>实现. 通过<code>namespace</code>实现资源隔离. 通过cgroup实现资源限制.</p><h1 id="网络原理"><a href="#网络原理" class="headerlink" title="网络原理"></a>网络原理</h1><ul><li><p>Bridge(桥接)</p><p>容器的默认网络模式，docker在安装时会创建一个名为docker0的Linux bridge，在不指定–network的情况下，创建的容器都会默认挂到docker0上面。bridge模式为容器创建独立的网络栈，保证容器内的进程使用独立的网络环境，使容器之间，容器和docker host之间实现网络隔离。</p></li><li><p>Host</p><p>使用宿主机的网卡进行网络访问, 无需转发,网络性能比较好</p></li><li><p>Container</p><p>A容器使用B容器的共享网络(??)</p></li><li><p>None</p><p>这样创建出来的容器完全没有网络</p></li><li><p>User-defined</p><p>用户自定义模式主要可选的有三种网络驱动：bridge、overlay、macvlan。bridge驱动用于创建类似于前面提到的bridge网络;overlay和macvlan驱动用于创建跨主机的网络、IP等。</p></li></ul><p>linux网络基础参考:<a href="https://www.cnblogs.com/jmilkfan-fanguiju/p/12789756.html">虚拟网络</a></p><h1 id="资源隔离"><a href="#资源隔离" class="headerlink" title="资源隔离"></a>资源隔离</h1><ul><li><p>namespace</p><p>参考namespace: <a href="https://www.cnblogs.com/sparkdev/p/9365405.html">linux namespace</a></p></li><li><p>cgroup</p><p>参考cgroup: <a href="https://tech.meituan.com/2015/03/31/cgroups.html">linux cgroup</a></p></li></ul>]]></content>
       
       
       
@@ -119,13 +201,13 @@
       
         <tags>
             
+            <tag> 优化 </tag>
+            
             <tag> leetcode </tag>
             
             <tag> 算法 </tag>
             
             <tag> hash </tag>
-            
-            <tag> 优化 </tag>
             
         </tags>
       

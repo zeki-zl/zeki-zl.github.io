@@ -183,6 +183,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" class="post-title-link" itemprop="url">验证二叉搜索树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-02 10:00:15 / Modified: 10:26:45" itemprop="dateCreated datePublished" datetime="2022-06-02T10:00:15+08:00">2022-06-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/validate-binary-search-tree/">验证二叉搜索树</a></p>
+<p>给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。</p>
+<p>有效 二叉搜索树定义如下：</p>
+<p>节点的左子树只包含 小于 当前节点的数。<br>节点的右子树只包含 大于 当前节点的数。<br>所有左子树和右子树自身必须也是二叉搜索树。</p>
+<p><img src="/2022/06/02/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/tree1.jpg" alt="tree1"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [2,1,3]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：判断二叉搜索树合法，需要根节点判断左右子树最大最小节点满足题目关系。可以维护一个子节点值范围（递归子节点时维护并判断当前节点合法性），通过此范围与根节点值判断。从而判断该节点是否合法。</p>
+<p><strong>递归思路：先自顶向下分析，然后分析底层边界逻辑反向验证，然后开始实现。</strong></p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val) &#123; this.val = val; &#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val, TreeNode left, TreeNode right) &#123;</span></span><br><span class="line"><span class="comment"> *         this.val = val;</span></span><br><span class="line"><span class="comment"> *         this.left = left;</span></span><br><span class="line"><span class="comment"> *         this.right = right;</span></span><br><span class="line"><span class="comment"> *     &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Integer[] vals = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">return</span> isValid(root, vals);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * root：要判断合法的子树根节点</span></span><br><span class="line"><span class="comment">     * vals：该子树值范围</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(TreeNode root, Integer[] vals)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">null</span>) &#123; </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对于叶子节点还是其他都出实话当前值作为范围</span></span><br><span class="line">        vals[<span class="number">0</span>] = root.val;</span><br><span class="line">        vals[<span class="number">1</span>] = root.val;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(root.left != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 此处用一个新的对象，防止污染当前节点范围</span></span><br><span class="line">            Integer[] tval = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">            <span class="type">boolean</span> <span class="variable">left</span> <span class="operator">=</span> isValid(root.left, tval);</span><br><span class="line">            <span class="keyword">if</span>(!left) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(root.val &lt;= tval[<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(tval[<span class="number">1</span>] &gt;= root.val)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 以左子树范围更新当前节点范围，如果上面条件通过则树合法，以子树范围更新可以扩大当前子树值范围</span></span><br><span class="line">            vals[<span class="number">0</span>] = tval[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 同上</span></span><br><span class="line">        <span class="keyword">if</span>(root.right != <span class="literal">null</span>)&#123;</span><br><span class="line">            Integer[] tval = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">            <span class="type">boolean</span> <span class="variable">right</span> <span class="operator">=</span> isValid(root.right, tval);</span><br><span class="line">            <span class="keyword">if</span>(!right) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(root.val &gt;= tval[<span class="number">0</span>]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(tval[<span class="number">0</span>] &lt;= root.val)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            vals[<span class="number">1</span>] = tval[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E6%9C%80%E5%B0%8F%E8%A6%86%E7%9B%96%E5%AD%90%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E6%9C%80%E5%B0%8F%E8%A6%86%E7%9B%96%E5%AD%90%E4%B8%B2/" class="post-title-link" itemprop="url">最小覆盖子串</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:26:57 / Modified: 21:57:08" itemprop="dateCreated datePublished" datetime="2022-06-01T21:26:57+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-substring/">最小覆盖字串</a></p>
+<p>给你一个字符串 <code>s</code> 、一个字符串 <code>t</code> 。返回 <code>s</code> 中涵盖 <code>t</code> 所有字符的最小子串。如果 <code>s</code> 中不存在涵盖 <code>t</code> 所有字符的子串，则返回空字符串 <code>&quot;&quot;</code> 。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>对于 <code>t</code> 中重复字符，我们寻找的子字符串中该字符数量必须不少于 <code>t</code> 中该字符数量。</li>
+<li>如果 <code>s</code> 中存在这样的子串，我们保证它是唯一的答案。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;ADOBECODEBANC&quot;, t = &quot;ABC&quot;</span><br><span class="line">输出：&quot;BANC&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：采用滑动窗口，通过hash <code>t</code>字符串每个字符的频率，同样在滑动窗口调整时维护<code>s</code>的字符频率hash。关于窗口的调整策略：先调整右边界，直到所有节点都已包含，可以更新最小长度。然后调整左边界，如果移动后依旧包含则更新最小长度。如果不包含调整右边界直至继续包含目标串。按照这个策略调整窗口并更新<code>s</code>的hash。右边界在移动的时候如果能保持hash数量大于t串hash对应数量则表示包含。另外全部包含需要一个额外变量存储length，通过每一次窗口调整更新该变量，如果该变量长度等于<code>t</code>串长度则表示已全包含（更新策略，如果右边界判断hash数量大于t串hash对应数量，则length + t中该字符数量，如果左边界判断hash数量小于t串hash对应数量，则length - 1）。</p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 待补充。。。</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/" class="post-title-link" itemprop="url">最长有效括号</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:11:25 / Modified: 21:27:56" itemprop="dateCreated datePublished" datetime="2022-06-01T21:11:25+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-valid-parentheses/">最长有效括号</a></p>
+<p>给你一个只包含 <code>&#39;(&#39;</code> 和 <code>&#39;)&#39;</code> 的字符串，找出最长有效（格式正确且连续）括号子串的长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;(()&quot;</span><br><span class="line">输出：2</span><br><span class="line">解释：最长有效括号子串是 &quot;()&quot;</span><br><span class="line"></span><br><span class="line">输入：s = &quot;)()())&quot;</span><br><span class="line">输出：4</span><br><span class="line">解释：最长有效括号子串是 &quot;()()&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：</p>
+<ol>
+<li><p>暴力</p>
+<p>遍历数组，以每一个索引开始寻找最长的合法括号串。然后找出最大的长度返回</p>
+</li>
+<li><p>dp</p>
+<p>定义：dp[i]：以索引<code>i</code>结尾的元素的最长合法括号串</p>
+<p>存在以下递推关系：</p>
+<p>dp[i] &#x3D; dp[i-2] + 2  &#x2F;&#x2F; 如果str[i] 与 str[i - 1] 为：<code>()</code></p>
+<p>dp[i] &#x3D; dp[i-1] + 2 + dp[i - 2 - dp[i-1]]  &#x2F;&#x2F; 如果str[i] &#x3D; <code>&#39;)&#39;</code> &amp;&amp; str[i - dp[i-1] - 1] &#x3D; <code>&#39;(&#39;</code></p>
+</li>
+</ol>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestValidParentheses</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="type">char</span> sc[] = s.toCharArray();</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> sc.length;</span><br><span class="line">        <span class="type">int</span> dp[] = <span class="keyword">new</span> <span class="title class_">int</span>[length];</span><br><span class="line">        <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">            <span class="comment">// 状况1</span></span><br><span class="line">            <span class="keyword">if</span>(sc[i]==<span class="string">&#x27;)&#x27;</span>&amp;&amp;sc[i-<span class="number">1</span>]==<span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">pos</span> <span class="operator">=</span> i-<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(pos&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                    dp[i] = <span class="number">2</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">// 更新dp</span></span><br><span class="line">                    dp[i] = dp[pos] + <span class="number">2</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 状况2</span></span><br><span class="line">            <span class="keyword">if</span>(sc[i]==<span class="string">&#x27;)&#x27;</span>&amp;&amp;sc[i-<span class="number">1</span>]==<span class="string">&#x27;)&#x27;</span>)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">pos</span> <span class="operator">=</span> i-dp[i-<span class="number">1</span>]-<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(pos&gt;=<span class="number">0</span>&amp;&amp;sc[pos]==<span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                    <span class="comment">// 更新dp</span></span><br><span class="line">                    dp[i] = dp[i-<span class="number">1</span>] + <span class="number">2</span>;</span><br><span class="line">                    <span class="comment">// 加前面的 重要：((()))(()), 如果此时索引为9，dp[i-1] = 2 (), 前面需要加的就是((()))</span></span><br><span class="line">                    <span class="keyword">if</span>(dp[i-<span class="number">1</span>]!=<span class="number">0</span>&amp;&amp;pos-<span class="number">1</span>&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">                        dp[i] += dp[pos-<span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max,dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/" class="post-title-link" itemprop="url">零钱兑换</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 21:01:29 / Modified: 21:27:56" itemprop="dateCreated datePublished" datetime="2022-06-01T21:01:29+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/coin-change/">零钱兑换</a></p>
+<p>给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。</p>
+<p>计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。</p>
+<p>你可以认为每种硬币的数量是无限的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：coins = [1, 2, 5], amount = 11</span><br><span class="line">输出：3 </span><br><span class="line">解释：11 = 5 + 5 + 1</span><br></pre></td></tr></table></figure>
+
+<p>思路：dp[amount]，计算每个amount的关于提供硬币的所需硬币数量：针对提供的硬币数组，计算从0～amount的dp数组。存在这样的关系：</p>
+<ul>
+<li>需要计算每一个金额最小的硬币数</li>
+<li>遍历每一个硬币，如果可以大于要组成的amount，直接continue（无法通过这个硬币组成该金额）</li>
+<li>小于amount，组成amount的硬币个数为：dp[amount - coinAmount] + 1（需要注意，如果dp[amount - coinAmount] 为-1，即无法组成该amount硬币组合，直接continue）</li>
+<li>对于每种组合，求最小的进行赋值：dp[amount] &#x3D; min(dp[amount - coinAmount] ) + 1</li>
+</ul>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">coinChange</span><span class="params">(<span class="type">int</span>[] coins, <span class="type">int</span> amount)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">am</span> <span class="operator">=</span> <span class="number">1</span>; am &lt;= amount; am++) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> coin : coins) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">other</span> <span class="operator">=</span> am - coin;</span><br><span class="line">                <span class="keyword">if</span>(other &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 如果硬币面值过大，直接丢弃这种组合方式</span></span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">// 表示没有这种组合方式，丢弃</span></span><br><span class="line">                    <span class="keyword">if</span>(dp[other] == -<span class="number">1</span>) &#123;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 首次直接赋值，后续需要取较小值更新</span></span><br><span class="line">                    count = count == <span class="literal">null</span> ? dp[other] + <span class="number">1</span> : Math.min(count,dp[other] + <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[am] = count == <span class="literal">null</span> ? -<span class="number">1</span> : count;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[amount];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/RAFT%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -600,337 +898,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="post-title-link" itemprop="url">线程池</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 11:05:43 / Modified: 11:37:34" itemprop="dateCreated datePublished" datetime="2022-05-31T11:05:43+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="创建方式"><a href="#创建方式" class="headerlink" title="创建方式"></a>创建方式</h1><p>ThreadPoolExecutor创建，了解线程创建参数避免资源耗尽。</p>
-<h1 id="核心参数"><a href="#核心参数" class="headerlink" title="核心参数"></a>核心参数</h1><ul>
-<li>核心线程数</li>
-<li>最大线程数</li>
-<li>线程空闲时间</li>
-<li>阻塞队列<ul>
-<li><code>ArrayBlockingQueue</code></li>
-<li><code>LinkedBlockingQuewue</code></li>
-<li><code>PriorityBlockingQueue</code></li>
-</ul>
-</li>
-<li>拒绝策略<ul>
-<li>丢弃任务并抛异常</li>
-<li>直接丢掉新任务</li>
-<li>丢掉队列中最早的任务</li>
-<li>提交任务的线程执行该任务</li>
-</ul>
-</li>
-</ul>
-<h1 id="任务提交执行流程"><a href="#任务提交执行流程" class="headerlink" title="任务提交执行流程"></a>任务提交执行流程</h1><ol>
-<li>提交任务</li>
-<li>判断当前线程数是否小雨核心线程，如果小于则创建核心线程执行</li>
-<li>否则判断阻塞队列是否已满，如果已满执行4，否则5</li>
-<li>判断当前线程数是否达到最大线程数，如果达到则触发拒绝策略，否则创建新线程执行</li>
-<li>加入阻塞队列即可</li>
-</ol>
-<h1 id="参数设计"><a href="#参数设计" class="headerlink" title="参数设计"></a>参数设计</h1><ol>
-<li><p>根据任务类型设计：</p>
-<p><strong>CPU密集型</strong>：与CPU核心数1～2倍。（不设置过多是CPU已经占用很高，避免无意义的上下文切换）</p>
-<p><strong>IO密集型</strong>：采用《Java并发编程实战》的作者 Brain Goetz 推荐的计算方法：<strong>线程数 &#x3D; CPU 核心数 *（1+平均等待时间&#x2F;平均工作时间）</strong></p>
-</li>
-<li><p>压测确定</p>
-<p>为了更准确的参数配置，可以通过压测来确定服务的最佳线程数量。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AQS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/AQS/" class="post-title-link" itemprop="url">AQS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 09:59:15 / Modified: 16:17:28" itemprop="dateCreated datePublished" datetime="2022-05-31T09:59:15+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类型state和一个双向队列。封装了线程锁请求入FIFO双向队列入队出队以及线程挂起唤醒等过程，实现线程安全。</p>
-<h1 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a><strong>两种模式</strong></h1><p>独占：State作为一个独占资源</p>
-<p>共享：State的32位拆分为多个资源。</p>
-<h1 id="公平非公平"><a href="#公平非公平" class="headerlink" title="公平非公平"></a><strong>公平非公平</strong></h1><p>公平锁：通过FIFO队列，新锁请求放入队尾</p>
-<p>非公平锁：锁请求先尝试获取锁，获取失败再入队列</p>
-<h1 id="加锁执行流程（独占非公平锁为例）"><a href="#加锁执行流程（独占非公平锁为例）" class="headerlink" title="加锁执行流程（独占非公平锁为例）"></a><strong>加锁执行流程</strong>（独占非公平锁为例）</h1><ul>
-<li>调用<code>lock()</code>方法</li>
-<li>CAS尝试修改State获取锁</li>
-<li>获取锁成功</li>
-<li>获取失败，加入锁队列，前驱节点设置为<code>Signal</code>状态（有后继节点需要唤醒），挂起当前线程</li>
-<li>等待前驱节点获取锁唤醒执行后，唤醒后继线程获取锁继续执行</li>
-</ul>
-<h1 id="解锁执行流程"><a href="#解锁执行流程" class="headerlink" title="解锁执行流程"></a><strong>解锁执行流程</strong></h1><ul>
-<li>调用<code>unlock()</code>方法</li>
-<li>CAS尝试修改State</li>
-<li>修改成功释放锁</li>
-<li>唤醒下一个节点</li>
-</ul>
-<h1 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"><span class="type">Condition</span> <span class="variable">condition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line"><span class="comment">// await</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.await();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// lock</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  lock.lock();</span><br><span class="line">  condition.signal();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Condition内部维护条件队列（单向链表）。当调用<code>awit()</code>时，加入条件队列中。调用<code>signal()</code>时将头节点转移到AQS队列尾部，等待唤醒执行。<code>signalAll()</code>会将所有条件队列的节点计入AQS队列。</p>
-<h1 id="Synchronized-VS-AQS"><a href="#Synchronized-VS-AQS" class="headerlink" title="Synchronized VS AQS"></a>Synchronized VS AQS</h1><ul>
-<li>Synchronized 无需手动解锁，AQS需要</li>
-<li>Synchronized膨胀为重量级锁后无法回退，AQS会自适应调整</li>
-<li>Synchronized 的wait&#x2F;notifyAll没有AQS Condition灵活</li>
-<li>AQS可中断锁</li>
-<li>AQS可以实现公平锁</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/Synchronized/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/Synchronized/" class="post-title-link" itemprop="url">Synchronized</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 09:12:49 / Modified: 09:58:59" itemprop="dateCreated datePublished" datetime="2022-05-31T09:12:49+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Synchronized是Java的一个关键字，通过它可以实现线程安全。</p>
-<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ol>
-<li><p>修饰实例方法</p>
-<p>将实例作为锁对象</p>
-</li>
-<li><p>修饰静态方法与静态代码块</p>
-<p>将Class对象作为锁对象</p>
-</li>
-<li><p>自定义锁对象</p>
-</li>
-</ol>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>编译过程中会生成<code>monitorenter</code>与<code>monitorexit</code>字节码指令。锁信息会记录在锁对象的对象头中的Mark Word中</p>
-<h1 id="锁升级过程"><a href="#锁升级过程" class="headerlink" title="锁升级过程"></a>锁升级过程</h1><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41860497/article/details/125010798#:~:text=%E5%81%8F%E5%90%91%E9%94%81%E6%98%AF%E6%8C%87%E5%BD%93%E4%B8%80%E6%AE%B5%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E4%B8%80%E7%9B%B4%E8%A2%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%89%80%E8%AE%BF%E9%97%AE%E6%97%B6%EF%BC%8C%E5%8D%B3%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AB%9E%E4%BA%89%E6%97%B6%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%A5%E7%BA%BF%E7%A8%8B%E5%9C%A8%E5%90%8E%E7%BB%AD%E8%AE%BF%E9%97%AE%E6%97%B6%E4%BE%BF%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%8E%B7%E5%BE%97%E9%94%81%EF%BC%8C%E4%BB%8E%E8%80%8C%E9%99%8D%E4%BD%8E%E8%8E%B7%E5%8F%96%E9%94%81%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%B6%88%E8%80%97%EF%BC%8C%E5%8D%B3%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E3%80%82%20%E5%BD%93%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%AE%BF%E9%97%AE%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E5%B9%B6%E8%8E%B7%E5%8F%96%E9%94%81%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%9C%A8%20Mark%20Word,%E9%87%8C%E5%AD%98%E5%82%A8%E9%94%81%E5%81%8F%E5%90%91%E7%9A%84%20%E7%BA%BF%E7%A8%8B%20ID%20%E3%80%82">锁升级过程</a></p>
-<p>最初Synchronized是采用重量级锁，重量级锁存在内核态与用户态的切换，存在性能损耗。于是后续进行了相关优化：锁升级</p>
-<p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
-<p>偏向锁：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程是不会主动释放偏向锁的。线程尝试竞争时，偏向锁等待全局安全点判断是否有竞争恢复到轻量级锁或无锁状态。<strong>偏向锁适用于同一个线程多次获取锁的情况</strong>。 <strong>缺点：竞争激烈情况下，存在锁撤销的开销，此时可以关闭偏向锁</strong></p>
-<p>轻量级锁：<strong>适用于多个线程交替获取锁，很少发生竞争</strong>， <strong>缺点：消耗CPU</strong></p>
-<p>重量级锁：<strong>系统中存在大量的线程同时尝试获取锁，高并发场景</strong>，<strong>缺点：线程阻塞唤醒，频繁切换上下文性能损耗</strong></p>
-<p>详细过程：</p>
-<ol>
-<li>尝试获取锁的线程，检查锁对象头中Mark Word记录的线程ID。如果与当前线程ID相同，表示已获取锁直接执行</li>
-<li>如果发现与当前线程不一致，偏向锁撤销升级为轻量级锁。拷贝Mark Word到栈帧，尝试CAS自旋修改Mark Word指向栈帧，修改成功则获得锁，否则在多次（15次）自旋失败后膨胀为重量级锁</li>
-<li>此时存在大量竞争，未保证线程安全并且降低自旋导致的cpu busy。重量级锁接管，对于未获取锁的线程进行阻塞。等待锁释放操作系统调度。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/31/AtomInteger%E4%B8%8ELongAdder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/31/AtomInteger%E4%B8%8ELongAdder/" class="post-title-link" itemprop="url">AtomInteger与LongAdder</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-31 08:59:49 / Modified: 09:12:09" itemprop="dateCreated datePublished" datetime="2022-05-31T08:59:49+08:00">2022-05-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>Compare And Swap：通过原子的进行比较交换操作保证数据安全。</p>
-<p>具体流程：每次更新前先判断当前值是否相等，如果相等就进行替换。否则自旋等待锁释放。</p>
-<p>存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁</p>
-<p>如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据</p>
-<h1 id="AtomInteger"><a href="#AtomInteger" class="headerlink" title="AtomInteger"></a>AtomInteger</h1><p>底层通过CAS，能够原子的进行累加，保证线程安全。</p>
-<p>缺点：只有一个共享资源，高并发下大部分线程自旋等待。性能不佳</p>
-<p>改进：使用<code>LongAdder</code></p>
-<h1 id="LongAdder"><a href="#LongAdder" class="headerlink" title="LongAdder"></a>LongAdder</h1><p>底层同样采用CAS，但是内部类似分段锁机制通过一个Cell数据将资源划分开，降低失败次数并减小自旋性能损失。所以在高并发情况下推荐使用<code>LongAdder</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -996,14 +967,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
