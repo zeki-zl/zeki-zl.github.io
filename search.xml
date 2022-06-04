@@ -4,6 +4,48 @@
   
     
     <entry>
+      <title>分布式概念</title>
+      <link href="/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/"/>
+      <url>/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>事务</p><p>事务是由一组操作构成的可靠的独立的工作单元，事务具备ACID的特性，即原子性、一致性、隔离性和持久性。</p></li><li><p>本地事务</p><p>事务由资源管理器本地管理时被称作本地事务。本地事务的优点就是支持严格的ACID特性，高效，可靠，状态可以只在资源管理器中维护，而且应用编程模型简单。但是本地事务不具备分布式事务的处理能力，隔离的最小单位受限于资源管理器。</p></li><li><p>分布式事务</p><p>当事务由全局事务管理器进行全局管理时成为全局事务，事务管理器负责管理全局的事务状态和参与的资源，协同资源的一致提交回滚。</p></li><li><p>两阶段提交</p><p>参考: <a href="https://www.jianshu.com/p/1aa944f44b7b">Two-phase Commit</a></p></li><li><p>BASE理论</p><p>BA(Basic Available) 基本可用, S(Soft) 柔性状态,允许短时间不同步,E(Eventually) 最终一致性</p></li><li><p>CAP定理</p><p>C(Consistency) 一致性, A(Availability) 可用性, P(Partition tolerance) 分区容错性. 分布式场景下只能同时满足两种. 常用的分布式实现: CP (满足一致性和分区容错性, 会存在短暂不可用状态), AP(满足可用性和分区容错性, 但不是强一致).</p></li></ul><p>参考文章: <a href="https://www.cnblogs.com/crazymakercircle/p/14375424.html">分布式事务整理</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 分布式 </tag>
+            
+            <tag> CAP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Docker 网络原理与资源隔离</title>
+      <link href="/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/"/>
+      <url>/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/</url>
+      
+        <content type="html"><![CDATA[<p>Docker底层通过<code>namespace</code>和<code>cgroup</code>实现. 通过<code>namespace</code>实现资源隔离. 通过cgroup实现资源限制.</p><h1 id="网络原理"><a href="#网络原理" class="headerlink" title="网络原理"></a>网络原理</h1><ul><li><p>Bridge(桥接)</p><p>容器的默认网络模式，docker在安装时会创建一个名为docker0的Linux bridge，在不指定–network的情况下，创建的容器都会默认挂到docker0上面。bridge模式为容器创建独立的网络栈，保证容器内的进程使用独立的网络环境，使容器之间，容器和docker host之间实现网络隔离。</p></li><li><p>Host</p><p>使用宿主机的网卡进行网络访问, 无需转发,网络性能比较好</p></li><li><p>Container</p><p>A容器使用B容器的共享网络(??)</p></li><li><p>None</p><p>这样创建出来的容器完全没有网络</p></li><li><p>User-defined</p><p>用户自定义模式主要可选的有三种网络驱动：bridge、overlay、macvlan。bridge驱动用于创建类似于前面提到的bridge网络;overlay和macvlan驱动用于创建跨主机的网络、IP等。</p></li></ul><p>linux网络基础参考:<a href="https://www.cnblogs.com/jmilkfan-fanguiju/p/12789756.html">虚拟网络</a></p><h1 id="资源隔离"><a href="#资源隔离" class="headerlink" title="资源隔离"></a>资源隔离</h1><ul><li><p>namespace</p><p>参考namespace: <a href="https://www.cnblogs.com/sparkdev/p/9365405.html">linux namespace</a></p></li><li><p>cgroup</p><p>参考cgroup: <a href="https://tech.meituan.com/2015/03/31/cgroups.html">linux namespace</a></p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> 网络原理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>乘积最大子数组</title>
       <link href="/2022/06/04/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/"/>
       <url>/2022/06/04/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/</url>
