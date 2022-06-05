@@ -183,6 +183,658 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D/" class="post-title-link" itemprop="url">打家劫舍</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 15:38:58 / Modified: 16:17:32" itemprop="dateCreated datePublished" datetime="2022-06-05T15:38:58+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/house-robber/">打家劫舍</a></p>
+<p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。</p>
+<p>给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：[1,2,3,1]</span><br><span class="line">输出：4</span><br><span class="line">解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。</span><br><span class="line">     偷窃到的最高金额 = 1 + 3 = 4 。</span><br></pre></td></tr></table></figure>
+
+<p>思路1: 递归实现,以任一个房屋开始,对于下一个不触发警报的房屋进行决策:是否偷他?! 然后对于不同的状况继续进行偷取. 在每一次偷取成功后就尝试更新最大偷盗金额.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rob</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        rob(nums, <span class="number">0</span>, <span class="number">0</span>, <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * home 当前偷到哪一个房子了</span></span><br><span class="line"><span class="comment">     * money 当前偷了多少钱了</span></span><br><span class="line"><span class="comment">     * last 最后一个偷的房间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rob</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> home, <span class="type">int</span> money, Integer last)</span> &#123;</span><br><span class="line">        max = Math.max(max, money);</span><br><span class="line">        <span class="keyword">if</span>(home &gt;= nums.length) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> home; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(last == <span class="literal">null</span>) &#123;</span><br><span class="line">                rob(nums, i, nums[i] + money, i);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 确认不会触发报警</span></span><br><span class="line">                <span class="keyword">if</span>(i &gt; last + <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="comment">// 偷,然后继续下一个房间</span></span><br><span class="line">                    rob(nums, i, nums[i] + money, i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(last == <span class="literal">null</span>) &#123;</span><br><span class="line">                rob(nums, i+<span class="number">1</span>, money, i+<span class="number">1</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(i &gt; last + <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="comment">// 不偷,继续下一个房间</span></span><br><span class="line">                    rob(nums, i + <span class="number">1</span>, money, i + <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>思路2: 动态规划, 定义dp数组, dp[i] 代表到第i位最大的金额,存在状态转移关系:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = nums[i] i == 0</span><br><span class="line">dp[i] = max(nums[i], dp[i-1], dp[i-1]) i &gt; 0, i &gt; 1</span><br></pre></td></tr></table></figure>
+
+<p>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rob</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span>) &#123;</span><br><span class="line">                dp[i] = nums[i];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">last</span> <span class="operator">=</span> i - <span class="number">2</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">last2</span> <span class="operator">=</span> i - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(last2 &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    dp[i] = Math.max(dp[i], dp[i - <span class="number">1</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(last &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    dp[i] = Math.max(dp[last] + nums[i], dp[i]);</span><br><span class="line">                &#125; </span><br><span class="line">                dp[i] = Math.max(dp[i], nums[i]);</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[length - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/%E5%9F%BA%E6%9C%AC%E8%AE%A1%E7%AE%97%E5%99%A8II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/%E5%9F%BA%E6%9C%AC%E8%AE%A1%E7%AE%97%E5%99%A8II/" class="post-title-link" itemprop="url">基本计算器II</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 13:06:36 / Modified: 13:11:44" itemprop="dateCreated datePublished" datetime="2022-06-05T13:06:36+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator-ii/">基本计算器 II</a></p>
+<p>给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。</p>
+<p>整数除法仅保留整数部分。</p>
+<p>你可以假设给定的表达式总是有效的。所有中间结果将在 [-231, 231 - 1] 的范围内。</p>
+<p>注意：不允许使用任何将字符串作为数学表达式计算的内置函数，比如 eval() 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;3+2*2&quot;</span><br><span class="line">输出：7</span><br></pre></td></tr></table></figure>
+
+<p>思路: 维护一个操作符栈和操作数栈以及操作符优先级字典. 流程如下: 遇到数字入栈,遇到操作符,如果优先级小于已入栈的操作符, 计算之前大于该操作符的操作,并将计算结果入栈操作数栈. 然后入栈新操作符,重复以上操作. 最终返回操作符栈剩下的结果即可.</p>
+<p>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">calculate</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        Stack&lt;Integer&gt; nums = <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line">        Stack&lt;Character&gt; ops = <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        Map&lt;Character, Integer&gt; pmap = <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">        pmap.put(<span class="string">&#x27;+&#x27;</span>, <span class="number">1</span>);</span><br><span class="line">        pmap.put(<span class="string">&#x27;-&#x27;</span>, <span class="number">1</span>);</span><br><span class="line">        pmap.put(<span class="string">&#x27;*&#x27;</span>, <span class="number">2</span>);</span><br><span class="line">        pmap.put(<span class="string">&#x27;/&#x27;</span>, <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">&#x27; &#x27;</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!sb.isEmpty()) &#123;</span><br><span class="line">                    nums.push(Integer.parseInt(sb.toString()));</span><br><span class="line">                    sb = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(pmap.containsKey(c)) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!sb.isEmpty()) &#123;</span><br><span class="line">                    nums.push(Integer.parseInt(sb.toString()));</span><br><span class="line">                    sb = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(ops.isEmpty()) &#123;</span><br><span class="line">                    ops.push(c);</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">while</span>(!ops.isEmpty() &amp;&amp; pmap.get(ops.peek()) &gt;= pmap.get(c)) &#123;</span><br><span class="line">                        <span class="type">int</span> <span class="variable">v2</span> <span class="operator">=</span> nums.pop();</span><br><span class="line">                        <span class="type">int</span> <span class="variable">v1</span> <span class="operator">=</span> nums.pop();</span><br><span class="line">                        nums.push(calc(v1, v2, ops.pop()));   </span><br><span class="line">                    &#125;</span><br><span class="line">                    ops.push(c);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sb.append(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!sb.isEmpty()) &#123;</span><br><span class="line">            nums.push(Integer.parseInt(sb.toString()));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!ops.isEmpty())&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">v2</span> <span class="operator">=</span> nums.pop();</span><br><span class="line">            <span class="type">int</span> <span class="variable">v1</span> <span class="operator">=</span> nums.pop();</span><br><span class="line">            nums.push(calc(v1, v2, ops.pop()));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums.pop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">calc</span><span class="params">(<span class="type">int</span> v1, <span class="type">int</span> v2, <span class="type">char</span> op)</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span>(op) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;+&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> v1 + v2;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> v1 - v2;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> v1 * v2;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;/&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> v1 / v2;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">基础数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 11:32:08 / Modified: 11:33:53" itemprop="dateCreated datePublished" datetime="2022-06-05T11:32:08+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>数组</p>
+</li>
+<li><p>链表</p>
+<p>优点:</p>
+<p>缺点: 节点内存不连续, 无法很好的利用CPU缓存. 同时链表需要维护指针带来的内存开销</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/%E8%8B%B1%E6%96%87%E9%9D%A2%E8%AF%95%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/%E8%8B%B1%E6%96%87%E9%9D%A2%E8%AF%95%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">英文面试自我介绍</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 10:59:50 / Modified: 11:10:41" itemprop="dateCreated datePublished" datetime="2022-06-05T10:59:50+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>转自: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30566237">英文面试准备</a></p>
+<p>外企面试，英文自我介绍是必答题，是送分题。</p>
+<p>无论是电话面试，还是face to face面试，只要能流利，语速适度的完成1分钟左右自我介绍，基本都可以通关。</p>
+<p>而大部分面试者，要么没有准备，要么磕磕巴巴，要么自我介绍太长，要么语速过快……</p>
+<p>如果你面试环节的自我介绍被面试官打断了，99%是个失败的自我介绍。 </p>
+<p><strong>英语面试都有套路和方法的，内容原创，禁止转载。</strong></p>
+<p>帮助大家有个精彩面试开局，<strong>奉上英语自我介绍</strong>「 <strong>方程式」。</strong></p>
+<h2 id="回答很长，拿好纸和笔，跟上思路，就可以写出为自己量身定制的自我介绍。"><a href="#回答很长，拿好纸和笔，跟上思路，就可以写出为自己量身定制的自我介绍。" class="headerlink" title="回答很长，拿好纸和笔，跟上思路，就可以写出为自己量身定制的自我介绍。"></a><strong>回答很长，拿好纸和笔，跟上思路，就可以写出为自己量身定制的自我介绍。</strong></h2><h2 id="01-自我介绍方程式"><a href="#01-自我介绍方程式" class="headerlink" title="01 自我介绍方程式"></a><strong>01 自我介绍方程式</strong></h2><h2 id="A-For-New-Graduates-毕业生自我介绍"><a href="#A-For-New-Graduates-毕业生自我介绍" class="headerlink" title="A. For New Graduates 毕业生自我介绍"></a><strong>A. For New Graduates 毕业生自我介绍</strong></h2><p>我叫小小，xx大学，xx专业毕业。大学期间我顺利通过xx级，xx级，拿到xx证书，我的平均成绩都在Top xx，我是xx协会的xx，是xx志愿者，我在平时还参加了xx实践项目。我熟练掌握英语、计算机和xx，精通office软件，具有(可以开始说你的各种能力)良好的沟通能力，xx能力，xx能力，xx能力，和人际交往能力….我相信我很适合xx职位.谢谢。</p>
+<p>I am <strong>Xiao Xiao</strong>. I recently graduated from <strong>×× University</strong> with a <strong>bachelor degree in Business Accounting</strong>. My GPA was among the <strong>top 3</strong> in my class. I passed <strong>CET6.</strong> Besides studying I was very active on campus. I participated in <strong>volunteer activities</strong> whenever I had time. I became the <strong>Chairman for the Student Union</strong> during my senior year. I also worked with Baidu as a <strong>Social Media Intern</strong> for a semester. I learned a lot about <strong>content curation</strong> and <strong>using social media tools</strong>. I could speak <strong>（pretty） good English</strong> and I’m fluent in Mandarin Chinese (Hahaha…因为我是中国人). I am highly proficient with <strong>Office.</strong> I have great communication <strong>skills</strong>. I am an <strong>outgoing person</strong>. I am very <strong>responsible and hardworking</strong>. I believe I’m a good fit for the Department Assistant position. Thank you for the opportunity.</p>
+<p>描述顺序拆解：</p>
+<p><img src="/2022/06/05/%E8%8B%B1%E6%96%87%E9%9D%A2%E8%AF%95%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/v2-e8f4b001bc4db1ad2b8f28bd3ec8f525_r.jpg" alt="v2-e8f4b001bc4db1ad2b8f28bd3ec8f525_r"></p>
+<p><strong>B. For Working Professionals 有工作经验自我介绍</strong></p>
+<p>我是小小，具有xx年xx领域的经验，现在是xx公司xx职位。之前是有xx年xx行业经验，xx行业xx经验。我的专长是xx比如说品牌管理和业务发展。我也很擅长xx比如说项目管理和活动策划。我英语很好英语、计算机和xx，擅长xx， 在工作中，我曾经获得xx等奖项。我有优秀的沟通技能，有很强的团队精神和自我驱动力。我相信以我的经验和热情我能够在xx岗位上给xx公司的成功做出贡献。谢谢。</p>
+<p>I am <strong>Xiao Xiao</strong>. I have <strong>over 8 years of experience in marketing</strong>. I am the <strong>team manager of marketing for HP since 2013</strong>. Previously I worked in <strong>IT for a year</strong> and <strong>retail for another 4 years or so</strong>. My specialties include <strong>brand management</strong> and <strong>business development</strong>. I’m also very experienced with <strong>project management</strong> and <strong>event coordination</strong>. I was voted the <strong>2016 Best Employee</strong> among my peers. I could speak <strong>（pretty） good English</strong> and I’m fluent in Mandarin Chinese(Hahaha…因为我是中国人). I am highly proficient with <strong>Microsoft Office softwares and Photoshop</strong>. I have <strong>excellent written and verbal communication skills</strong>. I’m a <strong>team player and self-driven</strong>. I believe I have the combination of experience and enthusiasm to contribute to the success of Intel Shanghai as the Senior Manager of Marketing. Thanks. </p>
+<p>描述顺序拆解：</p>
+<p><img src="/2022/06/05/%E8%8B%B1%E6%96%87%E9%9D%A2%E8%AF%95%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/v2-be67c5fbf089d4a1fe958c16c9bd82bf_1440w.jpg.png" alt="v2-be67c5fbf089d4a1fe958c16c9bd82bf_1440w.jpg"></p>
+<p><strong>C. Top 10个常用句型</strong></p>
+<p><strong>计算机和英语证书</strong></p>
+<p>I am highly proficient with…</p>
+<p><strong>学习成绩优秀</strong></p>
+<p>My grades were top in the class.</p>
+<p><strong>社团&#x2F;志愿者&#x2F;实践项目</strong></p>
+<p>I was very active on campus.</p>
+<p>I’ve participated in many campus groups, volunteer programs, and practical activities</p>
+<p><strong>具备能力</strong></p>
+<p>I’m passionate about…</p>
+<p>I’m very familiar with…</p>
+<p>I’m experienced with…</p>
+<p><strong>行业经验</strong></p>
+<p>I’ve work in marketing&#x2F;sales&#x2F;business development&#x2F;international education for X years</p>
+<p><strong>管理经验</strong></p>
+<p>I have x years of management experiences</p>
+<p><strong>项目经验</strong></p>
+<p>I took the lead in xxx project which was very successful.</p>
+<p><strong>获奖经历</strong></p>
+<p>I was recognized as…</p>
+<p>I was awarded the…</p>
+<p>I was voted the…</p>
+<p><strong>性格特质</strong></p>
+<p>I’m a people person.</p>
+<p>I’m a team player.</p>
+<p>I’m very hardworking.</p>
+<p>I’m super self-driven.</p>
+<p><strong>职位匹配描述</strong></p>
+<p>I believe I have the right combination of experience and enthusiasm to be successful in xxx position.</p>
+<p>I believe I am a good fit for xxx company as the xxx position. </p>
+<p>I believe I can do a great job as your xxx.</p>
+<p><strong>D: General Skill list 通用技能列表</strong></p>
+<p><strong>Personality and Characteristics 好用的性格和特征</strong></p>
+<p>A people person; 善于与人打交道的人</p>
+<p>A team player; 善于团队合作的人</p>
+<p>A good listener;好的倾听者</p>
+<p>A good leader; 好的领导</p>
+<p>An analytical thinker; 善于分析的思考者</p>
+<p>Hard working; 勤奋的</p>
+<p>Self-motivated;有上进心的，积极主动的</p>
+<p>Very driven;自我驱动很强的</p>
+<p>Adaptable; 适应能力不错</p>
+<p>Energetic;精力充沛的</p>
+<p>Proactive;积极主动的</p>
+<p>Business oriented;商业&#x2F;业务导向的</p>
+<p>Results oriented;结果导向的</p>
+<p>High attention to detail; 非常关注细节</p>
+<p><strong>Skills 技能</strong></p>
+<p>Excellent communication skills; 卓越的沟通技能</p>
+<p>Outstanding organization skills; 出众的组织技能</p>
+<p>Great verbal and written communication<br>skills in English and Chinese; 优秀的中英文口语和书面交流技能</p>
+<p>Good interpersonal skills; 很好的交际能力</p>
+<p>Fantastic organizational skills; 极好组织能力</p>
+<p>Excellent time management skills;卓越的时间管理技能</p>
+<p>Fantastic negotiation skills；极好的谈判技能</p>
+<p>Strong analytical skills; 很强的分析能力</p>
+<p>Highly proficient in PC skills.精通电脑</p>
+<p><strong>Abilities 能力</strong></p>
+<p>Ability to work effectively with staff at all levels; 能和各个级别员工高效工作</p>
+<p>Ability to interpret financial statements&#x2F;statistics; 解释财务报表&#x2F;统计数据的能力</p>
+<p>Strong problem solving ability; 较强的问题处理能力</p>
+<p>Strong business acumen; 良好的商业敏感度</p>
+<p>Ability to prioritize and work within tight timeframe; 能在时间紧迫的情况下安排工作优先等级</p>
+<p>Excellent research ability; 优秀的研究&#x2F;调研能力</p>
+<p>Very familiar with labor law and related policies in China; 非常熟悉劳动法和中国的相关政策法规</p>
+<p>Fluent in both English and Mandarin Chinese;英语和中文都很流利</p>
+<p>Tech savvy；科技通</p>
+<p>Ability to adapt quickly to any new accounting&#x2F;information system; 能够迅速适应任何新会计&#x2F;信息系统</p>
+<p><strong>Computer skills 电脑技能</strong></p>
+<p>Good at Office 精通 Office</p>
+<p>Proficient in Photoshop 精通PS</p>
+<p>High proficiency in PowerPoint 精通PPT</p>
+<p>Advanced level proficiency in Excel 精通Excel</p>
+<p><strong>Certificate List 证书列表</strong></p>
+<p>CET-4;四级</p>
+<p>CET-6;六级</p>
+<p>Certificate of English Interpreting:<br>Preliminary; 英语初级口译</p>
+<p>Certificate of English Interpreting:<br>Intermediate; 英语中级口译</p>
+<p>Certificate of English Interpreting:<br>Advanced; 英语高级口译</p>
+<p>Certificate of Teachers’Qualification (English); 教师资格证书</p>
+<p>Certificate of Mandarin Test.普通话测试证书</p>
+<p>……</p>
+<p><strong>Personality and characteristics 更多性格特质形容词</strong></p>
+<p>aggressive有进取心的,攻击性的 (这不是一个好的特质，听起来像是很有野心)</p>
+<p>passionate&#x2F;enthusiastic 热情的</p>
+<p>creative 富有创造性（力）的</p>
+<p>insightful 富有洞察力的</p>
+<p>diligent 好学的,勤奋的</p>
+<p>liberal 慷慨的,不拘泥的,宽大的</p>
+<p>nice 友善的</p>
+<p>Kind 善良的</p>
+<p>friendly 友善的</p>
+<p>considerate考虑周到的,体谅的</p>
+<p>humorous 幽默的</p>
+<p>confident 自信的</p>
+<p>imaginative 富想像力的</p>
+<p>responsible 负责的</p>
+<p>courageous 勇敢的</p>
+<p>independent 独立的</p>
+<p>demanding 要求多的 （a demanding position对员工要求很多，很高的职位）</p>
+<p>individualistic 个人主义的</p>
+<p>efficient 效率高的,有能力的</p>
+<p>energetic 精力旺盛的</p>
+<p>loyal 忠诚的</p>
+<p>modest 谦虚的</p>
+<p>thoughtful 考虑周到的</p>
+<p>motivated 有动力的</p>
+<p>positive&#x2F;optimistic 积极的&#x2F;乐观的</p>
+<p>open-minded 思想开明的</p>
+<p>trustworthy 值得信赖的</p>
+<p>gentle 温文尔雅的</p>
+<p>precise 精确的</p>
+<p>good-natured 脾气好的,温厚的</p>
+<p>idealistic 理想主义的</p>
+<p>witty 急智的</p>
+<p>wise 明智的,聪明的</p>
+<p>smart&#x2F;intelligent&#x2F;clever 聪明的</p>
+<p>outgoing&#x2F;sociable 爱好交际的</p>
+<p>easy-going 随和的,跟谁都处得来</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/" class="post-title-link" itemprop="url">Redis数据结构底层原</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-04 22:10:02" itemprop="dateCreated datePublished" datetime="2022-06-04T22:10:02+08:00">2022-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-05 11:59:52" itemprop="dateModified" datetime="2022-06-05T11:59:52+08:00">2022-06-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>参考: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaolincoding/p/15628854.html">Redis数据结构</a></p>
+<p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-lastnew.png" alt="redis数据结构-lastnew"></p>
+<p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/redis%E5%85%A8%E6%99%AF%E5%9B%BE.png" alt="redis全景图"></p>
+<p>*redis存储访问流程</p>
+<ul>
+<li>redisDb 结构，表示 Redis 数据库的结构，结构体里存放了指向了 dict 结构的指针；</li>
+<li>dict 结构，结构体里存放了 2 个哈希表，正常情况下都是用「哈希表1」，「哈希表2」只有在 rehash 的时候才用；</li>
+<li>ditctht 结构，表示哈希表的结构，结构里存放了哈希表数组，数组中的每个元素都是指向一个哈希表节点结构（dictEntry）的指针；</li>
+<li>dictEntry 结构，表示哈希表节点的结构，结构里存放了 <strong>void * key 和 void * value 指针， *key 指向的是 String 对象，而 *value 则可以指向 String 对象，也可以指向集合类型的对象，比如 List 对象、Hash 对象、Set 对象和 Zset 对象</strong>。</li>
+</ul>
+<h1 id="string：字符串"><a href="#string：字符串" class="headerlink" title="string：字符串"></a>string：字符串</h1><p>redis使用c语言开发, 在redis中，其自己定义了一种字符串格式，叫做SDS（Simple Dynamic String），即简单动态字符串. 结构定义sds.h:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> *sds;</span><br></pre></td></tr></table></figure>
+
+<p>sds包含以下属性:</p>
+<ul>
+<li>len：已使用的长度，即字符串的真实长度. 降低获取字符串长度复杂度到O(1). 同时帮助二进制安全</li>
+<li>alloc：分配的长度, 除去标头和终止符(‘\0’)后的长度. 减少而内存分配次数</li>
+<li>flags：表示不同类型的SDS, 低3位表示</li>
+<li>buf[]：存储字符数据</li>
+</ul>
+<h1 id="list：列表"><a href="#list：列表" class="headerlink" title="list：列表"></a>list：列表</h1><p>使用双向链表, 获取节点前后节点时间复杂度O(1),获取头尾节点也是O(1). 同时链表使用指针保存值, 可以保存各种类型的数据.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span> &#123;</span></span><br><span class="line">    <span class="comment">//链表头节点</span></span><br><span class="line">    listNode *head;</span><br><span class="line">    <span class="comment">//链表尾节点</span></span><br><span class="line">    listNode *tail;</span><br><span class="line">    <span class="comment">//节点值复制函数</span></span><br><span class="line">    <span class="type">void</span> *(*dup)(<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="comment">//节点值释放函数</span></span><br><span class="line">    <span class="type">void</span> (*<span class="built_in">free</span>)(<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="comment">//节点值比较函数</span></span><br><span class="line">    <span class="type">int</span> (*match)(<span class="type">void</span> *ptr, <span class="type">void</span> *key);</span><br><span class="line">    <span class="comment">//链表节点数量</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> len;</span><br><span class="line">&#125; <span class="built_in">list</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>ziplist</p>
+<p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="压缩列表节点结构"></p>
+<p>相比链表, 设计为更为内存紧凑的数据结构, 可以有效利用CPU缓存. 而且针对不同长度数据进行编码以节省内存开销. 同样存在缺陷: 不可以保存过多的元素,新增修改元素时,内存需要重分配和引发连锁更新问题.</p>
+<ul>
+<li>zlbytes：4个字节（32bits），表示ziplist占用的总字节数</li>
+<li>zltail：4个字节（32bits），表示ziplist中最后一个节点在ziplist中的偏移字节数</li>
+<li>entries：2个字节（16bits），表示ziplist中的元素数</li>
+<li>entry：长度不定，表示ziplist中的数据 (内部包含prevlen: 记录前一个节点长度(如果内存重新分配,后续的该字段都要更新,造成性能下降–<strong>连锁更新问题</strong>), encoding: 记录当前节点类型与长度, data: 数据)</li>
+<li>zlend：1个字节（8bits），表示结束标记，这个值固定为ff（255）</li>
+</ul>
+<p>这些数据均为小端存储，所以可能有些人查看数据的二进制流与其含义对应不上，其实是因为读数据的方式错了</p>
+<p>ziplist内部采取数据压缩的方式进行存储，压缩方式就不是重点了，我们仅从宏观来看，ziplist类似一个封装的数组，通过zltail可以方便地进行追加和删除尾部数据、使用entries可以方便地计算长度</p>
+<p>但是其依然有数组的缺点，就是当插入和删除数据时会频繁地引起数据移动，所以就引出了quicklist数据类型</p>
+</li>
+<li><p>quick list</p>
+<p>「双向链表 + 压缩列表」组合，因为一个 quicklist 就是一个链表，而链表中的每个元素又是一个压缩列表。</p>
+<p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/quicklist.png" alt="quicklist"></p>
+</li>
+<li><p>listpack</p>
+<p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/listpack%E8%8A%82%E7%82%B9.png" alt="listpack节点"></p>
+</li>
+</ul>
+<h1 id="hash：散列表"><a href="#hash：散列表" class="headerlink" title="hash：散列表"></a>hash：散列表</h1><p><img src="/2022/06/04/Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%BA%95%E5%B1%82%E5%8E%9F/%E5%93%88%E5%B8%8C%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="哈希表结构"></p>
+<ul>
+<li>哈希冲突</li>
+<li>链式哈希</li>
+<li>rehash</li>
+<li>渐进式 rehash</li>
+<li>rehash 触发条件</li>
+</ul>
+<h1 id="set：无序集合"><a href="#set：无序集合" class="headerlink" title="set：无序集合"></a>set：无序集合</h1><p>整数集合是 Set 对象的底层实现之一。当一个 Set 对象只包含整数值元素，并且元素数量不时，就会使用整数集这个数据结构作为底层实现。</p>
+<ul>
+<li>整数集合</li>
+</ul>
+<h1 id="zset：有序集合"><a href="#zset：有序集合" class="headerlink" title="zset：有序集合"></a>zset：有序集合</h1><p>内部使用跳表</p>
+<ul>
+<li>跳表</li>
+</ul>
+<p>待补充</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/TCP%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E5%92%8C%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%BA%A2%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/04/TCP%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E5%92%8C%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%BA%A2%E5%87%BA/" class="post-title-link" itemprop="url">TCP半连接队列和全连接队列溢出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-04 19:38:46 / Modified: 19:51:01" itemprop="dateCreated datePublished" datetime="2022-06-04T19:38:46+08:00">2022-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>转自: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sidesky/p/6844228.html">TCP连接队列</a></p>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JAVA的client和server，使用socket通信。server使用NIO。</span><br><span class="line">1.间歇性的出现client向server建立连接三次握手已经完成，但server的selector没有响应到这连接。</span><br><span class="line">2.出问题的时间点，会同时有很多连接出现这个问题。</span><br><span class="line">3.selector没有销毁重建，一直用的都是一个。</span><br><span class="line">4.程序刚启动的时候必会出现一些，之后会间歇性出现。</span><br></pre></td></tr></table></figure>
+
+<h1 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h1><ul>
+<li>第一步：client 发送 syn 到server 发起握手；</li>
+<li>第二步：server 收到 syn后回复syn+ack给client；</li>
+<li>第三步：client 收到syn+ack后，回复server一个ack表示收到了server的syn+ack（此时client的56911端口的连接已经是established）</li>
+</ul>
+<p>从问题的描述来看，有点像TCP建连接的时候全连接队列（accept队列）满了，尤其是症状2、4. 为了证明是这个原因，马上通过 ss -s 去看队列的溢出统计数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">667399 times the listen queue of a socket overflowed</span><br></pre></td></tr></table></figure>
+
+<p>反复看了几次之后发现这个overflowed 一直在增加，那么可以明确的是server上全连接队列一定溢出了</p>
+<p>接着查看溢出后，OS怎么处理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat /proc/sys/net/ipv4/tcp_abort_on_overflow</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<p>tcp_abort_on_overflow 为0表示如果三次握手第三步的时候全连接队列满了那么server扔掉client 发过来的ack（在server端认为连接还没建立起来）</p>
+<p>为了证明客户端应用代码的异常跟全连接队列满有关系，我先把tcp_abort_on_overflow修改成 1，1表示第三步的时候如果全连接队列满了，server发送一个reset包给client，表示废掉这个握手过程和这个连接（本来在server端这个连接就还没建立起来）。</p>
+<p>接着测试然后在客户端异常中可以看到很多connection reset by peer的错误，到此证明客户端错误是这个原因导致的。</p>
+<p>于是开发同学翻看java 源代码发现socket 默认的backlog（这个值控制全连接队列的大小，后面再详述）是50，于是改大重新跑，经过12个小时以上的压测，这个错误一次都没出现过，同时 overflowed 也不再增加了。</p>
+<p>到此问题解决，简单来说TCP三次握手后有个accept队列，进到这个队列才能从Listen变成accept，默认backlog 值是50，很容易就满了。满了之后握手第三步的时候server就忽略了client发过来的ack包（隔一段时间server重发握手第二步的syn+ack包给client），如果这个连接一直排不上队就异常了。</p>
+<h1 id="TCP握手创建流程"><a href="#TCP握手创建流程" class="headerlink" title="TCP握手创建流程"></a>TCP握手创建流程</h1><p><img src="/2022/06/04/TCP%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E5%92%8C%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%BA%A2%E5%87%BA/3d05f574867b70d1134e685e5f5ac137.jpg" alt="3d05f574867b70d1134e685e5f5ac137"></p>
+<p>在 TCP 三次握手的过程中，Linux 内核会维护两个队列，分别是：</p>
+<ul>
+<li>半连接队列 (SYN Queue)</li>
+<li>全连接队列 (Accept Queue)</li>
+</ul>
+<p>正常的 TCP 三次握手过程：</p>
+<ol>
+<li>Client 端向 Server 端发送 SYN 发起握手，Client 端进入 SYN_SENT 状态</li>
+<li>Server 端收到 Client 端的 SYN 请求后，Server 端进入 SYN_RECV 状态，此时内核会将连接存储到半连接队列(SYN Queue)，并向 Client 端回复 SYN+ACK</li>
+<li>Client 端收到 Server 端的 SYN+ACK 后，Client 端回复 ACK 并进入 ESTABLISHED 状态</li>
+<li>Server 端收到 Client 端的 ACK 后，内核将连接从半连接队列(SYN Queue)中取出，添加到全连接队列(Accept Queue)，Server 端进入 ESTABLISHED 状态</li>
+<li>Server 端应用进程调用 accept 函数时，将连接从全连接队列(Accept Queue)中取出</li>
+</ol>
+<p>半连接队列和全连接队列都有长度大小限制，超过限制时内核会将连接 Drop 丢弃或者返回 RST 包。</p>
+<h1 id="相关指标查看"><a href="#相关指标查看" class="headerlink" title="相关指标查看"></a>相关指标查看</h1><ul>
+<li><p>ss 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># -n 不解析服务名称 </span><br><span class="line"># -t 只显示 tcp sockets </span><br><span class="line"># -l 显示正在监听(LISTEN)的 sockets </span><br><span class="line"> </span><br><span class="line">$ ss -lnt </span><br><span class="line">State      Recv-Q Send-Q    Local Address:Port         Peer Address:Port </span><br><span class="line">LISTEN     0      128       [::]:2380                  [::]:* </span><br><span class="line">LISTEN     0      128       [::]:80                    [::]:* </span><br><span class="line">LISTEN     0      128       [::]:8080                  [::]:* </span><br><span class="line">LISTEN     0      128       [::]:8090                  [::]:* </span><br><span class="line"> </span><br><span class="line">$ ss -nt </span><br><span class="line">State      Recv-Q Send-Q    Local Address:Port         Peer Address:Port </span><br><span class="line">ESTAB      0      0         [::ffff:33.9.95.134]:80                   [::ffff:33.51.103.59]:47452 </span><br><span class="line">ESTAB      0      536       [::ffff:33.9.95.134]:80                  [::ffff:33.43.108.144]:37656 </span><br><span class="line">ESTAB      0      0         [::ffff:33.9.95.134]:80                   [::ffff:33.51.103.59]:38130 </span><br><span class="line">ESTAB      0      536       [::ffff:33.9.95.134]:80                   [::ffff:33.51.103.59]:38280 </span><br><span class="line">ESTAB      0      0         [::ffff:33.9.95.134]:80                   [:: </span><br></pre></td></tr></table></figure>
+
+<p>LISTEN状态Socket</p>
+<ul>
+<li>Recv-Q：当前全连接队列的大小，即已完成三次握手等待应用程序 accept() 的 TCP 链接</li>
+<li>Send-Q：全连接队列的最大长度，即全连接队列的大小</li>
+</ul>
+<p>非LISTEN状态Socket</p>
+<ul>
+<li>Recv-Q：已收到但未被应用程序读取的字节数</li>
+<li>Send-Q：已发送但未收到确认的字节数</li>
+</ul>
+</li>
+<li><p>netstat命令</p>
+<p>通过 netstat -s 命令可以查看 TCP 半连接队列、全连接队列的溢出情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -s | grep -i &quot;listen&quot; </span><br><span class="line">189088 times the listen queue of a socket overflowed </span><br><span class="line">30140232 SYNs to LISTEN sockets dropped </span><br></pre></td></tr></table></figure>
+
+<p>上面输出的数值是累计值，分别表示有多少 TCP socket 链接因为全连接队列、半连接队列满了而被丢弃</p>
+<ul>
+<li>189088 times the listen queue of a socket overflowed 代表有 189088 次全连接队列溢出</li>
+<li>30140232 SYNs to LISTEN sockets dropped 代表有 30140232 次半连接队列溢出</li>
+</ul>
+<p>在排查线上问题时，如果一段时间内相关数值一直在上升，则表明半连接队列、全连接队列有溢出情况</p>
+</li>
+</ul>
+<p>其他内容待补充, 参考文首链接</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E7%BB%93%E6%9E%84%E5%8C%96-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E5%92%8C%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -591,446 +1243,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">分布式概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 14:37:12 / Modified: 14:51:52" itemprop="dateCreated datePublished" datetime="2022-06-04T14:37:12+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>事务</p>
-<p>事务是由一组操作构成的可靠的独立的工作单元，事务具备ACID的特性，即原子性、一致性、隔离性和持久性。</p>
-</li>
-<li><p>本地事务</p>
-<p>事务由资源管理器本地管理时被称作本地事务。本地事务的优点就是支持严格的ACID特性，高效，可靠，状态可以只在资源管理器中维护，而且应用编程模型简单。但是本地事务不具备分布式事务的处理能力，隔离的最小单位受限于资源管理器。</p>
-</li>
-<li><p>分布式事务</p>
-<p>当事务由全局事务管理器进行全局管理时成为全局事务，事务管理器负责管理全局的事务状态和参与的资源，协同资源的一致提交回滚。</p>
-</li>
-<li><p>两阶段提交</p>
-<p>参考: <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1aa944f44b7b">Two-phase Commit</a></p>
-</li>
-<li><p>BASE理论</p>
-<p>BA(Basic Available) 基本可用, S(Soft) 柔性状态,允许短时间不同步,E(Eventually) 最终一致性</p>
-</li>
-<li><p>CAP定理</p>
-<p>C(Consistency) 一致性, A(Availability) 可用性, P(Partition tolerance) 分区容错性. 分布式场景下只能同时满足两种. 常用的分布式实现: CP (满足一致性和分区容错性, 会存在短暂不可用状态), AP(满足可用性和分区容错性, 但不是强一致).</p>
-</li>
-</ul>
-<p>参考文章: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/crazymakercircle/p/14375424.html">分布式事务整理</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/Docker-%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">Docker 网络原理与资源隔离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 11:36:52 / Modified: 16:42:55" itemprop="dateCreated datePublished" datetime="2022-06-04T11:36:52+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Docker底层通过<code>namespace</code>和<code>cgroup</code>实现. 通过<code>namespace</code>实现资源隔离. 通过cgroup实现资源限制.</p>
-<h1 id="网络原理"><a href="#网络原理" class="headerlink" title="网络原理"></a>网络原理</h1><ul>
-<li><p>Bridge(桥接)</p>
-<p>容器的默认网络模式，docker在安装时会创建一个名为docker0的Linux bridge，在不指定–network的情况下，创建的容器都会默认挂到docker0上面。bridge模式为容器创建独立的网络栈，保证容器内的进程使用独立的网络环境，使容器之间，容器和docker host之间实现网络隔离。</p>
-</li>
-<li><p>Host</p>
-<p>使用宿主机的网卡进行网络访问, 无需转发,网络性能比较好</p>
-</li>
-<li><p>Container</p>
-<p>A容器使用B容器的共享网络(??)</p>
-</li>
-<li><p>None</p>
-<p>这样创建出来的容器完全没有网络</p>
-</li>
-<li><p>User-defined</p>
-<p>用户自定义模式主要可选的有三种网络驱动：bridge、overlay、macvlan。bridge驱动用于创建类似于前面提到的bridge网络;overlay和macvlan驱动用于创建跨主机的网络、IP等。</p>
-</li>
-</ul>
-<p>linux网络基础参考:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jmilkfan-fanguiju/p/12789756.html">虚拟网络</a></p>
-<h1 id="资源隔离"><a href="#资源隔离" class="headerlink" title="资源隔离"></a>资源隔离</h1><ul>
-<li><p>namespace</p>
-<p>参考namespace: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/9365405.html">linux namespace</a></p>
-</li>
-<li><p>cgroup</p>
-<p>参考cgroup: <a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">linux cgroup</a></p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">乘积最大子数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 11:15:54 / Modified: 11:31:27" itemprop="dateCreated datePublished" datetime="2022-06-04T11:15:54+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-product-subarray/">乘积最大子数组</a></p>
-<p>给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。</p>
-<p>测试用例的答案是一个 32-位 整数。</p>
-<p>子数组 是数组的连续子序列。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: nums = [2,3,-2,4]</span><br><span class="line">输出: 6</span><br><span class="line">解释: 子数组 [2,3] 有最大乘积 6。</span><br></pre></td></tr></table></figure>
-
-<p>思路:</p>
-<p>维护每一个位置最大最小值( 通过这个可以为后续的提供数据支持)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProduct</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> nums[i];</span><br><span class="line">            <span class="keyword">if</span>(val == <span class="number">0</span>) &#123;</span><br><span class="line">                dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">                dp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span>) &#123;</span><br><span class="line">                dp[<span class="number">0</span>] = val;</span><br><span class="line">                dp[<span class="number">1</span>] = val;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">v1</span> <span class="operator">=</span> dp[<span class="number">0</span>] * val;</span><br><span class="line">                <span class="type">int</span> <span class="variable">v2</span> <span class="operator">=</span> dp[<span class="number">1</span>] * val;</span><br><span class="line">                <span class="keyword">if</span>(v1 &gt; v2) &#123;</span><br><span class="line">                    dp[<span class="number">0</span>] = Math.min(v2, val);</span><br><span class="line">                    dp[<span class="number">1</span>] = Math.max(v1, val);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    dp[<span class="number">0</span>] = Math.min(v1, val);</span><br><span class="line">                    dp[<span class="number">1</span>] = Math.max(v2, val);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, dp[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A7%A3%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A7%A3%E7%A0%81/" class="post-title-link" itemprop="url">字符串解码</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 10:05:59 / Modified: 11:10:51" itemprop="dateCreated datePublished" datetime="2022-06-04T10:05:59+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/decode-string/">字符串解码</a></p>
-<p>给定一个经过编码的字符串，返回它解码后的字符串。</p>
-<p>编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。</p>
-<p>你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。</p>
-<p>此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;3[a]2[bc]&quot;</span><br><span class="line">输出：&quot;aaabcbc&quot;</span><br></pre></td></tr></table></figure>
-
-<p>思路:如果遇到数字,直接累计<code>count</code>,遇到字母.结果集直接append, 扫描字符串如果遇到<code>&#39;[&#39;</code>则寻找其对应的结束符号<code>&#39;]&#39;</code>,递归计算范围内的字符串,然后根据count和得到的字符串多次append.</p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">decodeString</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="literal">null</span> || s.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="keyword">return</span> calc(s, <span class="number">0</span> , length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">		<span class="comment">// 寻找匹配的结束符号索引</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findEnd</span><span class="params">(String s, <span class="type">int</span> start)</span> &#123;</span><br><span class="line">        <span class="type">Stack</span> <span class="variable">stack</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> start; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">                stack.push(c);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(c == <span class="string">&#x27;]&#x27;</span>)&#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">                <span class="keyword">if</span>(stack.isEmpty()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">calc</span><span class="params">(String str, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">ret</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">count</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> start;</span><br><span class="line">        <span class="keyword">while</span>(i &lt;= end)&#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> str.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">                count.append(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(c == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> findEnd(str, i);</span><br><span class="line">                <span class="comment">// 递归计算子串</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">ss</span> <span class="operator">=</span> calc(str,i + <span class="number">1</span>,tmp - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span>(!count.isEmpty())&#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> Integer.parseInt(count.toString());</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt; num; k++)&#123;</span><br><span class="line">                        ret.append(ss);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                count = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                i = tmp + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ret.append(c);</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/" class="post-title-link" itemprop="url">岛屿的最大面积</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 21:00:05 / Modified: 21:04:01" itemprop="dateCreated datePublished" datetime="2022-06-03T21:00:05+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/max-area-of-island/">岛屿的最大面积</a></p>
-<p>给你一个大小为 m x n 的二进制矩阵 grid 。</p>
-<p>岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。</p>
-<p>岛屿的面积是岛上值为 1 的单元格的数目。</p>
-<p>计算并返回 grid 中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。</p>
-<p><img src="/2022/06/03/%E5%B2%9B%E5%B1%BF%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2%E7%A7%AF/maxarea1-grid.jpg" alt="maxarea1-grid"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]</span><br><span class="line">输出：6</span><br><span class="line">解释：答案不应该是 11 ，因为岛屿只能包含水平或垂直这四个方向上的 1 。</span><br></pre></td></tr></table></figure>
-
-<p>思路: 遍历二维数组,找到节点为1(即陆地)的位置,然后上下左右递归寻找. 对于寻找到的陆地,标记原数组位置值为2(用2来表示已访问过的位置,防止死循环)</p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">height</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">width</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxAreaOfIsland</span><span class="params">(<span class="type">int</span>[][] grid)</span> &#123;</span><br><span class="line">        height = grid.length;</span><br><span class="line">        width = grid[<span class="number">0</span>].length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; height; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; width; j++) &#123;</span><br><span class="line">                <span class="comment">// 遍历每一个节点更新最值</span></span><br><span class="line">                max = Math.max(max, visit(grid, i, j, <span class="number">0</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">visit</span><span class="params">(<span class="type">int</span>[][] grid, <span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> size)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; <span class="number">0</span> || i &gt;= height || j&lt;<span class="number">0</span> || j &gt;= width)&#123;</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> size;</span><br><span class="line">        <span class="keyword">if</span>(grid[i][j] == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 访问过的节点标记为已访问</span></span><br><span class="line">            grid[i][j] = <span class="number">2</span>;</span><br><span class="line">            curr++;</span><br><span class="line">            <span class="comment">// 上下左右遍历</span></span><br><span class="line">            curr =visit(grid, i+<span class="number">1</span>, j, curr);</span><br><span class="line">            curr = visit(grid, i, j+<span class="number">1</span>, curr);</span><br><span class="line">            curr = visit(grid, i-<span class="number">1</span>, j, curr);</span><br><span class="line">            curr = visit(grid, i, j-<span class="number">1</span>, curr);</span><br><span class="line">            <span class="keyword">return</span> curr;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> curr;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/03/%E6%9C%80%E9%95%BF%E8%BF%9E%E7%BB%AD%E5%BA%8F%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/03/%E6%9C%80%E9%95%BF%E8%BF%9E%E7%BB%AD%E5%BA%8F%E5%88%97/" class="post-title-link" itemprop="url">最长连续序列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-03 20:37:10 / Modified: 20:41:17" itemprop="dateCreated datePublished" datetime="2022-06-03T20:37:10+08:00">2022-06-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">最长连续序列</a></p>
-<p>给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。</p>
-<p>请你设计并实现时间复杂度为 O(n) 的算法解决此问题。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [100,4,200,1,3,2]</span><br><span class="line">输出：4</span><br><span class="line">解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>思路: 可以直接排序,然后每一个节点看是否存在(累加一直到不存在).但题目要求时间复杂度O(n).所以采用hash优化的方式</p>
-<p>代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestConsecutive</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 创建set,便于后续判断是否包含</span></span><br><span class="line">        Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> num : nums) &#123;</span><br><span class="line">            set.add(num);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> num : nums) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> num;</span><br><span class="line">            <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// !重要优化点! 如果节点前驱在数组中存在则跳过这次寻找不连续点</span></span><br><span class="line">            <span class="keyword">if</span>(set.contains(tmp-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 循环寻找直到不连续,更新最值</span></span><br><span class="line">            <span class="keyword">while</span>(set.contains(tmp))&#123;</span><br><span class="line">                count++;</span><br><span class="line">                tmp++;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, count);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1100,14 +1312,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
