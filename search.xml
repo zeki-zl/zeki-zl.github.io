@@ -886,9 +886,9 @@
       
         <tags>
             
-            <tag> 线程安全 </tag>
-            
             <tag> AQS </tag>
+            
+            <tag> 线程安全 </tag>
             
         </tags>
       
@@ -934,11 +934,11 @@
       
         <tags>
             
+            <tag> 线程安全 </tag>
+            
             <tag> AtomInteger </tag>
             
             <tag> LongAdder </tag>
-            
-            <tag> 线程安全 </tag>
             
             <tag> CAS </tag>
             
@@ -1022,9 +1022,9 @@
       
         <tags>
             
-            <tag> Java </tag>
-            
             <tag> 面试 </tag>
+            
+            <tag> Java </tag>
             
             <tag> 基础 </tag>
             
