@@ -170,6 +170,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 
     <main class="main">
@@ -179,6 +180,215 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/07/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">二叉搜索树与双向链表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-07 10:06:53 / Modified: 10:12:35" itemprop="dateCreated datePublished" datetime="2022-06-07T10:06:53+08:00">2022-06-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/">二叉搜索树与双向链表</a></p>
+<p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
+<p>为了让您更好地理解问题，以下面的二叉搜索树为例：</p>
+<p><img src="/Users/zeki/Documents/Blog/source/_posts/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/bstdllreturndll.png" alt="bstdllreturndll"></p>
+<p>我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。</p>
+<p>下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。</p>
+<p><img src="/Users/zeki/Documents/Blog/source/_posts/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/bstdlloriginalbst.png" alt="bstdlloriginalbst"></p>
+<p>特别地，我们希望可以就地完成转换操作。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。</p>
+<p>思路: 可以将整颗树的转化分解为左子树转化和右子树转化. 然后对于左子树转化后的结果获取头尾节点更新与当前根节点的指针即可, 右子树同样如此</p>
+<p>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// Definition for a Node.</span></span><br><span class="line"><span class="comment">class Node &#123;</span></span><br><span class="line"><span class="comment">    public int val;</span></span><br><span class="line"><span class="comment">    public Node left;</span></span><br><span class="line"><span class="comment">    public Node right;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public Node() &#123;&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public Node(int _val) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public Node(int _val,Node _left,Node _right) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">        left = _left;</span></span><br><span class="line"><span class="comment">        right = _right;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Node <span class="title function_">treeToDoublyList</span><span class="params">(Node root)</span> &#123;</span><br><span class="line">         <span class="keyword">if</span>(root == <span class="literal">null</span>) &#123; </span><br><span class="line">             <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">// 返回节点,默认当前根节点</span></span><br><span class="line">         <span class="type">Node</span> <span class="variable">ret</span> <span class="operator">=</span> root;</span><br><span class="line">         <span class="comment">// 尾结点,默认根节点</span></span><br><span class="line">         <span class="type">Node</span> <span class="variable">end</span> <span class="operator">=</span> root;</span><br><span class="line">         <span class="type">Node</span> <span class="variable">left</span> <span class="operator">=</span> root.left;</span><br><span class="line">         <span class="type">Node</span> <span class="variable">right</span> <span class="operator">=</span> root.right;</span><br><span class="line">         <span class="comment">// 左侧双向链表</span></span><br><span class="line">         <span class="type">Node</span> <span class="variable">linkLeft</span> <span class="operator">=</span> treeToDoublyList(left);</span><br><span class="line">         <span class="comment">// 右侧双向链表</span></span><br><span class="line">         <span class="type">Node</span> <span class="variable">linkRight</span> <span class="operator">=</span> treeToDoublyList(right);</span><br><span class="line">         <span class="keyword">if</span>(linkLeft != <span class="literal">null</span>) &#123;</span><br><span class="line">             ret = linkLeft;</span><br><span class="line">             <span class="type">Node</span> <span class="variable">tmp</span> <span class="operator">=</span> linkLeft;</span><br><span class="line">             <span class="comment">// 这里是寻找子树尾结点(后续可以优化)</span></span><br><span class="line">             <span class="keyword">while</span>(tmp.right != <span class="literal">null</span>) &#123;</span><br><span class="line">                 <span class="keyword">if</span>(tmp.right == linkLeft)&#123;</span><br><span class="line">                     <span class="keyword">break</span>;</span><br><span class="line">                 &#125;</span><br><span class="line">                 tmp = tmp.right;</span><br><span class="line">             &#125;</span><br><span class="line">             <span class="comment">// 更新指针指向</span></span><br><span class="line">             tmp.right = root;</span><br><span class="line">             root.left = tmp;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span>(linkRight != <span class="literal">null</span>) &#123;</span><br><span class="line">             <span class="type">Node</span> <span class="variable">tmp</span> <span class="operator">=</span> linkRight;</span><br><span class="line">             <span class="keyword">while</span>(tmp.right != <span class="literal">null</span>) &#123;</span><br><span class="line">                 <span class="keyword">if</span>(tmp.right == linkRight)&#123;</span><br><span class="line">                     <span class="keyword">break</span>;</span><br><span class="line">                 &#125;</span><br><span class="line">                 tmp = tmp.right;</span><br><span class="line">             &#125;</span><br><span class="line">             <span class="comment">// 更新指针指向</span></span><br><span class="line">             root.right = linkRight;</span><br><span class="line">             linkRight.left = root;</span><br><span class="line">             <span class="comment">// 更新头尾节点的指向关系</span></span><br><span class="line">             tmp.right = ret;</span><br><span class="line">             ret.left = tmp;</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">             ret.left = root;</span><br><span class="line">             root.right = ret;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/07/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">长度最小的子数组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-07 09:41:20 / Modified: 09:46:03" itemprop="dateCreated datePublished" datetime="2022-06-07T09:41:20+08:00">2022-06-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/">长度最小的子数组</a></p>
+<p>给定一个含有 n 个正整数的数组和一个正整数 target 。</p>
+<p>找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, …, numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：target = 7, nums = [2,3,1,2,4,3]</span><br><span class="line">输出：2</span><br><span class="line">解释：子数组 [4,3] 是该条件下的长度最小的子数组。</span><br></pre></td></tr></table></figure>
+
+<p>思路: 先遍历找到第一个累加到大于等于target的索引值idx,找不到就返回0. 随后设置左指针为0, 右指针为idx. 通过控制左右指针移动寻找最短连续子数组长度</p>
+<p>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="comment">// 最短长度</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">match</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="comment">// 当前累计和</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 从0开始第一个累计和达到target的索引</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">beginIdx</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            sum += nums[i];</span><br><span class="line">            <span class="keyword">if</span>(sum &gt;= target) &#123;</span><br><span class="line">                beginIdx = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(beginIdx == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> beginIdx;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;= r &amp;&amp; r &lt; nums.length) &#123;</span><br><span class="line">            <span class="keyword">if</span>(sum &gt;= target) &#123;</span><br><span class="line">                match = Math.min(match, r - l + <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span>(match == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 当前sum满足条件,尝试左指针右移并更新sum</span></span><br><span class="line">                sum -= nums[l];</span><br><span class="line">                l++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 当前sum不满足条件,右指针右移并更新sum</span></span><br><span class="line">                r++;</span><br><span class="line">                <span class="keyword">if</span>(r &gt;= nums.length)&#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                sum += nums[r];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> match;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E5%A4%8D%E5%88%B6%E5%B8%A6%E9%9A%8F%E6%9C%BA%E6%8C%87%E9%92%88%E7%9A%84%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/07/%E5%A4%8D%E5%88%B6%E5%B8%A6%E9%9A%8F%E6%9C%BA%E6%8C%87%E9%92%88%E7%9A%84%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">复制带随机指针的链表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-07 09:04:43 / Modified: 09:05:16" itemprop="dateCreated datePublished" datetime="2022-06-07T09:04:43+08:00">2022-06-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="复制带随机指针的链表"><a href="#复制带随机指针的链表" class="headerlink" title="复制带随机指针的链表"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/copy-list-with-random-pointer/">复制带随机指针的链表</a></h4><p>给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。</p>
+<p>构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。</p>
+<p>例如，如果原链表中有 X 和 Y 两个节点，其中 X.random –&gt; Y 。那么在复制链表中对应的两个节点 x 和 y ，同样有 x.random –&gt; y 。</p>
+<p>返回复制链表的头节点。</p>
+<p>用一个由 n 个节点组成的链表来表示输入&#x2F;输出中的链表。每个节点用一个 [val, random_index] 表示：</p>
+<p>val：一个表示 Node.val 的整数。<br>random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。<br>你的代码 只 接受原链表的头节点 head 作为传入参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br><span class="line">输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：首先遍历原链表，并在遍历过程中创建复制节点，并且维护一个新旧节点的映射关系。然后第二次遍历时，根据映射关系，找出每一个random节点在新链表的节点并指向它。</p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Node <span class="title function_">copyRandomList</span><span class="params">(Node head)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        Map&lt;Node, Node&gt; nmap = <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">        <span class="type">Node</span> <span class="variable">bak</span> <span class="operator">=</span> head;</span><br><span class="line">        <span class="type">Node</span> <span class="variable">node</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Node</span>(head.val);</span><br><span class="line">        <span class="type">Node</span> <span class="variable">nodebak</span> <span class="operator">=</span> node;</span><br><span class="line">        <span class="type">Node</span> <span class="variable">ret</span> <span class="operator">=</span> node;</span><br><span class="line">        nmap.put(head, node);</span><br><span class="line">        head = head.next;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Node</span> <span class="variable">next</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Node</span>(head.val);</span><br><span class="line">            nmap.put(head, next);</span><br><span class="line">            node.next = next;</span><br><span class="line">            node = node.next;</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(bak!=<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="type">Node</span> <span class="variable">radom</span> <span class="operator">=</span> bak.random;</span><br><span class="line">            <span class="type">Node</span> <span class="variable">rnode</span> <span class="operator">=</span> nmap.get(radom);</span><br><span class="line">            nodebak.random = rnode;</span><br><span class="line">            nodebak = nodebak.next;</span><br><span class="line">            bak = bak.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -912,337 +1122,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/" class="post-title-link" itemprop="url">MySQL命令explain</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 18:12:00 / Modified: 18:50:46" itemprop="dateCreated datePublished" datetime="2022-06-04T18:12:00+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>explain</code>是MySQL查询优化的关键命令. 通过这个命令可以模拟优化器执行SQL查询语句, 分析执行结果可以优化查询语句以提升查询性能.</p>
-<p>语句:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> xx <span class="keyword">where</span> yy <span class="operator">=</span> <span class="string">&#x27;zz&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>相应字段介绍:</p>
-<ul>
-<li><p>id : 语句中select查询子句的顺序</p>
-</li>
-<li><p>select_type : 查询类型</p>
-<ul>
-<li><p>SIMPLE : 简单查询, 不包含子查询与union查询</p>
-</li>
-<li><p>PRIMARY : 主查询, 存在子查询时,外层查询被标记为主查询</p>
-</li>
-<li><p>SUBQUERY : 子查询</p>
-</li>
-<li><p>UNION : 在union命令后的语句为此类型</p>
-</li>
-<li><p>UNION RESULT : 最终UNION结果会表示为此类型</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    id  select_type   table       partitions  type    possible_keys        key      </span><br><span class="line">------  ------------  ----------  ----------  ------  -------------------  ------- </span><br><span class="line">     1  PRIMARY       student     (NULL)      const   PRIMARY,id_name_age  PRIMARY  </span><br><span class="line">     2  UNION         student     (NULL)      const   PRIMARY,id_name_age  PRIMARY </span><br><span class="line">(NULL)  UNION RESULT  &lt;union1,2&gt;  (NULL)      ALL     (NULL)               (NULL)   </span><br></pre></td></tr></table></figure>
-</li>
-<li><p>DERIVED : FROM列表中包含子查询的语句被标记为此类型, MySQL会递归执行这些子查询放入临时表(MySQL 5.7+ 优化后使用derived_merge加速查询效率. 无此状态)</p>
-</li>
-</ul>
-</li>
-<li><p>table : 访问的表,结合id可以看到执行过程中表查询顺序</p>
-</li>
-<li><p>partitions : 匹配分区</p>
-</li>
-<li><p>type : 访问类型</p>
-<p>10个状态,从好到差排序:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NULL &gt; system &gt; const &gt; eq_ref &gt; ref &gt; ref_or_null &gt; index_merge &gt; range &gt; index &gt; ALL</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>NULL : 无需访问表和索引的查询. 例: </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="number">5</span><span class="operator">*</span><span class="number">7</span>  <span class="comment">-- 不访问表,计算数值</span></span><br><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="built_in">MAX</span>(id) <span class="keyword">FROM</span> student  <span class="comment">-- 查询最大索引,直接取索引树叶子结点获取 </span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>SYSTEM : 表只有一行记录（等于系统表），这是<code>const</code>类型的特列，平时不大会出现，可以忽略。</p>
-</li>
-<li><p>const : 一次索引查找到,主键索引或唯一索引查询时</p>
-</li>
-<li><p>eq_ref : 联表join查询时, 按联表的主键或唯一键查询</p>
-</li>
-<li><p>ref : 联表join查询时, 按联表的索引查询, 匹配多行不唯一</p>
-</li>
-<li><p>ref_or_null : 类似ref, 可以搜索值为NULL的行</p>
-</li>
-<li><p>index_merge : 查询了多个索引,然后取交集并集. 常见于在<code>and</code>, ‘or’的条件下使用了不同的索引. 大部分性能不如<code>range</code></p>
-</li>
-<li><p>range : 索引范围查询,常见于 &lt;&gt;, &gt;, &gt;&#x3D;, &lt;, &lt;&#x3D;, IS NULL, &lt;&#x3D;&gt;, BETWEEN, IN()或者like等运算符的查询中</p>
-</li>
-<li><p>ALL : 全表扫描, 务必优化!!!</p>
-</li>
-</ul>
-</li>
-<li><p>possible_keys : 可能使用的索引</p>
-</li>
-<li><p>key : 实际使用的索引, 为null时表示没使用索引</p>
-</li>
-<li><p>key_len : 索引中使用的字节数</p>
-</li>
-<li><p>ref : 索引的哪一列被使用</p>
-</li>
-<li><p>rows : 根据表统计信息以及索引选用情况,估算查找所需记录需要读取的行数. 数值越小效率越高</p>
-</li>
-<li><p>filtere : 查询数据占表的百分比. 类似rows,数值越小效率越高</p>
-</li>
-<li><p>extra : 其他重要的额外信息</p>
-<ul>
-<li>Using filesort : SQL需要排序, 但是优化器找不到可以使用的索引, 此时使用外部排序(多次磁盘IO访问,效率极低)</li>
-<li>Using tempporary : 查询结果排序时, 使用临时表协助. 效率低于外部排序.</li>
-<li>Using index : 使用了索引 👍🏻👍🏻👍🏻</li>
-<li>Using where : 使用了where</li>
-<li>Using join buffer : 多表join使用了连接缓存</li>
-<li>impossible where : 筛选条件啥也没找到</li>
-<li>distinct : 优化distinct操作, 找到匹配后立即停止同样值的动作</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/Sql-%E9%9D%A2%E8%AF%95/" class="post-title-link" itemprop="url">Sql 面试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 16:49:30 / Modified: 18:10:43" itemprop="dateCreated datePublished" datetime="2022-06-04T16:49:30+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>having</p>
-<p>having常用语分组后的条件过滤常用于<code>group by xx </code>后</p>
-<p>例子:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name, aggregate_function(column_name)</span><br><span class="line"><span class="keyword">FROM</span> table_name</span><br><span class="line"><span class="keyword">WHERE</span> column_name operator <span class="keyword">value</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> column_name</span><br><span class="line"><span class="keyword">HAVING</span> aggregate_function(column_name) operator <span class="keyword">value</span></span><br></pre></td></tr></table></figure>
-
-<p>注意事项:</p>
-<ul>
-<li>having 子句内容需要存在select列表中</li>
-<li>having限制的是组, where限制的是行</li>
-<li>where, group by, having执行顺序: where过滤行 -&gt; group by对数据分组,并执行聚集函数 -&gt; having过滤符合条件的组</li>
-</ul>
-</li>
-<li><p><code>select a.xx,b.xx from a,b where a.x = b.x</code>与<code>select a.xx,b.xx from a inner join b on a.x = b.x</code> 区别</p>
-</li>
-<li><p>union与union all</p>
-<p>union会去重, union all 直接合并</p>
-</li>
-<li><p>row_number()</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--在test表中根据name分组，age进行排序</span></span><br><span class="line"><span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> name <span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">age <span class="keyword">desc</span>) <span class="keyword">from</span> test;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--去掉重复的记录</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> name,age,<span class="built_in">row_number</span>() <span class="keyword">over</span>( <span class="keyword">partition</span> <span class="keyword">by</span> name </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> age <span class="keyword">desc</span>) rn <span class="keyword">from</span> test )<span class="keyword">where</span> rn<span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p>可以对结果集进行分组排序并生成一个row_number序列</p>
-</li>
-<li><p>DDL, DML与DCL</p>
-<ul>
-<li>DDL: Data Define Language, 数据定义语句. CREATE, ALTER, DROP等</li>
-<li>DML: Data Manage Language, 数据管理语句. SELECT, UPDATE, INSERT, DELETE</li>
-<li>DCL: Data Control Language, 数据控制语句. GRANT, DENY, REVOKE等个更新用户角色的命令</li>
-</ul>
-</li>
-<li><p>exists 与 in</p>
-<ul>
-<li><code>in</code> 仅执行一次(先查询子查询的表，然后将内表和外表做一个笛卡尔积，然后按照条件进行筛选), <code>exists</code>执行多次(外表行数)</li>
-<li>外层查询小于子查询使用<code>exists</code>; 外层查询大于子查询使用<code>in</code></li>
-<li><code>in</code> 与<code>exists</code>都会使用索引</li>
-<li><code>not in</code> 内外表均全局扫描,无法使用索引, <code>not exists</code>可以走索引</li>
-<li><code>in</code>的遍历实在内存中,速度较快. <code>exists</code>多次查询数据库.</li>
-</ul>
-</li>
-<li><p>索引使用注意事项</p>
-<ul>
-<li>尽量全值匹配</li>
-<li>模糊查询使用最左匹配原则</li>
-<li>全模糊查询使用覆盖索引方式也会走索引</li>
-<li>不在索引列上进行操作</li>
-<li>联合索引需要严格顺序匹配</li>
-<li>尽量使用覆盖索引</li>
-<li>mysql在使用<code>!=</code>与<code>&lt;&gt;</code>时索引失效</li>
-<li>字符串不加单引号导致索引失效</li>
-<li><code>or</code>使得索引失效</li>
-</ul>
-</li>
-<li><p>索引创建</p>
-<ul>
-<li>频繁查询的字段应创建索引</li>
-<li>与其他表关联查询的字段创建索引</li>
-<li>频繁更新的字段不适合作为索引</li>
-</ul>
-</li>
-<li><p>sql书写题目</p>
-<p>参考: <a target="_blank" rel="noopener" href="https://blog.csdn.net/jason_wang1989/article/details/115278576">经典题目</a></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Star-%E6%B3%95%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Zeki Li">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeki's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/04/Star-%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">Star 法则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-04 16:33:30 / Modified: 16:41:35" itemprop="dateCreated datePublished" datetime="2022-06-04T16:33:30+08:00">2022-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>摘自百度百科:</p>
-<p>STAR法则,即为Situation Task Action Result的缩写，具体含义是:</p>
-<ul>
-<li><p>Situation: 事情是在什么情况下发生</p>
-</li>
-<li><p>Task: 任务</p>
-</li>
-<li><p>Action: 针对这样的情况分析，你采用了什么行动方式</p>
-</li>
-<li><p>Result: 结果怎样，在这样的情况下你学习到了什么</p>
-</li>
-</ul>
-<p>简而言之，STAR法则是一个清晰、条理的模板。合理熟练运用此法则，可以轻松的对面试官描述事物的逻辑方式，表现出自己分析阐述问题的清晰性、条理性和逻辑性。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1312,14 +1191,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
