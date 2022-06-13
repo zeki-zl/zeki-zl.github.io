@@ -8,6 +8,8 @@ tags:
 
 Docker底层通过`namespace`和`cgroup`实现. 通过`namespace`实现资源隔离. 通过cgroup实现资源限制.
 
+<!--more-->
+
 # 网络原理
 
 - Bridge(桥接)

@@ -17,6 +17,8 @@ JAVA的client和server，使用socket通信。server使用NIO。
 4.程序刚启动的时候必会出现一些，之后会间歇性出现。
 ```
 
+<!--more-->
+
 # 分析问题
 
 - 第一步：client 发送 syn 到server 发起握手；

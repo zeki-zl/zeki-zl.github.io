@@ -18,6 +18,8 @@ tags:
 - ditctht 结构，表示哈希表的结构，结构里存放了哈希表数组，数组中的每个元素都是指向一个哈希表节点结构（dictEntry）的指针；
 - dictEntry 结构，表示哈希表节点的结构，结构里存放了 **void \* key 和 void \* value 指针， \*key 指向的是 String 对象，而 \*value 则可以指向 String 对象，也可以指向集合类型的对象，比如 List 对象、Hash 对象、Set 对象和 Zset 对象**。
 
+<!--more-->
+
 # string：字符串
 
 redis使用c语言开发, 在redis中，其自己定义了一种字符串格式，叫做SDS（Simple Dynamic String），即简单动态字符串. 结构定义sds.h:

@@ -26,6 +26,8 @@ tags:
    - having限制的是组, where限制的是行
    - where, group by, having执行顺序: where过滤行 -> group by对数据分组,并执行聚集函数 -> having过滤符合条件的组
 
+   <!--more-->
+
 2. `select a.xx,b.xx from a,b where a.x = b.x`与`select a.xx,b.xx from a inner join b on a.x = b.x` 区别
 
 3. union与union all

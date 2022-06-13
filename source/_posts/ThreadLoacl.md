@@ -13,7 +13,7 @@ private static final ThreadLocal<T> res1 = new NamedThreadLocal<>("resource1");
 private static final ThreadLocal<T> res2 = new NamedThreadLocal<>("resource2");
 ```
 
-
+<!--more-->
 
 # 原理
 

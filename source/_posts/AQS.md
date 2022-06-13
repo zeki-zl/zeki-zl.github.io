@@ -8,6 +8,8 @@ tags:
 
 AbstractQueueSynchroinzer。提供了一个锁框架。内部有一个Integer类型state和一个双向队列。封装了线程锁请求入FIFO双向队列入队出队以及线程挂起唤醒等过程，实现线程安全。
 
+<!--more-->
+
 # **两种模式**
 
 独占：State作为一个独占资源

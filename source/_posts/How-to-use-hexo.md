@@ -11,6 +11,8 @@ tags:
 
 https://hexo.io/docs/
 
+<!--more-->
+
 # 准备  
 
 ## Nodejs  
@@ -49,3 +51,12 @@ _config.yml配置github仓库以及branch
 search功能插件：hexo-search-db
 
 具体参考文章顶部链接
+
+
+
+# 插件
+
+```bash
+npm install --save hexo-filter-mermaid-diagrams  # markdown mermaid 在主题配置文件中找到mermaid选项，将enable设置为true hexo不支持markdown mermaid渲染. 该插件需要使用直接使用mermaid语法书写
+```
+

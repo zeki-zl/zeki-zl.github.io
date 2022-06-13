@@ -14,7 +14,7 @@ tags:
 
 `await()`主线程调用时，会判断state是否为0，是0的话直接退出，否则加入AQS队列等待唤醒。
 
-
+<!--more-->
 
 # CyclicBarrier
 

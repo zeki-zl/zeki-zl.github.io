@@ -8,8 +8,6 @@ tags:
   - CAS
 ---
 
-
-
 # CAS
 
 Compare And Swap：通过原子的进行比较交换操作保证数据安全。
@@ -19,6 +17,8 @@ Compare And Swap：通过原子的进行比较交换操作保证数据安全。
 存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁
 
 如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据
+
+<!--more-->
 
 # AtomInteger
 

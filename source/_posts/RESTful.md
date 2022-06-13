@@ -14,6 +14,8 @@ tags:
 - **表现形式（Representational）**：请求数据类型（`json`, `xml`,`file`等）
 - **状态转移（State Transfer）** ：通过具体的`method`行为（`GET`,`POST`,`PUT`,`PATCH`,`DELETE`）操作资源并改变资源状态
 
+<!--more-->
+
 ## 动作
 
 - `GET` 获取资源

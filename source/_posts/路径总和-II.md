@@ -13,6 +13,8 @@ tags:
 
 叶子节点 是指没有子节点的节点。
 
+<!--more-->
+
 ![pathsumii1](pathsumii1.jpg)
 
 ```
