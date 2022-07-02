@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="组合总和 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。 candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。  对于给定的输入，保证和为 target">
+  <meta name="description" content="组合总和 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。 candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="组合总和">
 <meta property="og:url" content="http://example.com/2022/06/03/%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C/index.html">
 <meta property="og:site_name" content="Zeki&#39;s Blog">
-<meta property="og:description" content="组合总和 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。 candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。  对于给定的输入，保证和为 target">
+<meta property="og:description" content="组合总和 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。 candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-03T02:22:10.000Z">
-<meta property="article:modified_time" content="2022-06-03T02:29:36.371Z">
+<meta property="article:modified_time" content="2022-06-09T08:59:28.735Z">
 <meta property="article:author" content="Zeki Li">
 <meta property="article:tag" content="leetcode">
 <meta property="article:tag" content="算法">
@@ -214,10 +214,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-03 10:22:10 / Modified: 10:29:36" itemprop="dateCreated datePublished" datetime="2022-06-03T10:22:10+08:00">2022-06-03</time>
+              <time title="Created: 2022-06-03 10:22:10" itemprop="dateCreated datePublished" datetime="2022-06-03T10:22:10+08:00">2022-06-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-09 16:59:28" itemprop="dateModified" datetime="2022-06-09T16:59:28+08:00">2022-06-09</time>
+              </span>
 
           
 
@@ -233,6 +239,8 @@
         <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum/">组合总和</a></p>
 <p>给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。</p>
 <p>candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 </p>
+<span id="more"></span>
+
 <p>对于给定的输入，保证和为 target 的不同组合数少于 150 个。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：candidates = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>], target = <span class="number">7</span></span><br><span class="line">输出：[[<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">7</span>]]</span><br><span class="line">解释：</span><br><span class="line"><span class="number">2</span> 和 <span class="number">3</span> 可以形成一组候选，<span class="number">2</span> + <span class="number">2</span> + <span class="number">3</span> = <span class="number">7</span> 。注意 <span class="number">2</span> 可以使用多次。</span><br><span class="line"><span class="number">7</span> 也是一个候选， <span class="number">7</span> = <span class="number">7</span> 。</span><br><span class="line">仅有这两种组合。</span><br></pre></td></tr></table></figure>
 
@@ -346,14 +354,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

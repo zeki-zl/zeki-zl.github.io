@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="最小路径和 给定一个包含非负整数的 *m* x *n* 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。 说明：每次只能向下或者向右移动一步。 123输入：grid &#x3D; [[1,3,1],[1,5,1],[4,2,1]]输出：7解释：因为路径 1→3→1→1→1 的总和最小。  思路1: 递归，当前位置到结束的最小路径和等于往左往右走较小和加上当前路径值即可 代码（">
+  <meta name="description" content="最小路径和 给定一个包含非负整数的 *m* x *n* 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。 说明：每次只能向下或者向右移动一步。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最小路径和">
 <meta property="og:url" content="http://example.com/2022/06/02/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E5%92%8C/index.html">
 <meta property="og:site_name" content="Zeki&#39;s Blog">
-<meta property="og:description" content="最小路径和 给定一个包含非负整数的 *m* x *n* 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。 说明：每次只能向下或者向右移动一步。 123输入：grid &#x3D; [[1,3,1],[1,5,1],[4,2,1]]输出：7解释：因为路径 1→3→1→1→1 的总和最小。  思路1: 递归，当前位置到结束的最小路径和等于往左往右走较小和加上当前路径值即可 代码（">
+<meta property="og:description" content="最小路径和 给定一个包含非负整数的 *m* x *n* 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。 说明：每次只能向下或者向右移动一步。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-02T08:41:05.000Z">
-<meta property="article:modified_time" content="2022-06-02T08:54:06.325Z">
+<meta property="article:modified_time" content="2022-06-09T08:57:08.319Z">
 <meta property="article:author" content="Zeki Li">
 <meta property="article:tag" content="leetcode">
 <meta property="article:tag" content="算法">
@@ -214,10 +214,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-02 16:41:05 / Modified: 16:54:06" itemprop="dateCreated datePublished" datetime="2022-06-02T16:41:05+08:00">2022-06-02</time>
+              <time title="Created: 2022-06-02 16:41:05" itemprop="dateCreated datePublished" datetime="2022-06-02T16:41:05+08:00">2022-06-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-09 16:57:08" itemprop="dateModified" datetime="2022-06-09T16:57:08+08:00">2022-06-09</time>
+              </span>
 
           
 
@@ -233,6 +239,8 @@
         <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-path-sum/">最小路径和</a></p>
 <p>给定一个包含非负整数的 <code>*m* x *n*</code> 网格 <code>grid</code> ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。</p>
 <p><strong>说明：</strong>每次只能向下或者向右移动一步。</p>
+<span id="more"></span>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：grid = [[1,3,1],[1,5,1],[4,2,1]]</span><br><span class="line">输出：7</span><br><span class="line">解释：因为路径 1→3→1→1→1 的总和最小。</span><br></pre></td></tr></table></figure>
 
 <p>思路1: 递归，当前位置到结束的最小路径和等于往左往右走较小和加上当前路径值即可</p>
@@ -344,14 +352,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
