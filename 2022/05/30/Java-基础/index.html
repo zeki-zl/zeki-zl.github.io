@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="语言特性 面向对象（封装、继承、多态） 跨平台 多线程支持 编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 基础">
+<meta property="og:url" content="http://example.com/2022/05/30/Java-%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Zeki&#39;s Blog">
+<meta property="og:description" content="语言特性 面向对象（封装、继承、多态） 跨平台 多线程支持 编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-30T02:29:11.000Z">
+<meta property="article:modified_time" content="2022-12-03T10:25:37.372Z">
+<meta property="article:author" content="Zeki Li">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="基础">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/05/30/Java-%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 基础 | Zeki's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Zeki's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zeki's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/30/Java-%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-30 10:29:11" itemprop="dateCreated datePublished" datetime="2022-05-30T10:29:11+08:00">2022-05-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="语言特性"><a href="#语言特性" class="headerlink" title="语言特性"></a>语言特性</h1><ul>
+<li>面向对象（封装、继承、多态）</li>
+<li>跨平台</li>
+<li>多线程支持</li>
+<li>编译与解释执行（class文件编译与JIT即时编译（编译为机器码），JVM执行时解释执行）</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><ol>
+<li><p>基础数据类型</p>
+<table>
+<thead>
+<tr>
+<th>基本类型</th>
+<th>位数</th>
+<th>字节</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>byte</code></td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td>-128 ~ 127</td>
+</tr>
+<tr>
+<td><code>short</code></td>
+<td>16</td>
+<td>2</td>
+<td>0</td>
+<td>-32768 ~ 32767</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td>32</td>
+<td>4</td>
+<td>0</td>
+<td>-2147483648 ~ 2147483647</td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td>64</td>
+<td>8</td>
+<td>0L</td>
+<td>-9223372036854775808 ~ 9223372036854775807</td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td>16</td>
+<td>2</td>
+<td>‘u0000’</td>
+<td>0 ~ 65535</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>32</td>
+<td>4</td>
+<td>0f</td>
+<td>1.4E-45 ~ 3.4028235E38</td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td>64</td>
+<td>8</td>
+<td>0d</td>
+<td>4.9E-324 ~ 1.7976931348623157E308</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td>1</td>
+<td></td>
+<td>false</td>
+<td>true、false</td>
+</tr>
+</tbody></table>
+<p>注意：boolean长度为明确。取决于JVM实现，逻辑上是占用1位。</p>
+</li>
+<li><p>自动拆装箱</p>
+<p>装箱其实就是调用了 包装类的<code>valueOf()</code>方法，拆箱其实就是调用了 <code>xxxValue()</code>方法。</p>
+<ol>
+<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
+<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
+</ol>
+</li>
+<li><p>局部变量与成员变量</p>
+<p>局部变量通常在栈中，随方法调用结束而回收。无默认值需设置；</p>
+<p>成员变量通常在堆中，随对象创建而存在。有默认值。</p>
+</li>
+<li><p>集合</p>
+<p>List，Map，Set以及线程安全相关集合</p>
+<p>集合操作参考：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-precautions-for-use.md">https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-precautions-for-use.md</a></p>
+</li>
+<li><p>并发</p>
+</li>
+<li><p>异常</p>
+<p>共同祖先：java.lang.Throwable</p>
+<p>重要子类：Exception与Error</p>
+<p><strong><code>Exception</code></strong> ：程序本身可以处理的异常，可以通过 <code>catch</code> 来进行捕获。<code>Exception</code> 又可以分为 Checked Exception (受检查异常，必须处理) 和 Unchecked Exception (不受检查异常，可以不处理)。</p>
+<ul>
+<li>Checked Excpetion:<ul>
+<li>IOException</li>
+<li>ClassNotFoundException</li>
+<li>SQLException</li>
+<li>FileNotFoundException</li>
+</ul>
+</li>
+<li>Unchecked Exception:<ul>
+<li>ArithmeticException</li>
+<li>ClassCastException</li>
+<li>NullPointException</li>
+<li>IllegalThreadStateException</li>
+<li>IndexOutOfBoundsException</li>
+</ul>
+</li>
+</ul>
+<p>**<code>Error</code>**：<code>Error</code> 属于程序无法处理的错误 ，<del>我们没办法通过 <code>catch</code> 来进行捕获</del>不建议通过<code>catch</code>捕获 。例如 Java 虚拟机运行错误（<code>Virtual MachineError</code>）、虚拟机内存不够错误(<code>OutOfMemoryError</code>)、类定义错误（<code>NoClassDefFoundError</code>）等 。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
+<ul>
+<li>OutOfMemoryError</li>
+<li>StackOverFlowError</li>
+<li>AssertionError</li>
+<li>VritualMachineError</li>
+</ul>
+<p>注意：不要再finally中使用return！在try中return返回值会放在一个本地变量中，后续执行到finally中的return，会覆盖并返回。</p>
+<p>JVM官方文档明确提到：</p>
+<p>If the <code>try</code> clause executes a <em>return</em>, the compiled code does the following:</p>
+<ol>
+<li>Saves the return value (if any) in a local variable.</li>
+<li>Executes a <em>jsr</em> to the code for the <code>finally</code> clause.</li>
+<li>Upon return from the <code>finally</code> clause, returns the value saved in the local variable.</li>
+</ol>
+<p>异常使用规范：异常信息有意义；日志打印异常与抛出异常不要并存。</p>
+</li>
+<li><p>泛型</p>
+<p>一套工具适配多种类型</p>
+<p>提供编译时检查避免错误</p>
+<p>泛型擦出：运行时泛型会去掉</p>
+</li>
+<li><p>反射</p>
+<p>优点：灵活</p>
+<p>缺点：性能问题，参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow">https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow</a></p>
+<p>应用场景：各种框架配置与调用都有用到反射。</p>
+</li>
+<li><p>IO</p>
+<p>操作系统相关的知识：为了保证操作系统的稳定性和安全性，一个进程的地址空间划分为 <strong>用户空间（User space）</strong> 和 <strong>内核空间（Kernel space ）</strong> 。</p>
+<p><strong>从应用程序的视角来看的话，我们的应用程序对操作系统的内核发起 IO 调用（系统调用），操作系统负责的内核执行具体的 IO 操作。也就是说，我们的应用程序实际上只是发起了 IO 操作的调用而已，具体 IO 的执行是由操作系统的内核来完成的。</strong></p>
+<p>UNIX 系统下， IO 模型一共有 5 种： <strong>同步阻塞 I&#x2F;O</strong>、<strong>同步非阻塞 I&#x2F;O</strong>、<strong>I&#x2F;O 多路复用</strong>、<strong>信号驱动 I&#x2F;O</strong> 和<strong>异步 I&#x2F;O</strong>。</p>
+<ul>
+<li><p>BIO</p>
+<ul>
+<li><p>同步阻塞 I&#x2F;O</p>
+<p>阻塞每次读写，等到内核态数据拷贝完成返回。</p>
+</li>
+<li><p>同步非阻塞 I&#x2F;O</p>
+<p>多次读取不阻塞，内核态数据拷贝时时阻塞。</p>
+</li>
+</ul>
+</li>
+<li><p>NIO</p>
+<ul>
+<li><p>select </p>
+<p>维护很多socket连接（创建链接时维护socket集合），通过询问内核是否已准备好数据，如果准备好再发器read（读取过程依旧是阻塞的），内核轮询socket集合，找到准备完成的socket进行数据读取（可能只有部分socket活跃，每次轮训耗时长且无意义）。每次需要将socket集合传递给内核，有一定开销。进程被唤醒拿到相应还需要遍历确定哪个socket收到数据，共需要两次遍历。select有最大文件描述符数量限制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> nfds, fd_set *readfds, fd_set *writefds,</span></span><br><span class="line"><span class="params">           fd_set *exceptfds, <span class="keyword">struct</span> timeval *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>pool 同select，但是无最大文件描述符限制</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">poll</span><span class="params">(<span class="keyword">struct</span> pollfd fds[], <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span>；</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>epool</p>
+<p>基于事件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epitem</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">rb_node</span>  <span class="title">rbn</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">rdllink</span>;</span> </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epitem</span>  *<span class="title">next</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epoll_filefd</span>  <span class="title">ffd</span>;</span>  </span><br><span class="line">  <span class="type">int</span>  nwait;                 </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">pwqlist</span>;</span>  </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">eventpoll</span>  *<span class="title">ep</span>;</span>      </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">fllink</span>;</span>   </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span>  <span class="title">event</span>;</span>  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">eventpoll</span> &#123;</span></span><br><span class="line">  <span class="type">spin_lock_t</span>       lock; </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">mutex</span>      <span class="title">mtx</span>;</span>  </span><br><span class="line">  <span class="type">wait_queue_head_t</span>     wq; </span><br><span class="line">  <span class="type">wait_queue_head_t</span>   poll_wait; </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">rdllist</span>;</span>   <span class="comment">//就绪链表</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">rb_root</span>      <span class="title">rbr</span>;</span>      <span class="comment">//红黑树根节点 </span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">epitem</span>      *<span class="title">ovflist</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用户数据载体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span> &#123;</span></span><br><span class="line">   <span class="type">void</span>    *ptr;</span><br><span class="line">   <span class="type">int</span>      fd;</span><br><span class="line">   <span class="type">uint32_t</span> u32;</span><br><span class="line">   <span class="type">uint64_t</span> u64;</span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br><span class="line"><span class="comment">//fd装载入内核的载体</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> &#123;</span></span><br><span class="line">     <span class="type">uint32_t</span>     events;    <span class="comment">/* Epoll events */</span></span><br><span class="line">     <span class="type">epoll_data_t</span> data;      <span class="comment">/* User data variable */</span></span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="comment">//三板斧api</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_create</span><span class="params">(<span class="type">int</span> size)</span>; </span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events,</span></span><br><span class="line"><span class="params">                 <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>AIO</p>
+<p>拿回数据异步</p>
+</li>
+</ul>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/722819425dbd">https://www.jianshu.com/p/722819425dbd</a></p>
+<ol start="10">
+<li><p>JVM</p>
+<p>可以先看看这个：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/jvm-intro.md">https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/jvm-intro.md</a></p>
+<ul>
+<li>内存分配</li>
+</ul>
+<p>堆：eden区，2个suvivor区，old区。对象创建会在eden创建，经过一次回收会搬到suvivor区，后续每经过一次回收对象年龄加一，直到到达老年代阈值（默认15岁），对象进入老年代。老年代阈值会根据配置动态计算。</p>
+<p>栈：本地方法栈、虚拟机栈以及程序计数器</p>
+<p>方法区：加载的类信息以及运行时常量池以及JIT编译代码缓存。字符串常量池与静态变量均在堆中。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/memory-area.md">https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/memory-area.md</a></p>
+<ul>
+<li><p>对象创建流程</p>
+<ol>
+<li><p>类加载</p>
+<p>检查是否已加载过，如果没有进行类加载</p>
+</li>
+<li><p>申请内存</p>
+<p>类加载完成即可确定需要的内存，随后便申请内存分配</p>
+<p>分配策略：</p>
+<ul>
+<li><p>指针碰撞</p>
+<p>维护一个指针，区分已使用空间与未使用空间。</p>
+</li>
+<li><p>空闲列表</p>
+<p>维护一个列表，记录哪些内存块可用</p>
+</li>
+</ul>
+<p>并发分配内存：</p>
+<ul>
+<li>CAS+失败重试：通过CAS保证操作原子性</li>
+<li>TLAB（Thread Local Allocation Buffer：本地分配缓存区，在线程初始化时申请Eden一部分空间）：分配内存时先在TLAB分配，到达一定量后通过CAS刷新到堆上。缺点：空间较小大对象无法适配。</li>
+</ul>
+</li>
+<li><p>类初始化</p>
+<ul>
+<li><p>初始化零值</p>
+<p>设置初始值，对象头不调整</p>
+</li>
+<li><p>设置对象头</p>
+<p><strong>虚拟机要对对象进行必要的设置</strong>，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希码、对象的 GC 分代年龄等信息。 <strong>这些信息存放在对象头中。</strong> 另外，根据虚拟机当前运行状态的不同，如是否启用偏向锁等，对象头会有不同的设置方式。</p>
+</li>
+<li><p>init方法执行</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>对象内存布局</p>
+<p>对象头，实例数据，对齐填充</p>
+<p><strong>Hotspot 虚拟机的对象头包括两部分信息</strong>，<strong>第一部分用于存储对象自身的运行时数据</strong>（哈希码、GC 分代年龄、锁状态标志等等），<strong>另一部分是类型指针</strong>，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。</p>
+<p><strong>实例数据部分是对象真正存储的有效信息</strong>，也是在程序中所定义的各种类型的字段内容。</p>
+<p><strong>对齐填充部分不是必然存在的，也没有什么特别的含义，仅仅起占位作用。</strong> 因为 Hotspot 虚拟机的自动内存管理系统要求对象起始地址必须是 8 字节的整数倍，换句话说就是对象的大小必须是 8 字节的整数倍。而对象头部分正好是 8 字节的倍数（1 倍或 2 倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p>
+</li>
+<li><p>对象访问方式</p>
+<p>句柄和直接指针</p>
+<ul>
+<li><p>句柄指向句柄池数据（堆），再由句柄池指向实例数据（堆）和对象类型数据（栈）</p>
+</li>
+<li><p>直接指针直接执行对象实例数据（堆），其对象头存在指向对象类型数据（栈）的指针</p>
+</li>
+</ul>
+<p>优缺点：句柄在对象变化过程后用户的引用无需变化，而直接指针需要变化。但是直接指针少一次指针定位开销，速度更快。</p>
+</li>
+<li><p>类加载模型</p>
+<p>双亲委托</p>
+<p>如果自定义类加载器：继承<code>ClassLoader</code>，重写<code>findClass()</code>方法，如果需要打破双亲委托，则需要重写<code>loadClass()</code>方法</p>
+</li>
+<li><p>JVM参数与优化</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/jvm-parameters-intro.md">https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/jvm/jvm-parameters-intro.md</a></p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="面试问题整理"><a href="#面试问题整理" class="headerlink" title="面试问题整理"></a>面试问题整理</h1><ol>
+<li><p>字符型常量与字符串常量的区别？</p>
+<p>字符常量相当于一个整形ASCII值，可以参与运算；字符串是内存地址。字符串常量2个字节；字符串若干个字节</p>
+</li>
+<li><p>重写遵循规范</p>
+<ol>
+<li>方法名，形参需要相同</li>
+<li>返回值类型以及声明异常均小于或等于父类方法</li>
+<li>访问权限需大于或等于父类方法</li>
+</ol>
+</li>
+<li><p>可变长参数</p>
+<p>可以传入不等长参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的：如果方法重载，固定参数方法优先级会高于变长参数方法</p>
+</li>
+<li><p>基本数据类型与包装类的区别？</p>
+<ol>
+<li>包装类型默认值null</li>
+<li>包装类型可用于泛型</li>
+<li>基本数据类型局部变量存储与Java虚拟机栈局部变量表中，基本数据类型的成员变量存在堆中，包装类型都在堆中</li>
+</ol>
+</li>
+<li><p>构造方否可以override？</p>
+<p>不能override，可以overload</p>
+</li>
+<li><p>java 9为何将String底层由 char[] 改成了 byte[] ?</p>
+<p>新版的 String 其实支持两个编码方案： Latin-1 和 UTF-16。如果字符串中包含的汉字没有超过 Latin-1 可表示范围内的字符，那就会使用 Latin-1 作为编码方案。Latin-1 编码方案下，<code>byte</code> 占一个字节(8 位)，<code>char</code> 占用 2 个字节（16），<code>byte</code> 相较 <code>char</code> 节省一半的内存空间。</p>
+</li>
+<li><p>String采用运算符“+”拼接为何耗费内存？</p>
+<p>内部采用StringBuillder.append() 方法实现，拼接完后调用toString() 得到Stirng对象。这样就会存在大量的StringBuilder对象。</p>
+</li>
+<li><p>字符串常量池什么作用？</p>
+<p>创建字符串后会在堆中创建具体对象，然后在常量池中创建对应的引用。访问字符串是直接返回常量池中的引用即可。字节码命令“ldc” 可以判断字符串常量池是否保存对应的字符串对象引用。</p>
+</li>
+<li><p>intern方法作用</p>
+<p>native方法：如果字符串常量池不包含字符串饮用添加。然后返回字符串引用。</p>
+</li>
+<li><p>常量折叠</p>
+<p>对于源代码中存在的可以确定的static final修饰的基础变量数据类型以及String，会对其进行计算并作为常量嵌入最终生成代码中。这事javac编译器做的优化</p>
+</li>
+<li><p>finally代码一定执行吗？</p>
+<p>不一定！虚拟机异常终止便不会执行了。比如调用：System.exit(1); 还有所在线程死亡，CPU停止执行。</p>
+</li>
+<li><p>Java只有值传递吗？</p>
+<p>是的，无论是基础类型还是引用类型。如果要修改对象值，通过引用修改即可。</p>
+</li>
+<li><p>通过类加载器与Class.forName()差异</p>
+<p>Class.forName() 可以指定是否初始化Class，类加载器不会初始化。如果不出实话静态代码不会得到执行。</p>
+</li>
+<li><p>精度丢失与BigDecimal</p>
+<p>由于float，double等表示小数时由于二进制存储原理，对于一些小数没有精确的2进制表示形式所以存在精度丢失。BigDecimal实现利用了BigInteger，并加入小数位的概念实现避免了精读丢失。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag"># 基础</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/30/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%E4%B9%8B%E4%BA%AE%E7%82%B9%E4%B8%8E%E9%9A%BE%E7%82%B9/" rel="prev" title="项目介绍之亮点与难点">
+      <i class="fa fa-chevron-left"></i> 项目介绍之亮点与难点
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/30/Hexo-%E5%9B%BE%E7%89%87/" rel="next" title="Hexo 图片">
+      Hexo 图片 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">语言特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">面试问题整理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zeki Li</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zeki-zl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zeki-zl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeki Li</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

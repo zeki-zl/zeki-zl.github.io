@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Zeki&#39;s Blog">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Zeki&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Zeki Li">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Zeki's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Zeki's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zeki's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/03/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/03/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-12-03 18:25:37" itemprop="dateCreated datePublished" datetime="2022-12-03T18:25:37+08:00">2022-12-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/03/hello-world/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/%E6%9C%80%E5%90%8E%E7%9A%84Typora%E5%85%8D%E8%B4%B9%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/%E6%9C%80%E5%90%8E%E7%9A%84Typora%E5%85%8D%E8%B4%B9%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">最后的Typora免费版本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:36:18" itemprop="dateCreated datePublished" datetime="2022-10-25T15:36:18+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>转自:<a target="_blank" rel="noopener" href="https://zahui.fan/posts/64b52e0d/">最后一个Typora免费版0.11.18</a></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/iuxt/src/releases/download/2.0/typora-0-11-18.exe">Windows</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iuxt/src/releases/download/2.0/typora-0-11-18.dmg">Mac</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iuxt/src/releases/download/2.0/Typora_Linux_0.11.18_amd64.deb">Ubuntu</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iuxt/src/releases/download/2.0/typora-0-11-18.tar.gz">其他Linux (非debian)</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/Spark%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/Spark%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">Spark之基础概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:34:04" itemprop="dateCreated datePublished" datetime="2022-10-25T15:34:04+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>基于内存，分布式计算，函数式处理</p>
+<h1 id="RDD：Resilient-Distributed-Dataset"><a href="#RDD：Resilient-Distributed-Dataset" class="headerlink" title="RDD：Resilient Distributed Dataset"></a>RDD：Resilient Distributed Dataset</h1><p>弹性分布式数据集：不可变，分布式抽象数据。使用时可以显示的将其换存在内存中以提高速度</p>
+<ul>
+<li>分片，每一个分片会被一个计算任务处理，可以在创建RDD时指定分片数</li>
+<li>迭代器，每个分片计算结果可以通过迭代器的compute函数进行整合，无需保存每次计算的结果</li>
+<li>依赖关系，RDD转换后形成新的RDD，新的RDD就依赖之前的结果。在部分分区计算失败或数据丢失时，可以具体到依赖的分区进行重新计算即可</li>
+<li>分片函数，哈希分片语范围分片，其决定了分片数量</li>
+<li>移动计算而不是移动数据，任务调度时尽可能将任务下发到所需处理的数据块存储节点执行</li>
+</ul>
+<h1 id="创建RDD"><a href="#创建RDD" class="headerlink" title="创建RDD"></a>创建RDD</h1><ul>
+<li>HDFS</li>
+<li>数据库</li>
+<li>本地文件</li>
+<li>其他</li>
+</ul>
+<h1 id="算子"><a href="#算子" class="headerlink" title="算子"></a>算子</h1><ul>
+<li><p>Transformation</p>
+<p>将一个RDD转换为另一个RDD，transfromation具有lazy load特性。需要遇到action算子时才会执行</p>
+<table>
+<thead>
+<tr>
+<th><strong>Transformation</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>map</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由每一个输入元素经过func函数转换后组成</td>
+</tr>
+<tr>
+<td><strong>filter</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由经过func函数计算后返回值为true的输入元素组成</td>
+</tr>
+<tr>
+<td><strong>flatMap</strong>(func)</td>
+<td>类似于map，但是每一个输入元素可以被映射为0或多个输出元素（所以func应该返回一个序列，而不是单一元素）</td>
+</tr>
+<tr>
+<td><strong>mapPartitions</strong>(func)</td>
+<td>类似于map，但独立地在RDD的每一个分片上运行，因此在类型为T的RDD上运行时，func的函数类型必须是Iterator[T] &#x3D;&gt; Iterator[U]</td>
+</tr>
+<tr>
+<td><strong>mapPartitionsWithIndex</strong>(func)</td>
+<td>类似于mapPartitions，但func带有一个整数参数表示分片的索引值，因此在类型为T的RDD上运行时，func的函数类型必须是(Int, Interator[T]) &#x3D;&gt; Iterator[U]</td>
+</tr>
+<tr>
+<td><strong>sample</strong>(withReplacement, fraction, seed)</td>
+<td>根据fraction指定的比例对数据进行采样，可以选择是否使用随机数进行替换，seed用于指定随机数生成器种子</td>
+</tr>
+<tr>
+<td><strong>union</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求并集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>intersection</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求交集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>distinct</strong>([numTasks]))</td>
+<td>对源RDD进行去重后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>groupByKey</strong>([numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K, Iterator[V])的RDD</td>
+</tr>
+<tr>
+<td><strong>reduceByKey</strong>(func, [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K,V)的RDD，使用指定的reduce函数，将相同key的值聚合到一起，与groupByKey类似，reduce任务的个数可以通过第二个可选的参数来设置</td>
+</tr>
+<tr>
+<td><strong>aggregateByKey</strong>(zeroValue)(seqOp, combOp, [numTasks])</td>
+<td>先按分区聚合 再总的聚合  每次要跟初始值交流 例如：aggregateByKey(0)(<em>+</em>,<em>+</em>) 对k&#x2F;y的RDD进行操作</td>
+</tr>
+<tr>
+<td><strong>sortByKey</strong>([ascending], [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，K必须实现Ordered接口，返回一个按照key进行排序的(K,V)的RDD</td>
+</tr>
+<tr>
+<td><strong>sortBy</strong>(func,[ascending], [numTasks])</td>
+<td>与sortByKey类似，但是更灵活 第一个参数是根据什么排序 第二个是怎么排序 false倒序  第三个排序后分区数 默认与原RDD一样</td>
+</tr>
+<tr>
+<td><strong>join</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个相同key对应的所有元素对在一起的(K,(V,W))的RDD 相当于内连接（求交集）</td>
+</tr>
+<tr>
+<td><strong>cogroup</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个(K,(Iterable<V>,Iterable<W>))类型的RDD</td>
+</tr>
+<tr>
+<td><strong>cartesian</strong>(otherDataset)</td>
+<td>两个RDD的笛卡尔积 的成很多个K&#x2F;V</td>
+</tr>
+<tr>
+<td><strong>pipe</strong>(command, [envVars])</td>
+<td>调用外部程序</td>
+</tr>
+<tr>
+<td><strong>coalesce</strong>(numPartitions**)**</td>
+<td>重新分区 第一个参数是要分多少区，第二个参数是否shuffle 默认false 少分区变多分区 true  多分区变少分区 false</td>
+</tr>
+<tr>
+<td><strong>repartition</strong>(numPartitions)</td>
+<td>重新分区 必须shuffle 参数是要分多少区 少变多</td>
+</tr>
+<tr>
+<td><strong>repartitionAndSortWithinPartitions</strong>(partitioner)</td>
+<td>重新分区+排序 比先分区再排序效率高 对K&#x2F;V的RDD进行操作</td>
+</tr>
+<tr>
+<td><strong>foldByKey</strong>(zeroValue)(seqOp)</td>
+<td>该函数用于K&#x2F;V做折叠，合并处理 ，与aggregate类似  第一个括号的参数应用于每个V值 第二括号函数是聚合例如：_+_</td>
+</tr>
+<tr>
+<td><strong>combineByKey</strong></td>
+<td>合并相同的key的值 rdd1.combineByKey(x &#x3D;&gt; x, (a: Int, b: Int) &#x3D;&gt; a + b, (m: Int, n: Int) &#x3D;&gt; m + n)</td>
+</tr>
+<tr>
+<td><strong>partitionBy****（partitioner）</strong></td>
+<td>对RDD进行分区 partitioner是分区器 例如new HashPartition(2</td>
+</tr>
+<tr>
+<td><strong>cache</strong></td>
+<td>RDD缓存，可以避免重复计算从而减少时间，区别：cache内部调用了persist算子，cache默认就一个缓存级别MEMORY-ONLY ，而persist则可以选择缓存级别</td>
+</tr>
+<tr>
+<td><strong>persist</strong></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Subtract****（rdd）</strong></td>
+<td>返回前rdd元素不在后rdd的rdd</td>
+</tr>
+<tr>
+<td><strong>leftOuterJoin</strong></td>
+<td>leftOuterJoin类似于SQL中的左外关联left outer join，返回结果以前面的RDD为主，关联不上的记录为空。只能用于两个RDD之间的关联，如果要多个RDD关联，多关联几次即可。</td>
+</tr>
+<tr>
+<td><strong>rightOuterJoin</strong></td>
+<td>rightOuterJoin类似于SQL中的有外关联right outer join，返回结果以参数中的RDD为主，关联不上的记录为空。只能用于两个RDD之间的关联，如果要多个RDD关联，多关联几次即可</td>
+</tr>
+<tr>
+<td>subtractByKey</td>
+<td>substractByKey和基本转换操作中的subtract类似只不过这里是针对K的，返回在主RDD中出现，并且不在otherRDD中出现的元素</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Action</p>
+<p>触发代码执行，一段spark代码至少需要一个action</p>
+<table>
+<thead>
+<tr>
+<th><strong>Action</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>reduce</strong>(<em>func</em>)</td>
+<td>通过func函数聚集RDD中的所有元素，这个功能必须是课交换且可并联的</td>
+</tr>
+<tr>
+<td><strong>collect</strong>()</td>
+<td>在驱动程序中，以数组的形式返回数据集的所有元素</td>
+</tr>
+<tr>
+<td><strong>count</strong>()</td>
+<td>返回RDD的元素个数</td>
+</tr>
+<tr>
+<td><strong>first</strong>()</td>
+<td>返回RDD的第一个元素（类似于take(1)）</td>
+</tr>
+<tr>
+<td><strong>take</strong>(<em>n</em>)</td>
+<td>返回一个由数据集的前n个元素组成的数组</td>
+</tr>
+<tr>
+<td><strong>takeSample</strong>(<em>withReplacement</em>,<em>num</em>, [<em>seed</em>])</td>
+<td>返回一个数组，该数组由从数据集中随机采样的num个元素组成，可以选择是否用随机数替换不足的部分，seed用于指定随机数生成器种子</td>
+</tr>
+<tr>
+<td><strong>takeOrdered</strong>(<em>n</em>, <em>[ordering]</em>)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>saveAsTextFile</strong>(<em>path</em>)</td>
+<td>将数据集的元素以textfile的形式保存到HDFS文件系统或者其他支持的文件系统，对于每个元素，Spark将会调用toString方法，将它装换为文件中的文本</td>
+</tr>
+<tr>
+<td><strong>saveAsSequenceFile</strong>(<em>path</em>)</td>
+<td>将数据集中的元素以Hadoop sequencefile的格式保存到指定的目录下，可以使HDFS或者其他Hadoop支持的文件系统。</td>
+</tr>
+<tr>
+<td><strong>saveAsObjectFile</strong>(<em>path</em>)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>countByKey</strong>()</td>
+<td>针对(K,V)类型的RDD，返回一个(K,Int)的map，表示每一个key对应的元素个数。</td>
+</tr>
+<tr>
+<td><strong>foreach</strong>(<em>func</em>)</td>
+<td>在数据集的每一个元素上，运行函数func进行更新。</td>
+</tr>
+<tr>
+<td><strong>aggregate</strong></td>
+<td>先对分区进行操作，在总体操作</td>
+</tr>
+<tr>
+<td><strong>reduceByKeyLocally</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lookup</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>top</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>fold</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>foreachPartition</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h1 id="Spark任务基础概念"><a href="#Spark任务基础概念" class="headerlink" title="Spark任务基础概念"></a>Spark任务基础概念</h1><ul>
+<li><p>Application</p>
+<p>driver程序以及集群执行的代码</p>
+</li>
+<li><p>driver</p>
+<p>创建sc，加载数据集，处理数据以及展示流程</p>
+</li>
+<li><p>集群节点</p>
+<p>driver：创建sc，启动spark级集群计算任务</p>
+<p>master：master节点</p>
+<p>worker：集群任务执行节点，启动executor进程</p>
+<p>Executor：执行应用程序以及汇报执行状态</p>
+<p>cluster manager：集群资源管理器，负责申请资源调度任务，如yarn</p>
+</li>
+<li><p>jobs</p>
+<p>RDD中的action，每个action变为一个job，然后DAGScheduler回分解stage执行</p>
+</li>
+<li><p>stage</p>
+<p>一个job拆分为多组task，每组是一个stage</p>
+</li>
+<li><p>task</p>
+<p>送到executor执行的工作单元，两类：shuffleMapTask：输出shffle所需要的数据；resultTask：无需shuffle直接返回处理结果</p>
+</li>
+<li><p>partition</p>
+<p>数据划分</p>
+</li>
+<li><p>cores</p>
+<p>worker执行进程</p>
+</li>
+<li><p>memory</p>
+<p>内存设置</p>
+</li>
+<li><p>shuffle</p>
+<p>stage之间的数据拷贝</p>
+</li>
+</ul>
+<h1 id="窄依赖与宽依赖"><a href="#窄依赖与宽依赖" class="headerlink" title="窄依赖与宽依赖"></a>窄依赖与宽依赖</h1><p>窄依赖：每个RDD只会被一个子RDD所依赖，例如map、filter、union等操作都会产生窄依赖；（独生子女）</p>
+<p>宽依赖：每个RDD被多个子RDD所依赖，例如groupByKey、reduceByKey、sortByKey等操作都会产生宽依赖；（超生）</p>
+<p>关于join的依赖关系：</p>
+<p>两个RDD在进行join操作时，一个RDD的partition仅仅和另一个RDD中已知个数的Partition进行join，那么这种类型的join操作就是窄依赖。否则就是宽依赖。</p>
+<h1 id="DAG图与宽窄依赖"><a href="#DAG图与宽窄依赖" class="headerlink" title="DAG图与宽窄依赖"></a>DAG图与宽窄依赖</h1><p>DAGScheduler遇到action job时，会根据宽窄依赖决定stage划分。如果遇到窄依赖会将该action加入当前stage，遇到宽依赖则创建新的stage去执行</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/Git-commit-message-specification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/Git-commit-message-specification/" class="post-title-link" itemprop="url">Git commit message specification</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:32:10" itemprop="dateCreated datePublished" datetime="2022-10-25T15:32:10+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Git commit message specification</p>
+<p><a target="_blank" rel="noopener" href="https://www.conventionalcommits.org/en/v1.0.0/">https://www.conventionalcommits.org/en/v1.0.0/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html">https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html</a></p>
+<h1 id="Specification"><a href="#Specification" class="headerlink" title="Specification"></a>Specification</h1><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;[optional scope]: &lt;description&gt;</span><br><span class="line"></span><br><span class="line">[optional body]</span><br><span class="line"></span><br><span class="line">[optional footer(s)]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Types:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">abaliable types:</span><br><span class="line">[</span><br><span class="line">  &#x27;build&#x27;,</span><br><span class="line">  &#x27;chore&#x27;,</span><br><span class="line">  &#x27;ci&#x27;,</span><br><span class="line">  &#x27;docs&#x27;,</span><br><span class="line">  &#x27;feat&#x27;,</span><br><span class="line">  &#x27;fix&#x27;,</span><br><span class="line">  &#x27;perf&#x27;,</span><br><span class="line">  &#x27;refactor&#x27;,</span><br><span class="line">  &#x27;revert&#x27;,</span><br><span class="line">  &#x27;style&#x27;,</span><br><span class="line">  &#x27;test&#x27;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">description:</span><br><span class="line">feat：新功能（feature）</span><br><span class="line">fix：修补bug</span><br><span class="line">docs：文档（documentation）</span><br><span class="line">style： 格式（不影响代码运行的变动）</span><br><span class="line">refactor：重构（即不是新增功能，也不是修改bug的代码变动）</span><br><span class="line">test：增加测试</span><br><span class="line">chore：构建过程或辅助工具的变动</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><h3 id="Commit-message-with-description-and-breaking-change-footer"><a href="#Commit-message-with-description-and-breaking-change-footer" class="headerlink" title="Commit message with description and breaking change footer"></a>Commit message with description and breaking change footer</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">feat: allow provided config object to extend other configs</span><br><span class="line"></span><br><span class="line">BREAKING CHANGE: `extends` key in config file is now used for extending other config files</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-to-draw-attention-to-breaking-change"><a href="#Commit-message-with-to-draw-attention-to-breaking-change" class="headerlink" title="Commit message with ! to draw attention to breaking change"></a>Commit message with <code>!</code> to draw attention to breaking change</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feat!: send an email to the customer when a product is shipped</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-scope-and-to-draw-attention-to-breaking-change"><a href="#Commit-message-with-scope-and-to-draw-attention-to-breaking-change" class="headerlink" title="Commit message with scope and ! to draw attention to breaking change"></a>Commit message with scope and <code>!</code> to draw attention to breaking change</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feat(api)!: send an email to the customer when a product is shipped</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-both-and-BREAKING-CHANGE-footer"><a href="#Commit-message-with-both-and-BREAKING-CHANGE-footer" class="headerlink" title="Commit message with both ! and BREAKING CHANGE footer"></a>Commit message with both <code>!</code> and BREAKING CHANGE footer</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chore!: drop support for Node 6</span><br><span class="line"></span><br><span class="line">BREAKING CHANGE: use JavaScript features not available in Node 6.</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-no-body"><a href="#Commit-message-with-no-body" class="headerlink" title="Commit message with no body"></a>Commit message with no body</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docs: correct spelling of CHANGELOG</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-scope"><a href="#Commit-message-with-scope" class="headerlink" title="Commit message with scope"></a>Commit message with scope</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feat(lang): add Polish language</span><br></pre></td></tr></table></figure>
+
+<h3 id="Commit-message-with-multi-paragraph-body-and-multiple-footers"><a href="#Commit-message-with-multi-paragraph-body-and-multiple-footers" class="headerlink" title="Commit message with multi-paragraph body and multiple footers"></a>Commit message with multi-paragraph body and multiple footers</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fix: prevent racing of requests</span><br><span class="line"></span><br><span class="line">Introduce a request id and a reference to latest request. Dismiss</span><br><span class="line">incoming responses other than from latest request.</span><br><span class="line"></span><br><span class="line">Remove timeouts which were used to mitigate the racing issue but are</span><br><span class="line">obsolete now.</span><br><span class="line"></span><br><span class="line">Reviewed-by: Z</span><br><span class="line">Refs: #123</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h1><p>idea plugins: <code>git commit template</code></p>
+<p>hangelog generate &amp; commit message validate</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/spark%E4%B9%8B%E5%B9%BF%E6%92%AD%E4%B8%8E%E7%B4%AF%E5%8A%A0%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/spark%E4%B9%8B%E5%B9%BF%E6%92%AD%E4%B8%8E%E7%B4%AF%E5%8A%A0%E5%99%A8/" class="post-title-link" itemprop="url">spark之广播与累加器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:30:43" itemprop="dateCreated datePublished" datetime="2022-10-25T15:30:43+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h1><p>如果我们要在分布式计算里面分发大对象，例如：字典，集合，黑白名单等，这个都会由Driver端进行分发，一般来讲，如果这个变量不是广播变量，那么每个task就会分发一份，这在<strong>task数目十分多的情况下Driver的带宽会成为系统的瓶颈，而且会大量消耗task服务器上的资源</strong>，如果将这个变量声明为广播变量，那么知识每个executor拥有一份，这个executor启动的task会共享这个变量，节省了通信的成本和服务器的资源。</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create</span><br><span class="line"><span class="keyword">val</span> a = <span class="number">3</span></span><br><span class="line"><span class="keyword">val</span> broadcast = sc.broadcast(a)</span><br><span class="line"></span><br><span class="line"># use</span><br><span class="line"><span class="keyword">val</span> c = broadcast.value</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1、能不能将一个RDD使用广播变量广播出去？</p>
+<pre><code>不能，因为RDD是不存储数据的。**可以将RDD的结果广播出去。**
+</code></pre>
+<p>2、 广播变量只能在Driver端定义，<strong>不能在Executor端定义。</strong></p>
+<p>3、 在Driver端可以修改广播变量的值，<strong>在Executor端无法修改广播变量的值。</strong></p>
+<p>4、如果executor端用到了Driver的变量，如果<strong>不使用广播变量在Executor有多少task就有多少Driver端的变量副本。</strong></p>
+<p>5、如果Executor端用到了Driver的变量，如果<strong>使用广播变量在每个Executor中只有一份Driver端的变量副本。</strong></p>
+<h1 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h1><p>在spark应用程序中，我们经常会有这样的需求，如异常监控，调试，记录符合某特性的数据的数目，这种需求都需要用到计数器，如果一个变量不被声明为一个累加器，那么它将在被改变时不会再driver端进行全局汇总，即在分布式运行时每个task运行的只是原始变量的一个副本，并不能改变原始变量的值，但是当这个变量被声明为累加器后，该变量就会有分布式计数的功能。</p>
+<h2 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># create</span><br><span class="line"><span class="keyword">val</span> a = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"># use</span><br><span class="line"><span class="keyword">val</span> b = a.value</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h2><p>累加器在Driver端定义赋初始值，累加器只能在Driver端读取最后的值，在Excutor端更新。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/Linux-%E5%AE%89%E8%A3%85shadowsocks%E5%B9%B6%E5%BC%80%E5%90%AF%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/Linux-%E5%AE%89%E8%A3%85shadowsocks%E5%B9%B6%E5%BC%80%E5%90%AF%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">Linux 安装shadowsocks并开启全局代理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:09:38" itemprop="dateCreated datePublished" datetime="2022-10-25T15:09:38+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>linux安装ss客户端与kcp并开启全局代理</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/25/Linux-%E5%AE%89%E8%A3%85shadowsocks%E5%B9%B6%E5%BC%80%E5%90%AF%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/Vim-%E5%A4%8D%E5%88%B6%E5%86%85%E5%AE%B9%E5%88%B0%E5%89%AA%E5%88%87%E6%9D%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/Vim-%E5%A4%8D%E5%88%B6%E5%86%85%E5%AE%B9%E5%88%B0%E5%89%AA%E5%88%87%E6%9D%BF/" class="post-title-link" itemprop="url">Vim 复制内容到剪切板</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 14:42:20" itemprop="dateCreated datePublished" datetime="2022-10-25T14:42:20+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 行复制：光标移动到需要复制的行，输入下面命令</span><br><span class="line">&quot;+y</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/13/git%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/13/git%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">git总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-13 21:14:59" itemprop="dateCreated datePublished" datetime="2022-06-13T21:14:59+08:00">2022-06-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Git 是一个开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Git 与常用的版本控制工具 CVS, Subversion 等不同，它采用了分布式版本库的方式，不必服务器端软件支持。</p>
+<p>Git 一般只添加数据, 你执行的 Git 操作，几乎只往 Git 数据库中增加数据。 很难让Git 执行任何不可逆操作，或者让它以任何方式清除数据。 同别的 VCS 一样，未提交更新时有可能丢失或弄乱修改的内容;但是一旦你提交快照到 Git 中，就难以再丢失数据，特别是如果你定期的推送数据库到其它仓库的话。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/06/13/git%E6%80%BB%E7%BB%93/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/10/Markdown-UML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/10/Markdown-UML/" class="post-title-link" itemprop="url">Markdown UML</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-10 10:41:38" itemprop="dateCreated datePublished" datetime="2022-06-10T10:41:38+08:00">2022-06-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文介绍如何使用Markdown绘制UML图</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/06/10/Markdown-UML/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/07/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">二叉搜索树与双向链表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-07 10:06:53" itemprop="dateCreated datePublished" datetime="2022-06-07T10:06:53+08:00">2022-06-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/">二叉搜索树与双向链表</a></p>
+<p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/06/07/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zeki Li</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zeki-zl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zeki-zl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeki Li</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

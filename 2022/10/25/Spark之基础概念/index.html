@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基于内存，分布式计算，函数式处理 RDD：Resilient Distributed Dataset弹性分布式数据集：不可变，分布式抽象数据。使用时可以显示的将其换存在内存中以提高速度  分片，每一个分片会被一个计算任务处理，可以在创建RDD时指定分片数 迭代器，每个分片计算结果可以通过迭代器的compute函数进行整合，无需保存每次计算的结果 依赖关系，RDD转换后形成新的RDD，新的RDD就依">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark之基础概念">
+<meta property="og:url" content="http://example.com/2022/10/25/Spark%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Zeki&#39;s Blog">
+<meta property="og:description" content="基于内存，分布式计算，函数式处理 RDD：Resilient Distributed Dataset弹性分布式数据集：不可变，分布式抽象数据。使用时可以显示的将其换存在内存中以提高速度  分片，每一个分片会被一个计算任务处理，可以在创建RDD时指定分片数 迭代器，每个分片计算结果可以通过迭代器的compute函数进行整合，无需保存每次计算的结果 依赖关系，RDD转换后形成新的RDD，新的RDD就依">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-10-25T07:34:04.000Z">
+<meta property="article:modified_time" content="2022-12-03T10:25:37.380Z">
+<meta property="article:author" content="Zeki Li">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="basic">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/10/25/Spark%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Spark之基础概念 | Zeki's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Zeki's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Zeki's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/25/Spark%E4%B9%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zeki Li">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeki's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark之基础概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 15:34:04" itemprop="dateCreated datePublished" datetime="2022-10-25T15:34:04+08:00">2022-10-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>基于内存，分布式计算，函数式处理</p>
+<h1 id="RDD：Resilient-Distributed-Dataset"><a href="#RDD：Resilient-Distributed-Dataset" class="headerlink" title="RDD：Resilient Distributed Dataset"></a>RDD：Resilient Distributed Dataset</h1><p>弹性分布式数据集：不可变，分布式抽象数据。使用时可以显示的将其换存在内存中以提高速度</p>
+<ul>
+<li>分片，每一个分片会被一个计算任务处理，可以在创建RDD时指定分片数</li>
+<li>迭代器，每个分片计算结果可以通过迭代器的compute函数进行整合，无需保存每次计算的结果</li>
+<li>依赖关系，RDD转换后形成新的RDD，新的RDD就依赖之前的结果。在部分分区计算失败或数据丢失时，可以具体到依赖的分区进行重新计算即可</li>
+<li>分片函数，哈希分片语范围分片，其决定了分片数量</li>
+<li>移动计算而不是移动数据，任务调度时尽可能将任务下发到所需处理的数据块存储节点执行</li>
+</ul>
+<h1 id="创建RDD"><a href="#创建RDD" class="headerlink" title="创建RDD"></a>创建RDD</h1><ul>
+<li>HDFS</li>
+<li>数据库</li>
+<li>本地文件</li>
+<li>其他</li>
+</ul>
+<h1 id="算子"><a href="#算子" class="headerlink" title="算子"></a>算子</h1><ul>
+<li><p>Transformation</p>
+<p>将一个RDD转换为另一个RDD，transfromation具有lazy load特性。需要遇到action算子时才会执行</p>
+<table>
+<thead>
+<tr>
+<th><strong>Transformation</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>map</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由每一个输入元素经过func函数转换后组成</td>
+</tr>
+<tr>
+<td><strong>filter</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由经过func函数计算后返回值为true的输入元素组成</td>
+</tr>
+<tr>
+<td><strong>flatMap</strong>(func)</td>
+<td>类似于map，但是每一个输入元素可以被映射为0或多个输出元素（所以func应该返回一个序列，而不是单一元素）</td>
+</tr>
+<tr>
+<td><strong>mapPartitions</strong>(func)</td>
+<td>类似于map，但独立地在RDD的每一个分片上运行，因此在类型为T的RDD上运行时，func的函数类型必须是Iterator[T] &#x3D;&gt; Iterator[U]</td>
+</tr>
+<tr>
+<td><strong>mapPartitionsWithIndex</strong>(func)</td>
+<td>类似于mapPartitions，但func带有一个整数参数表示分片的索引值，因此在类型为T的RDD上运行时，func的函数类型必须是(Int, Interator[T]) &#x3D;&gt; Iterator[U]</td>
+</tr>
+<tr>
+<td><strong>sample</strong>(withReplacement, fraction, seed)</td>
+<td>根据fraction指定的比例对数据进行采样，可以选择是否使用随机数进行替换，seed用于指定随机数生成器种子</td>
+</tr>
+<tr>
+<td><strong>union</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求并集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>intersection</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求交集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>distinct</strong>([numTasks]))</td>
+<td>对源RDD进行去重后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>groupByKey</strong>([numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K, Iterator[V])的RDD</td>
+</tr>
+<tr>
+<td><strong>reduceByKey</strong>(func, [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K,V)的RDD，使用指定的reduce函数，将相同key的值聚合到一起，与groupByKey类似，reduce任务的个数可以通过第二个可选的参数来设置</td>
+</tr>
+<tr>
+<td><strong>aggregateByKey</strong>(zeroValue)(seqOp, combOp, [numTasks])</td>
+<td>先按分区聚合 再总的聚合  每次要跟初始值交流 例如：aggregateByKey(0)(<em>+</em>,<em>+</em>) 对k&#x2F;y的RDD进行操作</td>
+</tr>
+<tr>
+<td><strong>sortByKey</strong>([ascending], [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，K必须实现Ordered接口，返回一个按照key进行排序的(K,V)的RDD</td>
+</tr>
+<tr>
+<td><strong>sortBy</strong>(func,[ascending], [numTasks])</td>
+<td>与sortByKey类似，但是更灵活 第一个参数是根据什么排序 第二个是怎么排序 false倒序  第三个排序后分区数 默认与原RDD一样</td>
+</tr>
+<tr>
+<td><strong>join</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个相同key对应的所有元素对在一起的(K,(V,W))的RDD 相当于内连接（求交集）</td>
+</tr>
+<tr>
+<td><strong>cogroup</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个(K,(Iterable<V>,Iterable<W>))类型的RDD</td>
+</tr>
+<tr>
+<td><strong>cartesian</strong>(otherDataset)</td>
+<td>两个RDD的笛卡尔积 的成很多个K&#x2F;V</td>
+</tr>
+<tr>
+<td><strong>pipe</strong>(command, [envVars])</td>
+<td>调用外部程序</td>
+</tr>
+<tr>
+<td><strong>coalesce</strong>(numPartitions**)**</td>
+<td>重新分区 第一个参数是要分多少区，第二个参数是否shuffle 默认false 少分区变多分区 true  多分区变少分区 false</td>
+</tr>
+<tr>
+<td><strong>repartition</strong>(numPartitions)</td>
+<td>重新分区 必须shuffle 参数是要分多少区 少变多</td>
+</tr>
+<tr>
+<td><strong>repartitionAndSortWithinPartitions</strong>(partitioner)</td>
+<td>重新分区+排序 比先分区再排序效率高 对K&#x2F;V的RDD进行操作</td>
+</tr>
+<tr>
+<td><strong>foldByKey</strong>(zeroValue)(seqOp)</td>
+<td>该函数用于K&#x2F;V做折叠，合并处理 ，与aggregate类似  第一个括号的参数应用于每个V值 第二括号函数是聚合例如：_+_</td>
+</tr>
+<tr>
+<td><strong>combineByKey</strong></td>
+<td>合并相同的key的值 rdd1.combineByKey(x &#x3D;&gt; x, (a: Int, b: Int) &#x3D;&gt; a + b, (m: Int, n: Int) &#x3D;&gt; m + n)</td>
+</tr>
+<tr>
+<td><strong>partitionBy****（partitioner）</strong></td>
+<td>对RDD进行分区 partitioner是分区器 例如new HashPartition(2</td>
+</tr>
+<tr>
+<td><strong>cache</strong></td>
+<td>RDD缓存，可以避免重复计算从而减少时间，区别：cache内部调用了persist算子，cache默认就一个缓存级别MEMORY-ONLY ，而persist则可以选择缓存级别</td>
+</tr>
+<tr>
+<td><strong>persist</strong></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Subtract****（rdd）</strong></td>
+<td>返回前rdd元素不在后rdd的rdd</td>
+</tr>
+<tr>
+<td><strong>leftOuterJoin</strong></td>
+<td>leftOuterJoin类似于SQL中的左外关联left outer join，返回结果以前面的RDD为主，关联不上的记录为空。只能用于两个RDD之间的关联，如果要多个RDD关联，多关联几次即可。</td>
+</tr>
+<tr>
+<td><strong>rightOuterJoin</strong></td>
+<td>rightOuterJoin类似于SQL中的有外关联right outer join，返回结果以参数中的RDD为主，关联不上的记录为空。只能用于两个RDD之间的关联，如果要多个RDD关联，多关联几次即可</td>
+</tr>
+<tr>
+<td>subtractByKey</td>
+<td>substractByKey和基本转换操作中的subtract类似只不过这里是针对K的，返回在主RDD中出现，并且不在otherRDD中出现的元素</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Action</p>
+<p>触发代码执行，一段spark代码至少需要一个action</p>
+<table>
+<thead>
+<tr>
+<th><strong>Action</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>reduce</strong>(<em>func</em>)</td>
+<td>通过func函数聚集RDD中的所有元素，这个功能必须是课交换且可并联的</td>
+</tr>
+<tr>
+<td><strong>collect</strong>()</td>
+<td>在驱动程序中，以数组的形式返回数据集的所有元素</td>
+</tr>
+<tr>
+<td><strong>count</strong>()</td>
+<td>返回RDD的元素个数</td>
+</tr>
+<tr>
+<td><strong>first</strong>()</td>
+<td>返回RDD的第一个元素（类似于take(1)）</td>
+</tr>
+<tr>
+<td><strong>take</strong>(<em>n</em>)</td>
+<td>返回一个由数据集的前n个元素组成的数组</td>
+</tr>
+<tr>
+<td><strong>takeSample</strong>(<em>withReplacement</em>,<em>num</em>, [<em>seed</em>])</td>
+<td>返回一个数组，该数组由从数据集中随机采样的num个元素组成，可以选择是否用随机数替换不足的部分，seed用于指定随机数生成器种子</td>
+</tr>
+<tr>
+<td><strong>takeOrdered</strong>(<em>n</em>, <em>[ordering]</em>)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>saveAsTextFile</strong>(<em>path</em>)</td>
+<td>将数据集的元素以textfile的形式保存到HDFS文件系统或者其他支持的文件系统，对于每个元素，Spark将会调用toString方法，将它装换为文件中的文本</td>
+</tr>
+<tr>
+<td><strong>saveAsSequenceFile</strong>(<em>path</em>)</td>
+<td>将数据集中的元素以Hadoop sequencefile的格式保存到指定的目录下，可以使HDFS或者其他Hadoop支持的文件系统。</td>
+</tr>
+<tr>
+<td><strong>saveAsObjectFile</strong>(<em>path</em>)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>countByKey</strong>()</td>
+<td>针对(K,V)类型的RDD，返回一个(K,Int)的map，表示每一个key对应的元素个数。</td>
+</tr>
+<tr>
+<td><strong>foreach</strong>(<em>func</em>)</td>
+<td>在数据集的每一个元素上，运行函数func进行更新。</td>
+</tr>
+<tr>
+<td><strong>aggregate</strong></td>
+<td>先对分区进行操作，在总体操作</td>
+</tr>
+<tr>
+<td><strong>reduceByKeyLocally</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lookup</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>top</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>fold</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>foreachPartition</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h1 id="Spark任务基础概念"><a href="#Spark任务基础概念" class="headerlink" title="Spark任务基础概念"></a>Spark任务基础概念</h1><ul>
+<li><p>Application</p>
+<p>driver程序以及集群执行的代码</p>
+</li>
+<li><p>driver</p>
+<p>创建sc，加载数据集，处理数据以及展示流程</p>
+</li>
+<li><p>集群节点</p>
+<p>driver：创建sc，启动spark级集群计算任务</p>
+<p>master：master节点</p>
+<p>worker：集群任务执行节点，启动executor进程</p>
+<p>Executor：执行应用程序以及汇报执行状态</p>
+<p>cluster manager：集群资源管理器，负责申请资源调度任务，如yarn</p>
+</li>
+<li><p>jobs</p>
+<p>RDD中的action，每个action变为一个job，然后DAGScheduler回分解stage执行</p>
+</li>
+<li><p>stage</p>
+<p>一个job拆分为多组task，每组是一个stage</p>
+</li>
+<li><p>task</p>
+<p>送到executor执行的工作单元，两类：shuffleMapTask：输出shffle所需要的数据；resultTask：无需shuffle直接返回处理结果</p>
+</li>
+<li><p>partition</p>
+<p>数据划分</p>
+</li>
+<li><p>cores</p>
+<p>worker执行进程</p>
+</li>
+<li><p>memory</p>
+<p>内存设置</p>
+</li>
+<li><p>shuffle</p>
+<p>stage之间的数据拷贝</p>
+</li>
+</ul>
+<h1 id="窄依赖与宽依赖"><a href="#窄依赖与宽依赖" class="headerlink" title="窄依赖与宽依赖"></a>窄依赖与宽依赖</h1><p>窄依赖：每个RDD只会被一个子RDD所依赖，例如map、filter、union等操作都会产生窄依赖；（独生子女）</p>
+<p>宽依赖：每个RDD被多个子RDD所依赖，例如groupByKey、reduceByKey、sortByKey等操作都会产生宽依赖；（超生）</p>
+<p>关于join的依赖关系：</p>
+<p>两个RDD在进行join操作时，一个RDD的partition仅仅和另一个RDD中已知个数的Partition进行join，那么这种类型的join操作就是窄依赖。否则就是宽依赖。</p>
+<h1 id="DAG图与宽窄依赖"><a href="#DAG图与宽窄依赖" class="headerlink" title="DAG图与宽窄依赖"></a>DAG图与宽窄依赖</h1><p>DAGScheduler遇到action job时，会根据宽窄依赖决定stage划分。如果遇到窄依赖会将该action加入当前stage，遇到宽依赖则创建新的stage去执行</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/spark/" rel="tag"># spark</a>
+              <a href="/tags/basic/" rel="tag"># basic</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/25/Git-commit-message-specification/" rel="prev" title="Git commit message specification">
+      <i class="fa fa-chevron-left"></i> Git commit message specification
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/25/%E6%9C%80%E5%90%8E%E7%9A%84Typora%E5%85%8D%E8%B4%B9%E7%89%88%E6%9C%AC/" rel="next" title="最后的Typora免费版本">
+      最后的Typora免费版本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RDD%EF%BC%9AResilient-Distributed-Dataset"><span class="nav-number">1.</span> <span class="nav-text">RDD：Resilient Distributed Dataset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BARDD"><span class="nav-number">2.</span> <span class="nav-text">创建RDD</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E5%AD%90"><span class="nav-number">3.</span> <span class="nav-text">算子</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark%E4%BB%BB%E5%8A%A1%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">4.</span> <span class="nav-text">Spark任务基础概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AA%84%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%AE%BD%E4%BE%9D%E8%B5%96"><span class="nav-number">5.</span> <span class="nav-text">窄依赖与宽依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DAG%E5%9B%BE%E4%B8%8E%E5%AE%BD%E7%AA%84%E4%BE%9D%E8%B5%96"><span class="nav-number">6.</span> <span class="nav-text">DAG图与宽窄依赖</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zeki Li</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zeki-zl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zeki-zl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeki Li</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
