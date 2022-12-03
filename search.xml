@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>使用ssh连接github</title>
+      <link href="/2022/12/03/%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5github/"/>
+      <url>/2022/12/03/%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5github/</url>
+      
+        <content type="html"><![CDATA[<p>国内服务器由于网络环境无法正常使用github管理项目</p><p>解决方式：</p><ol><li>添加github-client源</li><li>apt update &amp; apt install gh</li><li>gh auth login. # choose ssh</li></ol><p>enjoy!</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> issue </tag>
+            
+            <tag> github </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2022/12/03/hello-world/"/>
       <url>/2022/12/03/hello-world/</url>

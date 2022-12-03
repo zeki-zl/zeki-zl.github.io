@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-12-03T10:25:37.380Z</updated>
+  <updated>2022-12-03T10:47:53.800Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用ssh连接github</title>
+    <link href="http://example.com/2022/12/03/%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5github/"/>
+    <id>http://example.com/2022/12/03/%E4%BD%BF%E7%94%A8ssh%E8%BF%9E%E6%8E%A5github/</id>
+    <published>2022-12-03T10:41:51.000Z</published>
+    <updated>2022-12-03T10:47:53.800Z</updated>
+    
+    <content type="html"><![CDATA[<p>国内服务器由于网络环境无法正常使用github管理项目</p><p>解决方式：</p><ol><li>添加github-client源</li><li>apt update &amp; apt install gh</li><li>gh auth login. # choose ssh</li></ol><p>enjoy!</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;国内服务器由于网络环境无法正常使用github管理项目&lt;/p&gt;
+&lt;p&gt;解决方式：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;添加github-client源&lt;/li&gt;
+&lt;li&gt;apt update &amp;amp; apt install gh&lt;/li&gt;
+&lt;li&gt;gh auth login. #</summary>
+      
+    
+    
+    
+    
+    <category term="issue" scheme="http://example.com/tags/issue/"/>
+    
+    <category term="github" scheme="http://example.com/tags/github/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
@@ -467,29 +496,6 @@
     
     
     <category term="数据处理" scheme="http://example.com/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL命令explain</title>
-    <link href="http://example.com/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/"/>
-    <id>http://example.com/2022/06/04/MySQL%E5%91%BD%E4%BB%A4explain/</id>
-    <published>2022-06-04T10:12:00.000Z</published>
-    <updated>2022-12-03T10:25:37.372Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>explain</code>是MySQL查询优化的关键命令. 通过这个命令可以模拟优化器执行SQL查询语句, 分析执行结果可以优化查询语句以提升查询性能.</p><span id="more"></span><p>语句:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> xx <span class="keyword">where</span> yy <span class="operator">=</span> <span class="string">&#x27;zz&#x27;</span></span><br></pre></td></tr></table></figure><p>相应字段介绍:</p><ul><li><p>id : 语句中select查询子句的顺序</p></li><li><p>select_type : 查询类型</p><ul><li><p>SIMPLE : 简单查询, 不包含子查询与union查询</p></li><li><p>PRIMARY : 主查询, 存在子查询时,外层查询被标记为主查询</p></li><li><p>SUBQUERY : 子查询</p></li><li><p>UNION : 在union命令后的语句为此类型</p></li><li><p>UNION RESULT : 最终UNION结果会表示为此类型</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    id  select_type   table       partitions  type    possible_keys        key      </span><br><span class="line">------  ------------  ----------  ----------  ------  -------------------  ------- </span><br><span class="line">     1  PRIMARY       student     (NULL)      const   PRIMARY,id_name_age  PRIMARY  </span><br><span class="line">     2  UNION         student     (NULL)      const   PRIMARY,id_name_age  PRIMARY </span><br><span class="line">(NULL)  UNION RESULT  &lt;union1,2&gt;  (NULL)      ALL     (NULL)               (NULL)   </span><br></pre></td></tr></table></figure></li><li><p>DERIVED : FROM列表中包含子查询的语句被标记为此类型, MySQL会递归执行这些子查询放入临时表(MySQL 5.7+ 优化后使用derived_merge加速查询效率. 无此状态)</p></li></ul></li><li><p>table : 访问的表,结合id可以看到执行过程中表查询顺序</p></li><li><p>partitions : 匹配分区</p></li><li><p>type : 访问类型</p><p>10个状态,从好到差排序:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NULL &gt; system &gt; const &gt; eq_ref &gt; ref &gt; ref_or_null &gt; index_merge &gt; range &gt; index &gt; ALL</span><br></pre></td></tr></table></figure><ul><li><p>NULL : 无需访问表和索引的查询. 例: </p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="number">5</span><span class="operator">*</span><span class="number">7</span>  <span class="comment">-- 不访问表,计算数值</span></span><br><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="built_in">MAX</span>(id) <span class="keyword">FROM</span> student  <span class="comment">-- 查询最大索引,直接取索引树叶子结点获取 </span></span><br></pre></td></tr></table></figure></li><li><p>SYSTEM : 表只有一行记录（等于系统表），这是<code>const</code>类型的特列，平时不大会出现，可以忽略。</p></li><li><p>const : 一次索引查找到,主键索引或唯一索引查询时</p></li><li><p>eq_ref : 联表join查询时, 按联表的主键或唯一键查询</p></li><li><p>ref : 联表join查询时, 按联表的索引查询, 匹配多行不唯一</p></li><li><p>ref_or_null : 类似ref, 可以搜索值为NULL的行</p></li><li><p>index_merge : 查询了多个索引,然后取交集并集. 常见于在<code>and</code>, ‘or’的条件下使用了不同的索引. 大部分性能不如<code>range</code></p></li><li><p>range : 索引范围查询,常见于 &lt;&gt;, &gt;, &gt;&#x3D;, &lt;, &lt;&#x3D;, IS NULL, &lt;&#x3D;&gt;, BETWEEN, IN()或者like等运算符的查询中</p></li><li><p>ALL : 全表扫描, 务必优化!!!</p></li></ul></li><li><p>possible_keys : 可能使用的索引</p></li><li><p>key : 实际使用的索引, 为null时表示没使用索引</p></li><li><p>key_len : 索引中使用的字节数</p></li><li><p>ref : 索引的哪一列被使用</p></li><li><p>rows : 根据表统计信息以及索引选用情况,估算查找所需记录需要读取的行数. 数值越小效率越高</p></li><li><p>filtere : 查询数据占表的百分比. 类似rows,数值越小效率越高</p></li><li><p>extra : 其他重要的额外信息</p><ul><li>Using filesort : SQL需要排序, 但是优化器找不到可以使用的索引, 此时使用外部排序(多次磁盘IO访问,效率极低)</li><li>Using tempporary : 查询结果排序时, 使用临时表协助. 效率低于外部排序.</li><li>Using index : 使用了索引 👍🏻👍🏻👍🏻</li><li>Using where : 使用了where</li><li>Using join buffer : 多表join使用了连接缓存</li><li>impossible where : 筛选条件啥也没找到</li><li>distinct : 优化distinct操作, 找到匹配后立即停止同样值的动作</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;explain&lt;/code&gt;是MySQL查询优化的关键命令. 通过这个命令可以模拟优化器执行SQL查询语句, 分析执行结果可以优化查询语句以提升查询性能.&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="数据库" scheme="http://example.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    <category term="MySQL" scheme="http://example.com/tags/MySQL/"/>
-    
-    <category term="优化" scheme="http://example.com/tags/%E4%BC%98%E5%8C%96/"/>
     
   </entry>
   
