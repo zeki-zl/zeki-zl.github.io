@@ -23,7 +23,7 @@ Services:
 | file browser | http://192.168.31.114:8080| file browser |
 | samba | smb://192.168.31.114:445 | file share service |
 | transmission | http://192.168.31.114:9091 | PT download service |
-| hexo | http://192.168.31.114:4040 | | hexo blog service, TODO: use docker later |
+| hexo | http://192.168.31.114:4000 | | hexo blog service, TODO: use docker later |
 | code server | http://192.168.31.114:8888 | vscode web server |
 | Apple HA | - | todo |
 

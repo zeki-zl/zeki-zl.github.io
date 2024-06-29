@@ -28,7 +28,7 @@
 <meta property="og:description" content="广播如果我们要在分布式计算里面分发大对象，例如：字典，集合，黑白名单等，这个都会由Driver端进行分发，一般来讲，如果这个变量不是广播变量，那么每个task就会分发一份，这在task数目十分多的情况下Driver的带宽会成为系统的瓶颈，而且会大量消耗task服务器上的资源，如果将这个变量声明为广播变量，那么知识每个executor拥有一份，这个executor启动的task会共享这个变量，节省了">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-10-25T07:30:43.000Z">
-<meta property="article:modified_time" content="2022-10-25T07:37:01.135Z">
+<meta property="article:modified_time" content="2023-12-03T02:01:58.738Z">
 <meta property="article:author" content="Zeki Li">
 <meta property="article:tag" content="spark">
 <meta property="article:tag" content="broadcast">
@@ -345,14 +345,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -387,7 +387,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

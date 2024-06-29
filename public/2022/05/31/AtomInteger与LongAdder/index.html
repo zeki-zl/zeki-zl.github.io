@@ -28,7 +28,7 @@
 <meta property="og:description" content="CASCompare And Swap：通过原子的进行比较交换操作保证数据安全。 具体流程：每次更新前先判断当前值是否相等，如果相等就进行替换。否则自旋等待锁释放。 存在问题：ABA问题，就是存在另外线程将值改回之前的值，此时另一个不该获取锁的线程可以拿到锁 如何避免：通过对信息加版本号，例如：使用AtomicStampedReference作为版本信息保证不会回退旧数据">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-31T00:59:49.000Z">
-<meta property="article:modified_time" content="2022-10-25T07:02:10.203Z">
+<meta property="article:modified_time" content="2023-12-03T02:01:58.730Z">
 <meta property="article:author" content="Zeki Li">
 <meta property="article:tag" content="线程安全">
 <meta property="article:tag" content="AtomInteger">
@@ -341,14 +341,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -383,7 +383,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

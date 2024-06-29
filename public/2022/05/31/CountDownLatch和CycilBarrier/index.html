@@ -28,7 +28,7 @@
 <meta property="og:description" content="CountDownLatch内部采用AQS实现，初始化时设置State。 countDown()方法调用时调用tryRelease()将state减一并通过CAS更新state； await()主线程调用时，会判断state是否为0，是0的话直接退出，否则加入AQS队列等待唤醒。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-31T06:46:31.000Z">
-<meta property="article:modified_time" content="2022-10-25T07:02:10.203Z">
+<meta property="article:modified_time" content="2023-12-03T02:01:58.730Z">
 <meta property="article:author" content="Zeki Li">
 <meta property="article:tag" content="并发">
 <meta property="article:tag" content="线程同步">
@@ -339,14 +339,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -381,7 +381,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
